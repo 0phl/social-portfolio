@@ -8,4 +8,8 @@
   body {
     @apply bg-white font-sans text-gray-900 antialiased;
   }
+
+  a:focus-visible {
+    @apply outline outline-2 outline-offset-4 outline-brand;
+  }
 }
