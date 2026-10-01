@@ -4,16 +4,19 @@ import { profile } from '../../data/profile';
 export function ProfileHeader() {
   return (
     <section aria-labelledby="profile-name" className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-      <div
-        aria-hidden="true"
-        className="h-32 border-b border-gray-200 bg-gradient-to-r from-gray-100 to-gray-50 sm:h-48"
+      <img
+        src={profile.cover}
+        alt=""
+        width={2172}
+        height={724}
+        className="h-32 w-full border-b border-gray-200 bg-gray-100 object-cover object-center sm:h-48"
       />
 
       <div className="px-4 pb-6 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
           <img
             src={profile.avatar}
-            alt={`${profile.name}'s personal logo`}
+            alt={profile.name}
             width={128}
             height={128}
             className="relative -mt-12 h-24 w-24 shrink-0 rounded-full border-4 border-white bg-white object-cover shadow-sm sm:-mt-16 sm:h-32 sm:w-32"
