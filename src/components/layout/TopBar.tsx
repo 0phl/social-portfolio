@@ -1,11 +1,16 @@
+import type { MouseEventHandler } from 'react';
 import { GithubIcon, LinkedinIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
 
-export function TopBar() {
+interface TopBarProps {
+  onHomeClick: MouseEventHandler<HTMLAnchorElement>;
+}
+
+export function TopBar({ onHomeClick }: TopBarProps) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-14 border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-full max-w-5xl items-center justify-between gap-4 px-4 lg:px-0">
-        <a href="#main-content" className="flex min-w-0 items-center gap-2 rounded-md">
+        <a href="#main-content" onClick={onHomeClick} className="flex min-w-0 items-center gap-2 rounded-md">
           <span
             aria-hidden="true"
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-brand text-lg font-bold text-white"
