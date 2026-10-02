@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { BookmarkIcon, HeartIcon, MessageCircleIcon, MoreHorizontalIcon, SendIcon, Share2Icon, UserRoundIcon } from 'lucide-react';
+import { BookmarkIcon, HeartIcon, MessageCircleIcon, MoreHorizontalIcon, SendIcon, Share2Icon } from 'lucide-react';
 import { profile } from '../../data/profile';
 import type { Post } from '../../data/posts';
+import { VisitorAvatar } from '../shared/VisitorAvatar';
+import { LocalComment } from '../shared/LocalComment';
 
 export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; onLike: () => void }) {
   const [saved, setSaved] = useState(false);
@@ -33,7 +35,7 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
     <article id={`post-${post.id}`} tabIndex={-1} aria-label={post.preview ? 'Your local post preview' : `Post by ${profile.name}`} className="scroll-mt-36 rounded-lg border border-gray-200 bg-white p-4 transition-colors hover:border-gray-300 focus:outline-none sm:p-5">
       <header className="relative mb-3 flex items-start justify-between gap-2">
         <div className="flex min-w-0 items-center gap-3">
-          {post.preview ? <UserRoundIcon aria-hidden="true" className="h-10 w-10 shrink-0 rounded-full bg-gray-100 p-2 text-gray-500" /> : <img src={profile.avatar} alt="" className="h-10 w-10 shrink-0 rounded-full border border-gray-200 object-cover" />}
+          {post.preview ? <VisitorAvatar size="medium" /> : <img src={profile.avatar} alt="" className="h-10 w-10 shrink-0 rounded-full border border-gray-200 object-cover" />}
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
               <h3 className="text-sm font-semibold">{post.preview ? 'You' : profile.name}</h3>
@@ -68,7 +70,7 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
           <motion.section id={`comments-${post.id}`} aria-label="Comments" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: reduceMotion ? 0 : 0.2 }} className="overflow-hidden">
             <div className="mt-4 border-t border-gray-100 pt-4">
               <form onSubmit={(event) => { event.preventDefault(); if (!draft.trim()) return; setComments([...comments, draft.trim()]); setDraft(''); }} className="flex items-center gap-2">
-                <UserRoundIcon aria-hidden="true" className="h-8 w-8 shrink-0 rounded-full bg-gray-100 p-1.5 text-gray-500" />
+                <VisitorAvatar />
                 <div className="flex min-w-0 flex-1 items-center rounded-full border border-gray-200 bg-gray-50 pl-4 focus-within:border-brand">
                   <input aria-label="Add a comment" placeholder="Add a comment..." value={draft} onChange={(event) => setDraft(event.target.value)} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none" />
                   <button type="submit" aria-label="Add comment" disabled={!draft.trim()} className="flex h-11 w-11 shrink-0 items-center justify-center text-brand disabled:text-gray-300"><SendIcon aria-hidden="true" className="h-4 w-4" /></button>
@@ -76,7 +78,7 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
               </form>
               <p className="mt-2 text-xs text-gray-500">Comments are local previews and reset when you reload.</p>
               <div role="log" aria-label="Local comments" className="mt-4 space-y-3">
-                {comments.map((comment, index) => <div key={index} className="rounded-2xl rounded-tl-sm bg-gray-50 px-4 py-2.5"><h4 className="text-xs font-semibold">You</h4><p className="mt-0.5 break-words text-sm text-gray-800">{comment}</p></div>)}
+                {comments.map((comment, index) => <LocalComment key={index} text={comment} />)}
               </div>
             </div>
           </motion.section>

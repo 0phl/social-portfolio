@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { profile } from '../../data/profile';
+import { VisitorAvatar } from '../shared/VisitorAvatar';
 import { posts, type Post } from '../../data/posts';
 import { PostCard } from './PostCard';
 
@@ -40,7 +40,7 @@ export function FeedTab({ postId }: { postId?: string }) {
     <div className="space-y-4">
       <div className="rounded-lg border border-gray-200 bg-white p-4">
         <div className="flex items-center gap-3">
-          <img src={profile.avatar} alt="" className="h-10 w-10 shrink-0 rounded-full border border-gray-200 object-cover" />
+          <VisitorAvatar size="medium" />
           <button ref={composeButton} type="button" aria-expanded={composing} aria-controls="post-composer" onClick={() => setComposing(!composing)} className="min-h-11 min-w-0 flex-1 rounded-full border border-gray-300 px-4 py-2.5 text-left text-sm text-gray-500 transition-colors hover:bg-gray-50">Start a post...</button>
         </div>
         <AnimatePresence initial={false}>

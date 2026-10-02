@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { BookmarkIcon, HeartIcon, MessageCircleIcon, SendIcon, Share2Icon, UserRoundIcon } from 'lucide-react';
+import { BookmarkIcon, HeartIcon, MessageCircleIcon, SendIcon, Share2Icon } from 'lucide-react';
+import { VisitorAvatar } from '../shared/VisitorAvatar';
+import { LocalComment } from '../shared/LocalComment';
 
 export function BlogResponses({ postId }: { postId: string }) {
   const [liked, setLiked] = useState(false);
@@ -42,7 +44,7 @@ export function BlogResponses({ postId }: { postId: string }) {
       <section className="mb-16 mt-2" aria-labelledby="blog-responses-heading">
         <h2 id="blog-responses-heading" className="mb-4 text-sm font-semibold text-gray-900">Responses ({comments.length})</h2>
         <form onSubmit={(event) => { event.preventDefault(); if (!draft.trim()) return; setComments([...comments, draft.trim()]); setDraft(''); }} className="flex items-center gap-2">
-          <UserRoundIcon aria-hidden="true" className="h-8 w-8 shrink-0 rounded-full bg-gray-100 p-1.5 text-gray-500" />
+          <VisitorAvatar />
           <div className="flex min-w-0 flex-1 items-center rounded-full border border-gray-200 bg-gray-50 pl-4 focus-within:border-brand">
             <input ref={input} aria-label="Add a response" placeholder="Add a response..." value={draft} onChange={(event) => setDraft(event.target.value)} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none" />
             <button type="submit" aria-label="Add response" disabled={!draft.trim()} className="flex h-11 w-11 shrink-0 items-center justify-center text-brand disabled:text-gray-300"><SendIcon aria-hidden="true" className="h-4 w-4" /></button>
@@ -50,7 +52,7 @@ export function BlogResponses({ postId }: { postId: string }) {
         </form>
         <p className="mt-2 text-xs text-gray-500">Likes, saves, and responses are local previews and reset when you leave this page.</p>
         <div role="log" aria-label="Local responses" className="mt-4 space-y-3">
-          {comments.map((comment, index) => <div key={index} className="rounded-2xl rounded-tl-sm bg-gray-50 px-4 py-2.5"><h3 className="text-xs font-semibold">You</h3><p className="mt-0.5 break-words text-sm text-gray-800">{comment}</p></div>)}
+          {comments.map((comment, index) => <LocalComment key={index} text={comment} />)}
         </div>
       </section>
     </>
