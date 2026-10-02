@@ -68,7 +68,7 @@ I also want other students or beginners to know that it is normal to feel unsure
 
 Sometimes, getting hired is where the real learning begins.
 
-![Ronan in his graduation gown on a red staircase.](/images/blog/starting-before-i-felt-ready/stairs.jpg)
+![Ronan in his graduation gown on a red staircase.](/images/blog/starting-before-i-felt-ready/stairs-1200.jpg)
 
 ## Still learning
 

@@ -17,7 +17,7 @@ export interface BlogPost {
 
 const body: BlogBlock[] = startingBeforeReady.trim().split(/\r?\n\s*\r?\n/).slice(1).map((block) => {
   const image = block.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
-  if (image) return { type: 'image', alt: image[1], src: image[2], width: 4000, height: 6000 };
+  if (image) return { type: 'image', alt: image[1], src: image[2], width: 1200, height: 1800 };
   if (block.startsWith('## ')) return { type: 'heading', text: block.slice(3) };
   return { type: 'paragraph', text: block };
 });
@@ -30,10 +30,10 @@ export const blogPosts: BlogPost[] = [{
   publishedAt: '2026-10-02',
   readTime: `${Math.max(1, Math.ceil(wordCount / 200))} min read`,
   cover: {
-    src: '/images/blog/starting-before-i-felt-ready/graduation.jpg',
+    src: '/images/blog/starting-before-i-felt-ready/graduation-1600.jpg',
     alt: 'Ronan in his graduation gown, holding his cap up outside a building.',
-    width: 6000,
-    height: 4000,
+    width: 1600,
+    height: 1067,
   },
   tags: ['Personal', 'College', 'Career'],
   body,

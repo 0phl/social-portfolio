@@ -3,8 +3,8 @@ export const profile = {
   title: 'Server Administrator & Developer',
   bio: 'I work with Linux servers and build web applications. This is where I share my projects, things I\'m learning, and the occasional fix that took longer than it should have.',
   location: 'Philippines',
-  avatar: '/images/profile/ronan.png',
-  cover: '/images/profile/cover.png',
+  avatar: '/images/profile/ronan-512.jpg',
+  cover: '/images/profile/cover-2048.jpg',
   badge: '/images/profile/badge.png',
   mockStats: { connections: 512, followers: 2847 },
   about: [
