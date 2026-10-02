@@ -88,7 +88,6 @@ export const projects: Project[] = [
     images: projectImages.szhotpot,
     technologies: ['PHP', 'MySQL', 'HTML', 'CSS', 'JavaScript', 'Bootstrap'],
     repository: 'https://github.com/0phl/sz-hotpot-store',
-    website: 'https://szhotpot.free.nf/',
   },
   {
     id: 'linkfolio',
@@ -99,7 +98,6 @@ export const projects: Project[] = [
     images: projectImages.linkfolio,
     technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'shadcn/ui', 'IndexedDB'],
     repository: 'https://github.com/0phl/Linkfolio',
-    website: 'https://linkfolio-iota.vercel.app/',
   },
   {
     id: 'car-rental',
