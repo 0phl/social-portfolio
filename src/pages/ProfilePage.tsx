@@ -11,6 +11,7 @@ import { ProjectsTab } from '../components/projects/ProjectsTab';
 import { ProfileHeader } from '../components/profile/ProfileHeader';
 import { TabNavigation } from '../components/profile/TabNavigation';
 import { profileTabs } from '../data/profileTabs';
+import { profile } from '../data/profile';
 import { useProfileTab } from '../hooks/useProfileTab';
 
 export function ProfilePage() {
@@ -20,6 +21,12 @@ export function ProfilePage() {
   const previousProject = useRef<string>();
   const previousBlog = useRef<string>();
   const [bioRequest, setBioRequest] = useState(0);
+
+  useEffect(() => {
+    const sectionTitle = profileTabs.find((tab) => tab.id === activeTab)?.label;
+    document.title = blog ? `${blog.title} | ${profile.name}` : project ? `${project.title} | ${profile.name}` : activeTab === 'posts' ? `${profile.name} | ${profile.title}` : `${sectionTitle} | ${profile.name}`;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', blog?.excerpt ?? project?.description ?? profile.bio);
+  }, [activeTab, blog, project]);
 
   useEffect(() => {
     if (!project && previousProject.current && activeTab === 'projects') {

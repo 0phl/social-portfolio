@@ -10,12 +10,9 @@ export function BlogPage({ post }: { post: BlogPost }) {
   const { scrollYProgress } = useScroll();
 
   useEffect(() => {
-    const previousTitle = document.title;
-    document.title = `${post.title} | ${profile.name}`;
     heading.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0 });
-    return () => { document.title = previousTitle; };
-  }, [post.id, post.title]);
+  }, [post.id]);
 
   return (
     <>

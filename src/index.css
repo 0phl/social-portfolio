@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,7 +7,7 @@
     @apply bg-white font-sans text-gray-900 antialiased;
   }
 
-  a:focus-visible {
+  a:focus-visible, button:focus-visible, select:focus-visible {
     @apply outline outline-2 outline-offset-4 outline-brand;
   }
 }
