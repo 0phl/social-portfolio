@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { BotIcon, SendIcon, XIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
 
 export function MessagePanel({ onClose }: { onClose: () => void }) {
+  const reduceMotion = useReducedMotion();
   const dialog = useRef<HTMLDialogElement>(null);
   const messagesEnd = useRef<HTMLDivElement>(null);
   const [draft, setDraft] = useState('');
@@ -25,7 +27,16 @@ export function MessagePanel({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <dialog ref={dialog} onCancel={(event) => { event.preventDefault(); onClose(); }} aria-labelledby="message-title" className="fixed bottom-4 left-auto right-4 top-auto m-0 h-[500px] max-h-[calc(100dvh-6rem)] w-[350px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-gray-200 bg-white p-0 text-gray-900 shadow-2xl backdrop:bg-black/10 sm:bottom-6 sm:right-6">
+    <motion.dialog
+      ref={dialog}
+      initial={reduceMotion ? false : { opacity: 0, y: 100, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 100, scale: 0.95 }}
+      transition={reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 30 }}
+      onCancel={(event) => { event.preventDefault(); onClose(); }}
+      aria-labelledby="message-title"
+      className="fixed bottom-4 left-auto right-4 top-auto m-0 h-[500px] max-h-[calc(100dvh-6rem)] w-[350px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-gray-200 bg-white p-0 text-gray-900 shadow-2xl backdrop:bg-black/10 sm:bottom-6 sm:right-6"
+    >
       <div className="flex h-full flex-col">
         <header className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
           <div className="flex items-center gap-3">
@@ -62,6 +73,6 @@ export function MessagePanel({ onClose }: { onClose: () => void }) {
           <p className="mt-2 text-center text-[10px] text-gray-500">Preview only · no messages are delivered</p>
         </form>
       </div>
-    </dialog>
+    </motion.dialog>
   );
 }

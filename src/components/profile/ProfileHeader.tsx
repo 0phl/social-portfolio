@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { CheckIcon, GithubIcon, LinkedinIcon, MapPinIcon, MoreHorizontalIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { MessagePanel } from './MessagePanel';
@@ -125,12 +126,13 @@ export function ProfileHeader() {
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
               <p><span className="font-semibold tabular-nums">{profile.mockStats.connections.toLocaleString('en-US')}</span> <span className="text-gray-500">Connections</span></p>
               <p><span className="font-semibold tabular-nums">{(profile.mockStats.followers + Number(isFollowing)).toLocaleString('en-US')}</span> <span className="text-gray-500">Followers</span></p>
-              <span className="text-xs text-gray-400">Mock data</span>
             </div>
           </div>
         </div>
       </section>
-      {messageOpen && <MessagePanel onClose={() => setMessageOpen(false)} />}
+      <AnimatePresence>
+        {messageOpen && <MessagePanel key="messages" onClose={() => setMessageOpen(false)} />}
+      </AnimatePresence>
     </>
   );
 }
