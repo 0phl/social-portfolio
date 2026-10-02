@@ -41,3 +41,7 @@ npm run preview  # Preview the build locally
 - `index.html` contains the page title and social sharing metadata.
 
 Replace my personal content, photos, branding, and links with your own. Update `public/social-preview.jpg` and the favicon for your site too.
+
+## License
+
+Licensed under the [MIT License](LICENSE).
