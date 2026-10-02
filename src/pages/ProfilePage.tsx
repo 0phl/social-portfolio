@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FileTextIcon } from 'lucide-react';
 import { FeedTab } from '../components/posts/FeedTab';
+import { AboutTab } from '../components/profile/AboutTab';
 import { ProfileSidebar } from '../components/profile/ProfileSidebar';
 import { projects } from '../data/projects';
 import { ProjectPage } from './ProjectPage';
 import { ProjectsTab } from '../components/projects/ProjectsTab';
 import { ProfileHeader } from '../components/profile/ProfileHeader';
 import { TabNavigation } from '../components/profile/TabNavigation';
-import { profile } from '../data/profile';
 import { profileTabs } from '../data/profileTabs';
 import { useProfileTab } from '../hooks/useProfileTab';
 
@@ -20,9 +20,10 @@ const emptyStates = {
 };
 
 export function ProfilePage() {
-  const { activeTab, selectTab, projectId, postId } = useProfileTab();
+  const { activeTab, selectTab, projectId, postId, aboutSection } = useProfileTab();
   const project = projects.find((item) => item.id === projectId);
   const previousProject = useRef<string>();
+  const [bioRequest, setBioRequest] = useState(0);
 
   useEffect(() => {
     if (!project && previousProject.current && activeTab === 'projects') {
@@ -54,15 +55,10 @@ export function ProfilePage() {
                   aria-labelledby={`tab-${tab.id}`}
                   hidden={activeTab !== tab.id}
                   tabIndex={0}
-                  className={`scroll-mt-36 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand ${tab.id === 'projects' || tab.id === 'posts' ? '' : 'rounded-lg border border-gray-200 bg-white p-5 sm:p-6'}`}
+                  className={`scroll-mt-36 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand ${tab.id === 'articles' ? 'rounded-lg border border-gray-200 bg-white p-5 sm:p-6' : ''}`}
                 >
                   {tab.id === 'about' ? (
-                    <>
-                      <h2 className="text-lg font-semibold">A little about me</h2>
-                      <div className="mt-3 max-w-2xl space-y-3 text-[15px] leading-relaxed text-gray-700">
-                        {profile.about.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-                      </div>
-                    </>
+                    <AboutTab active={activeTab === 'about'} section={aboutSection} bioRequest={bioRequest} />
                   ) : tab.id === 'projects' ? (
                     <ProjectsTab />
                   ) : tab.id === 'posts' ? (
@@ -80,7 +76,7 @@ export function ProfilePage() {
               );
             })}
           </div>
-          <ProfileSidebar />
+          <ProfileSidebar onReadBio={() => setBioRequest((request) => request + 1)} />
         </div>
       </div>
     </>

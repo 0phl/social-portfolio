@@ -1,13 +1,13 @@
 import { ArrowRightIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
 
-export function ProfileSidebar() {
+export function ProfileSidebar({ onReadBio }: { onReadBio: () => void }) {
   return (
     <aside aria-label="Profile summary" className="hidden space-y-4 lg:block">
       <section className="rounded-lg border border-gray-200 bg-white p-5">
         <h2 className="mb-3 font-semibold">About</h2>
         <p className="mb-4 text-sm leading-relaxed text-gray-600">{profile.bio}</p>
-        <a href="#about" className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline">
+        <a href="#about/bio" onClick={onReadBio} className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline">
           Read full bio <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
         </a>
       </section>

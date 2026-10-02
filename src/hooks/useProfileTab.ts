@@ -15,5 +15,5 @@ export function useProfileTab() {
     window.location.hash = tab;
   };
 
-  return { activeTab, selectTab, projectId: activeTab === 'projects' ? projectId : undefined, postId: activeTab === 'posts' ? projectId : undefined };
+  return { activeTab, selectTab, projectId: activeTab === 'projects' ? projectId : undefined, postId: activeTab === 'posts' ? projectId : undefined, aboutSection: activeTab === 'about' ? projectId : undefined };
 }
