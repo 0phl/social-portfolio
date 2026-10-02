@@ -1,6 +1,7 @@
 import type { MouseEventHandler } from 'react';
 import { GithubIcon, LinkedinIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
+import { Notifications } from './Notifications';
 
 interface TopBarProps {
   onHomeClick: MouseEventHandler<HTMLAnchorElement>;
@@ -14,7 +15,7 @@ export function TopBar({ onHomeClick }: TopBarProps) {
           <img src="/logo.png" alt={profile.name} width={48} height={48} className="h-12 w-12 object-contain" />
         </a>
 
-        <nav aria-label="Social links" className="flex shrink-0 items-center gap-1 sm:gap-2">
+        <nav aria-label="Profile navigation" className="flex shrink-0 items-center gap-1 sm:gap-2">
           <a
             href={profile.links.github}
             target="_blank"
@@ -32,6 +33,10 @@ export function TopBar({ onHomeClick }: TopBarProps) {
             className="flex h-11 w-11 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-brand"
           >
             <LinkedinIcon aria-hidden="true" className="h-5 w-5" />
+          </a>
+          <Notifications />
+          <a href="#posts" onClick={onHomeClick} aria-label="View Ronan's profile" className="flex h-11 w-11 items-center justify-center rounded-full">
+            <img src={profile.avatar} alt="" width={32} height={32} className="h-8 w-8 rounded-full border border-gray-300 bg-gray-100 object-cover" />
           </a>
         </nav>
       </div>
