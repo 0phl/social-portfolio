@@ -1,4 +1,5 @@
-import { FileTextIcon, FolderOpenIcon, MessageSquareIcon } from 'lucide-react';
+import { FileTextIcon, MessageSquareIcon } from 'lucide-react';
+import { ProjectsTab } from '../components/projects/ProjectsTab';
 import { ProfileHeader } from '../components/profile/ProfileHeader';
 import { TabNavigation } from '../components/profile/TabNavigation';
 import { profile } from '../data/profile';
@@ -10,11 +11,6 @@ const emptyStates = {
     icon: MessageSquareIcon,
     title: 'No posts yet',
     description: "I'll share project updates, things I'm learning, and notes from my day-to-day work here.",
-  },
-  projects: {
-    icon: FolderOpenIcon,
-    title: 'Projects are on the way',
-    description: "I'm putting together a selection of my work, with the story behind each project.",
   },
   articles: {
     icon: FileTextIcon,
@@ -32,7 +28,7 @@ export function ProfilePage() {
       <TabNavigation activeTab={activeTab} onSelect={selectTab} />
 
       {profileTabs.map((tab) => {
-        const emptyState = tab.id === 'about' ? null : emptyStates[tab.id];
+        const emptyState = tab.id === 'posts' || tab.id === 'articles' ? emptyStates[tab.id] : null;
         const Icon = emptyState?.icon;
 
         return (
@@ -52,6 +48,8 @@ export function ProfilePage() {
                   {profile.about.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
                 </div>
               </>
+            ) : tab.id === 'projects' ? (
+              <ProjectsTab />
             ) : emptyState && Icon ? (
               <div className="flex flex-col items-center py-8 text-center sm:py-10">
                 <div className="mb-4 rounded-full bg-gray-50 p-3 text-gray-500">
