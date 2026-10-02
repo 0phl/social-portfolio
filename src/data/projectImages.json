@@ -1,4 +1,12 @@
 {
+  "pmma-enrollment": [
+    {
+      "src": "/images/projects/pmma-enrollment/sign-in.png",
+      "alt": "PMMA Graduate School enrollment portal with sign-in and applicant registration options.",
+      "width": 1908,
+      "height": 936
+    }
+  ],
   "hushmap": [
     {
       "src": "/images/projects/hushmap/dashboard.png",

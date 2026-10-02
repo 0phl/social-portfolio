@@ -7,8 +7,11 @@ import { ProjectImagePlaceholder } from '../components/projects/ProjectImagePlac
 const stackCategories = [
   { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui'] },
   { label: 'Mobile', items: ['Flutter', 'Dart'] },
-  { label: 'Backend', items: ['Laravel', 'Express', 'PHP'] },
-  { label: 'Data', items: ['MySQL', 'Firebase', 'IndexedDB'] },
+  { label: 'Backend', items: ['Laravel', 'Express', 'PHP', 'NestJS', 'Node.js', 'Zod', 'pg-boss'] },
+  { label: 'Data', items: ['MySQL', 'Firebase', 'IndexedDB', 'PostgreSQL', 'Prisma', 'MinIO'] },
+  { label: 'Integrations & files', items: ['Moodle Web Services', 'PDFKit', 'Nodemailer', 'Sharp'] },
+  { label: 'Deployment', items: ['Docker Compose', 'Nginx', 'Rocky Linux'] },
+  { label: 'Development & testing', items: ['Vitest', 'pnpm', 'Turborepo'] },
   { label: 'AI', items: ['Google Gemini'] },
   { label: 'Maps', items: ['Leaflet.js'] },
 ];
@@ -16,6 +19,7 @@ const stackCategories = [
 export function ProjectPage({ project }: { project: Project }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const related = projects.filter((item) => item.id !== project.id && item.type === project.type).slice(0, 3);
+  const featureGroups = project.featureGroups ?? [{ title: 'Highlights', items: project.highlights }];
   const stack = stackCategories.map((group) => ({
     label: group.label,
     items: project.technologies.filter((technology) => group.items.includes(technology)),
@@ -59,17 +63,24 @@ export function ProjectPage({ project }: { project: Project }) {
             <p className="text-base leading-relaxed text-gray-700">{project.description}</p>
             {project.note && <p className="mt-4 text-sm leading-relaxed text-gray-500">{project.note}</p>}
           </section>
-          <section className="mt-10">
-            <h2 className="mb-4 text-lg font-semibold">Highlights</h2>
+          {project.contribution && (
+            <section className="mt-10">
+              <h2 className="mb-3 text-lg font-semibold">My contribution</h2>
+              <h3 className="text-base font-semibold">{project.contribution.title}</h3>
+              <p className="mt-2 text-base leading-relaxed text-gray-700">{project.contribution.description}</p>
+            </section>
+          )}
+          {featureGroups.map((group) => <section key={group.title} className="mt-10">
+            <h2 className="mb-4 text-lg font-semibold">{group.title}</h2>
             <ul className="space-y-3">
-              {project.highlights.map((highlight) => (
+              {group.items.map((highlight) => (
                 <li key={highlight} className="flex gap-3 text-[15px] leading-relaxed text-gray-800">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-light text-brand"><CheckIcon aria-hidden="true" className="h-3 w-3" strokeWidth={3} /></span>
                   {highlight}
                 </li>
               ))}
             </ul>
-          </section>
+          </section>)}
           </div>
         <aside aria-label="Project details" className="lg:border-l lg:border-gray-200 lg:pl-8">
           <h2 className="mb-4 text-sm font-semibold">Tech stack</h2>

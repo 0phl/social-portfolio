@@ -14,6 +14,8 @@ export interface Project {
   type: 'personal' | 'professional';
   description: string;
   highlights: string[];
+  contribution?: { title: string; description: string };
+  featureGroups?: { title: string; items: string[] }[];
   note?: string;
   images: ProjectImage[];
   website?: string;
@@ -22,6 +24,88 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    id: 'pmma-enrollment',
+    title: 'PMMA Graduate School Enrollment System',
+    category: 'Seaversity client project',
+    type: 'professional',
+    description: 'An enrollment system developed at Seaversity for the Philippine Merchant Marine Academy Graduate School. It connects online applications, document review, admission decisions, payments, and Moodle classroom access in one workflow.',
+    contribution: {
+      title: 'Sole Full-Stack Developer',
+      description: 'I designed and developed the frontend, backend, database, and deployment as part of my role at Seaversity. My work covered the applicant portal, staff tools, Moodle integration, automated tests, and server setup.',
+    },
+    note: 'Developed for PMMA Graduate School through Seaversity. The system belongs to PMMA; this page presents my development contribution.',
+    images: projectImages['pmma-enrollment'],
+    highlights: ['Online applications and staff review workflows.', 'Fee assessment and payment recording.', 'Automated Moodle account and course provisioning.'],
+    featureGroups: [
+      {
+        title: 'Applications & student portal',
+        items: [
+          'Account registration, email verification, password recovery, and a step-by-step application saved as a draft.',
+          'Program and course selection, personal information, Philippine address selection, education and employment history, document uploads, surveys, and consent records.',
+          'Application status, requested corrections, resubmission, withdrawal, and enrollment for continuing students in later terms.',
+        ],
+      },
+      {
+        title: 'Document review & admission',
+        items: [
+          'Registrar queues with separate checks for uploaded scans and paper originals, configurable requirements, and application endorsement or return.',
+          'Dean approval, decline, and return workflows, with a generated Notice of Admission PDF.',
+          'Printable student information sheets, document revision history, and recorded responses to returned applications.',
+        ],
+      },
+      {
+        title: 'Courses & academic terms',
+        items: [
+          'Management of programs, curricula, courses, prerequisites, instructors, class sections, schedules, and capacity.',
+          'Term setup and rollover, course eligibility by program, student categories, and course prices for each term.',
+          'Course selection and drop workflows, plus a staff-assisted enrollment flow for authorized exceptions.',
+        ],
+      },
+      {
+        title: 'Assessment & payments',
+        items: [
+          'Automatic assessments with tuition and general fees. Bills retain a snapshot of the prices used when they were created.',
+          'Bank-deposit proof uploads, payment review, counter-payment recording, refunds, and balance tracking.',
+          'Configurable fee schedules and bank accounts, with payment monitoring and collection summaries for Accounting.',
+        ],
+      },
+      {
+        title: 'Moodle integration',
+        items: [
+          'Background jobs create or match student accounts and enroll students in the correct Moodle courses.',
+          'A classroom page shows course access and provisioning status, with a Moodle password reset flow.',
+          'Retry controls, failed-job monitoring, course withdrawal handling, and reconciliation checks for differences between the portal and Moodle.',
+        ],
+      },
+      {
+        title: 'Staff dashboards & reports',
+        items: [
+          'Separate workspaces for applicants, the Registrar, Dean, Accounting, and administrators, with dashboards scoped by academic term.',
+          'Course enrollment, student load, survey, payment, and collection reports, with filtered CSV exports.',
+          'Staff account management, school settings, and a readable audit log of administrative actions.',
+        ],
+      },
+      {
+        title: 'Notifications & document storage',
+        items: [
+          'Editable email templates, SMTP settings, delivery history, and retries for application, payment, and classroom notifications.',
+          'Private MinIO document storage with access-controlled, expiring file links and upload validation.',
+          'Lossless upload optimization that keeps the original file when a smaller verified version cannot be produced.',
+        ],
+      },
+      {
+        title: 'Architecture & deployment',
+        items: [
+          'A TypeScript monorepo with a Next.js frontend, NestJS API and background worker, shared Zod validation, and Prisma with PostgreSQL.',
+          'PostgreSQL-backed jobs through pg-boss, role-based permissions, session authentication, password hashing, and login throttling.',
+          'Self-hosted deployment on Rocky Linux using Docker Compose and Nginx, with database migrations, health checks, backup and restore scripts, and deployment documentation.',
+          'Automated tests for business rules and user interfaces, plus integration checks for enrollment, billing, and Moodle workflows.',
+        ],
+      },
+    ],
+    technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'NestJS', 'Node.js', 'Zod', 'Prisma', 'PostgreSQL', 'pg-boss', 'MinIO', 'Moodle Web Services', 'PDFKit', 'Nodemailer', 'Sharp', 'Docker Compose', 'Nginx', 'Rocky Linux', 'Vitest', 'pnpm', 'Turborepo'],
+  },
   {
     id: 'adj-automotive',
     title: 'ADJ Automotive',
