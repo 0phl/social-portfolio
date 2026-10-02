@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { GithubIcon, LinkedinIcon, SendIcon, XIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
@@ -12,7 +12,7 @@ export function MessagePanel({ onClose }: { onClose: () => void }) {
   const [draft, setDraft] = useState('');
   const [messages, setMessages] = useState<{ text: string; time: string }[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const element = dialog.current;
     element?.showModal();
     return () => element?.close();
@@ -36,14 +36,22 @@ export function MessagePanel({ onClose }: { onClose: () => void }) {
       onCancel={(event) => { event.preventDefault(); onClose(); }}
       aria-labelledby="message-title"
       aria-describedby="message-disclaimer"
-      className="fixed inset-0 !m-0 h-[100dvh] max-h-none w-screen max-w-none grid-cols-1 grid-rows-[minmax(0,1fr)] place-items-center overflow-hidden border-0 bg-transparent p-4 text-gray-900 backdrop:bg-gray-900/25 backdrop:backdrop-blur-sm open:grid sm:p-8"
+      className="fixed inset-0 !m-0 h-[100dvh] max-h-none w-screen max-w-none grid-cols-1 grid-rows-[minmax(0,1fr)] place-items-center overflow-hidden border-0 bg-transparent p-4 text-gray-900 backdrop:bg-transparent open:grid sm:p-8"
     >
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: reduceMotion ? 0 : 0.2, ease: 'easeOut' }}
+        className="pointer-events-none absolute inset-0 bg-gray-900/25 backdrop-blur-sm"
+      />
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.98 }}
-        transition={reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 320, damping: 32 }}
-        className="flex h-[640px] max-h-full w-[920px] max-w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl"
+        transition={{ duration: reduceMotion ? 0 : 0.2, ease: 'easeOut' }}
+        className="relative flex h-[640px] max-h-full w-[920px] max-w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl"
       >
         <header className="flex h-20 shrink-0 items-center justify-between gap-3 border-b border-gray-100 px-5 sm:px-8">
           <div>
