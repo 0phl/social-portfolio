@@ -13,10 +13,10 @@ export function AboutTab({ active, section, bioRequest }: { active: boolean; sec
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!active || section !== 'bio') return;
-    setBioExpanded(true);
+    if (!active || !section || !['bio', 'skills', 'experience'].includes(section)) return;
+    if (section === 'bio') setBioExpanded(true);
     const frame = requestAnimationFrame(() => {
-      const bio = document.getElementById('about-bio');
+      const bio = document.getElementById(`about-${section}`);
       bio?.focus({ preventScroll: true });
       bio?.scrollIntoView({ behavior: reduceMotion ? 'instant' : 'smooth', block: 'start' });
     });
@@ -45,7 +45,7 @@ export function AboutTab({ active, section, bioRequest }: { active: boolean; sec
         </button>
       </section>
 
-      <section id="about-experience" className={card}>
+      <section id="about-experience" tabIndex={-1} className={`${card} focus-visible:outline-brand`}>
         <h2 className="mb-5 text-lg font-semibold text-gray-900">Experience</h2>
         <ol>
           {experience.map((role, index) => {
@@ -78,7 +78,7 @@ export function AboutTab({ active, section, bioRequest }: { active: boolean; sec
                             <span className="tabular-nums sm:hidden">{role.period} ·</span>
                             <MapPinIcon aria-hidden="true" className="h-3 w-3" />{role.location}
                           </span>
-                          {!isOpen && <span className="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-600">{role.description}</span>}
+                          <span className={`mt-2 block text-sm leading-relaxed text-gray-600 ${isOpen ? '' : 'line-clamp-2'}`}>{role.description}</span>
                         </span>
                         <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: reduceMotion ? 0 : 0.2, ease }} className="mt-1 shrink-0 text-gray-400 group-hover:text-gray-700">
                           <ChevronDownIcon aria-hidden="true" className="h-4 w-4" />
@@ -123,7 +123,7 @@ export function AboutTab({ active, section, bioRequest }: { active: boolean; sec
         </ol>
       </section>
 
-      <section id="about-skills" className={card}>
+      <section id="about-skills" tabIndex={-1} className={`${card} focus-visible:outline-brand`}>
         <h2 className="mb-4 text-lg font-semibold text-gray-900">Skills</h2>
         <div className="space-y-4">
           {skillGroups.map((group) => (
@@ -139,9 +139,14 @@ export function AboutTab({ active, section, bioRequest }: { active: boolean; sec
 
       <section id="about-education" className={card}>
         <h2 className="mb-4 text-lg font-semibold text-gray-900">Education</h2>
-        <h3 className="font-semibold text-gray-900">{education.school}</h3>
-        <p className="mt-0.5 text-sm text-gray-700">{education.degree}</p>
-        <p className="mt-1 text-xs tabular-nums text-gray-500">{education.period}</p>
+        <div className="flex items-start gap-3">
+          <img src={education.logo} alt="" width={48} height={48} loading="lazy" className="h-12 w-12 shrink-0 rounded border border-gray-200 bg-white object-contain" />
+          <div className="min-w-0">
+            <h3 className="font-semibold text-gray-900">{education.school}</h3>
+            <p className="mt-0.5 text-sm text-gray-700">{education.degree}</p>
+            <p className="mt-1 text-xs tabular-nums text-gray-500">{education.period}</p>
+          </div>
+        </div>
       </section>
     </motion.div>
   );

@@ -3,6 +3,7 @@ export const experience = [
     id: 'seaversity-full-time',
     role: 'Server Administrator',
     company: 'Seaversity, Inc.',
+    logo: '/images/organizations/seaversity.png',
     type: 'Full-time',
     period: 'May 2026 – Present',
     location: 'Philippines · On-site',
@@ -20,6 +21,7 @@ export const experience = [
     id: 'seaversity-contract',
     role: 'Server Administrator',
     company: 'Seaversity, Inc.',
+    logo: '/images/organizations/seaversity.png',
     type: 'Contract',
     period: 'Nov 2025 – May 2026',
     location: 'Philippines',
@@ -37,6 +39,7 @@ export const experience = [
     id: 'seaversity-intern',
     role: 'IT Intern',
     company: 'Seaversity, Inc.',
+    logo: '/images/organizations/seaversity.png',
     type: 'Internship',
     period: 'Aug 2025 – Nov 2025',
     location: 'Philippines · On-site',
@@ -60,6 +63,7 @@ export const skillGroups = [
 
 export const education = {
   school: 'St. Dominic College of Asia',
+  logo: '/images/organizations/st-dominic.png',
   degree: 'Bachelor of Science in Information Technology',
   period: '2022 – 2026',
 };
