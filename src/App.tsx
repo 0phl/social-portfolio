@@ -19,7 +19,10 @@ export function App() {
       >
         Skip to content
       </a>
-      <TopBar onHomeClick={focusContent} />
+      <TopBar onHomeClick={(event) => {
+        if (window.location.hash.startsWith('#projects/')) window.location.hash = 'projects';
+        focusContent(event);
+      }} />
       <main
         id="main-content"
         tabIndex={-1}

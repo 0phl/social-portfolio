@@ -6,17 +6,14 @@ function subscribe(onChange: () => void) {
   return () => window.removeEventListener('hashchange', onChange);
 }
 
-function getTab(): ProfileTab {
-  const hash = window.location.hash.slice(1);
-  return profileTabs.find((tab) => tab.id === hash)?.id ?? 'posts';
-}
-
 export function useProfileTab() {
-  const activeTab = useSyncExternalStore(subscribe, getTab);
+  const hash = useSyncExternalStore(subscribe, () => window.location.hash.slice(1));
+  const [tabId, projectId] = hash.split('/');
+  const activeTab = profileTabs.find((tab) => tab.id === tabId)?.id ?? 'posts';
 
   const selectTab = (tab: ProfileTab) => {
     window.location.hash = tab;
   };
 
-  return { activeTab, selectTab };
+  return { activeTab, selectTab, projectId: activeTab === 'projects' ? projectId : undefined };
 }
