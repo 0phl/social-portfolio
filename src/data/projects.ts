@@ -73,7 +73,6 @@ export const projects: Project[] = [
     highlights: ['Live noise readings from an ESP32 and an INMP441 microphone.', 'A floor-plan heatmap with quiet, moderate, and loud noise levels.', 'Firebase keeps the sensor readings and dashboard in sync.'],
     technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Firebase', 'ESP32', 'Arduino C++', 'INMP441'],
     repository: 'https://github.com/0phl/hushmap',
-    website: 'https://hushmap.kalinn.dev',
   },
   {
     id: 'iskedyulko',
