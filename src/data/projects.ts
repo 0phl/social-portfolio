@@ -39,10 +39,10 @@ export const projects: Project[] = [
     description: 'A place to find Bacoor services, requirements, and local information before heading to a government office. An unofficial, community-run guide for residents.',
     note: 'Built on the BetterLocalGov starter, with original credits preserved in the repository.',
     images: [{
-      src: '/images/projects/betterbacoor.jpg',
+      src: '/images/projects/betterbacoor.png',
       alt: 'BetterBacoor home page with service search and guides for business permits, civil records, and working permits.',
-      width: 1280,
-      height: 720,
+      width: 1898,
+      height: 919,
     }],
     website: 'https://www.betterbacoor.org/',
     technologies: ['React', 'TypeScript', 'Tailwind CSS'],

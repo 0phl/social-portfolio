@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRightIcon, ChevronLeftIcon, ChevronRightIcon, ImageOffIcon } from 'lucide-react';
+import { ArrowUpRightIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import type { ProjectImage } from '../../data/projects';
+import { ProjectImagePlaceholder } from './ProjectImagePlaceholder';
 
 export function ProjectGallery({ images, title }: { images: ProjectImage[]; title: string }) {
   const [index, setIndex] = useState(0);
@@ -10,10 +11,8 @@ export function ProjectGallery({ images, title }: { images: ProjectImage[]; titl
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-video flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 text-center text-gray-500">
-        <ImageOffIcon aria-hidden="true" className="mb-2 h-6 w-6" />
-        <p className="text-sm font-medium">No images yet</p>
-        <p className="mt-0.5 text-xs text-gray-400">Screenshots for this project are coming soon.</p>
+      <div className="aspect-video overflow-hidden rounded-xl border border-dashed border-gray-300 bg-gray-50">
+        <ProjectImagePlaceholder />
       </div>
     );
   }

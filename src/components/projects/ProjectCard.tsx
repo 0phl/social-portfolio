@@ -1,4 +1,5 @@
 import type { Project } from '../../data/projects';
+import { ProjectImagePlaceholder } from './ProjectImagePlaceholder';
 
 export function ProjectCard({ project }: { project: Project }) {
   const cover = project.images[0];
@@ -10,7 +11,7 @@ export function ProjectCard({ project }: { project: Project }) {
       className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-left transition-colors hover:border-gray-300"
     >
       <div className="aspect-video overflow-hidden border-b border-gray-100 bg-gray-50">
-        {cover && (
+        {cover ? (
           <img
             src={cover.src}
             alt=""
@@ -19,7 +20,7 @@ export function ProjectCard({ project }: { project: Project }) {
             loading="lazy"
             className={`h-full w-full transition-transform duration-300 motion-safe:group-hover:scale-[1.02] ${cover.height > cover.width ? 'object-contain' : 'object-cover'}`}
           />
-        )}
+        ) : <ProjectImagePlaceholder />}
       </div>
       <div className="flex flex-1 flex-col p-4">
         <p className="text-xs text-gray-500">
