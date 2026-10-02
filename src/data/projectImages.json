@@ -1,4 +1,12 @@
 {
+  "lms-billing": [
+    {
+      "src": "/images/projects/lms-billing/sign-in.png",
+      "alt": "Seaversity LMS Billing sign-in page with username and password fields and a billing illustration.",
+      "width": 1914,
+      "height": 939
+    }
+  ],
   "pmma-enrollment": [
     {
       "src": "/images/projects/pmma-enrollment/sign-in.png",

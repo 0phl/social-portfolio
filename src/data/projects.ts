@@ -107,6 +107,88 @@ export const projects: Project[] = [
     technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'NestJS', 'Node.js', 'Zod', 'Prisma', 'PostgreSQL', 'pg-boss', 'MinIO', 'Moodle Web Services', 'PDFKit', 'Nodemailer', 'Sharp', 'Docker Compose', 'Nginx', 'Rocky Linux', 'Vitest', 'pnpm', 'Turborepo'],
   },
   {
+    id: 'lms-billing',
+    title: 'LMS Billing',
+    category: 'Seaversity internal tool',
+    type: 'professional',
+    description: 'An internal billing support tool developed at Seaversity. It brings together trainee completion data from client Moodle sites so the team can review courses, prepare billing records, and track which courses have been marked paid.',
+    contribution: {
+      title: 'Sole Full-Stack Developer',
+      description: 'I designed and developed the frontend, backend, database, and deployment as part of my role at Seaversity. My work included the Moodle integration, completion checks, reporting, background refreshes, access controls, and server setup.',
+    },
+    note: 'Developed for internal use at Seaversity. This page presents my contribution as the developer.',
+    images: projectImages['lms-billing'],
+    highlights: ['Completion-based billing checks across client Moodle sites.', 'Excel, CSV, and PDF supporting records.', 'Scheduled refreshes and restricted client viewer accounts.'],
+    featureGroups: [
+      {
+        title: 'Moodle sites & course catalog',
+        items: [
+          'Manage multiple client Moodle connections, switch between sites, and test whether the required web service functions are available.',
+          'Sync categories and courses into a stored catalog, with a searchable category tree and filters for completion, paid status, and tracking.',
+          'Find courses by name, batch code, category, or common abbreviations without making a new Moodle request for every search.',
+        ],
+      },
+      {
+        title: 'Trainee completion checks',
+        items: [
+          'Check trainee progress using Moodle Web Services, with a formula that follows the Completion Progress block and configurable alternatives for each site.',
+          'Show active, completed, billable, and suspended counts alongside each trainee\'s progress, status, and last course access.',
+          'Exclude non-trainee roles, identify missing progress figures, and retain the last successful result when a refresh fails.',
+        ],
+      },
+      {
+        title: 'Billing dashboard & paid tracking',
+        items: [
+          'Dashboard views for courses ready to bill, courses in progress, paid courses, and items needing attention.',
+          'Mark individual courses or a batch\'s ready courses as paid, recording the date and the billable count from the stored check. Paid marks can also be removed.',
+          'Filter paid records by month, year, or a custom date range, with summaries of courses, batches, and trainees billed.',
+        ],
+      },
+      {
+        title: 'Exports & supporting documents',
+        items: [
+          'Export completed trainees or the full trainee list to Excel and CSV, including progress, completion status, and last course access.',
+          'Generate a billing supporting-data PDF with account, course, batch, date, and preparer details, with reusable account and preparer information per site.',
+          'Build exported counts and trainee lists from the same stored check. The PDF export asks for a fresh review if that check changed while the form was open.',
+        ],
+      },
+      {
+        title: 'Background refresh & tracking',
+        items: [
+          'Refresh a course, batch, category, or all tracked courses, with progress indicators and cancellation controls.',
+          'Run nightly refreshes within a configurable Manila-time window, with global and per-site switches and a choice of tracked categories.',
+          'Exclude individual courses from bulk monitoring and resume them later while keeping stored results and paid history.',
+          'Use a PostgreSQL-backed job queue, per-site request limits, and course locks to manage refresh work and avoid duplicate checks.',
+        ],
+      },
+      {
+        title: 'Client viewer accounts',
+        items: [
+          'Create client accounts assigned to one LMS, with read-only access to its stored dashboard, courses, trainee details, and billing status.',
+          'Keep exports, refreshes, paid-status changes, settings, and account management restricted to administrators.',
+          'Manage assignments, reset passwords, and disable access. Account changes revoke existing client sessions.',
+        ],
+      },
+      {
+        title: 'Architecture & access controls',
+        items: [
+          'A Next.js and TypeScript application with React screens, server-side actions and API routes, Zod validation, and PostgreSQL through Drizzle ORM.',
+          'Encrypted Moodle tokens, hashed passwords, signed sessions, login throttling, and server-side checks for each account\'s permitted LMS.',
+          'Stored course snapshots keep browsing separate from live Moodle requests; the refresh worker and scheduler run within the application process.',
+        ],
+      },
+      {
+        title: 'Deployment & verification',
+        items: [
+          'Self-hosted deployment using Docker Compose, PostgreSQL, and Nginx, with NPMplus and Cloudflare for the HTTPS entry point.',
+          'Versioned container releases, non-root containers, database health checks, controlled application promotion, and compatible code rollback.',
+          'Vitest and PGlite tests cover application and database behavior. A separate comparison tool checks progress formulas against Moodle\'s Completion Progress block.',
+        ],
+      },
+    ],
+    technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Zod', 'PostgreSQL', 'Drizzle ORM', 'Moodle Web Services', 'PDFKit', 'write-excel-file', 'Docker Compose', 'Nginx', 'NPMplus', 'Cloudflare', 'Vitest', 'PGlite'],
+  },
+  {
     id: 'adj-automotive',
     title: 'ADJ Automotive',
     category: 'Freelance project',
