@@ -4,6 +4,8 @@ export interface Project {
   category: string;
   description: string;
   note?: string;
+  image?: { src: string; alt: string; width: number; height: number };
+  website?: string;
   technologies: string[];
   repository: string;
 }
@@ -15,6 +17,13 @@ export const projects: Project[] = [
     category: 'Community guide',
     description: 'A place to find Bacoor services, requirements, and local information before heading to a government office. An unofficial, community-run guide for residents.',
     note: 'Built on the BetterLocalGov starter, with original credits preserved in the repository.',
+    image: {
+      src: '/images/projects/betterbacoor.jpg',
+      alt: 'BetterBacoor home page with service search and guides for business permits, civil records, and working permits.',
+      width: 1280,
+      height: 720,
+    },
+    website: 'https://www.betterbacoor.org/',
     technologies: ['React', 'TypeScript', 'Tailwind CSS'],
     repository: 'https://github.com/0phl/betterbacoor',
   },
