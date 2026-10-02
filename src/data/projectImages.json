@@ -1,0 +1,302 @@
+{
+  "adjauto": [
+    {
+      "src": "/images/projects/adj-automotive.jpg",
+      "alt": "ADJ Automotive screenshot 1",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/adjauto/adjauto2.jpg",
+      "alt": "ADJ Automotive screenshot 2",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/adjauto/adjauto3.jpg",
+      "alt": "ADJ Automotive screenshot 3",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/adjauto/adjauto4.jpg",
+      "alt": "ADJ Automotive screenshot 4",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/adjauto/adjauto5.jpg",
+      "alt": "ADJ Automotive screenshot 5",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "aroundu": [
+    {
+      "src": "/images/projects/aroundu/aroundu1.jpg",
+      "alt": "AroundU screenshot 1",
+      "width": 389,
+      "height": 1024
+    },
+    {
+      "src": "/images/projects/aroundu/aroundu2.jpg",
+      "alt": "AroundU screenshot 2",
+      "width": 386,
+      "height": 859
+    },
+    {
+      "src": "/images/projects/aroundu/aroundu3.jpg",
+      "alt": "AroundU screenshot 3",
+      "width": 383,
+      "height": 859
+    },
+    {
+      "src": "/images/projects/aroundu/aroundu4.jpg",
+      "alt": "AroundU screenshot 4",
+      "width": 386,
+      "height": 861
+    },
+    {
+      "src": "/images/projects/aroundu/aroundu5.jpg",
+      "alt": "AroundU screenshot 5",
+      "width": 384,
+      "height": 860
+    },
+    {
+      "src": "/images/projects/aroundu/aroundu6.jpg",
+      "alt": "AroundU screenshot 6",
+      "width": 384,
+      "height": 859
+    },
+    {
+      "src": "/images/projects/aroundu/aroundu7.jpg",
+      "alt": "AroundU screenshot 7",
+      "width": 381,
+      "height": 857
+    },
+    {
+      "src": "/images/projects/aroundu/aroundu8.jpg",
+      "alt": "AroundU screenshot 8",
+      "width": 382,
+      "height": 856
+    },
+    {
+      "src": "/images/projects/aroundu/aroundu9.jpg",
+      "alt": "AroundU screenshot 9",
+      "width": 385,
+      "height": 858
+    }
+  ],
+  "aroundu-admin": [
+    {
+      "src": "/images/projects/aroundu/arounduad1.jpg",
+      "alt": "AroundU Admin Dashboard screenshot 1",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/aroundu/arounduad2.jpg",
+      "alt": "AroundU Admin Dashboard screenshot 2",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/aroundu/arounduad3.jpg",
+      "alt": "AroundU Admin Dashboard screenshot 3",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/aroundu/arounduad4.jpg",
+      "alt": "AroundU Admin Dashboard screenshot 4",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/aroundu/arounduad5.jpg",
+      "alt": "AroundU Admin Dashboard screenshot 5",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/aroundu/arounduad6.jpg",
+      "alt": "AroundU Admin Dashboard screenshot 6",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "carrental": [
+    {
+      "src": "/images/projects/carrental/car-rental1.jpg",
+      "alt": "Car Rental System screenshot 1",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/carrental/car-rental2.jpg",
+      "alt": "Car Rental System screenshot 2",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/carrental/car-rental3.jpg",
+      "alt": "Car Rental System screenshot 3",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/carrental/car-rental4.jpg",
+      "alt": "Car Rental System screenshot 4",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/carrental/car-rental5.jpg",
+      "alt": "Car Rental System screenshot 5",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/carrental/car-rental6.jpg",
+      "alt": "Car Rental System screenshot 6",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/carrental/car-rental7.jpg",
+      "alt": "Car Rental System screenshot 7",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/carrental/car-rental8.jpg",
+      "alt": "Car Rental System screenshot 8",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "lenscraft": [
+    {
+      "src": "/images/projects/lenscraft/lenscraft1.png",
+      "alt": "LensCraft screenshot 1",
+      "width": 1891,
+      "height": 1076
+    },
+    {
+      "src": "/images/projects/lenscraft/lenscraft2.png",
+      "alt": "LensCraft screenshot 2",
+      "width": 1897,
+      "height": 1078
+    },
+    {
+      "src": "/images/projects/lenscraft/lenscraft3.png",
+      "alt": "LensCraft screenshot 3",
+      "width": 1892,
+      "height": 1078
+    }
+  ],
+  "linkfolio": [
+    {
+      "src": "/images/projects/linkfolio/linkfolio1.jpg",
+      "alt": "Linkfolio screenshot 1",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "lutongbahai": [
+    {
+      "src": "/images/projects/lutongbahai/lutongbahai1.jpg",
+      "alt": "Lutong BahAI screenshot 1",
+      "width": 383,
+      "height": 851
+    },
+    {
+      "src": "/images/projects/lutongbahai/lutongbahai2.jpg",
+      "alt": "Lutong BahAI screenshot 2",
+      "width": 387,
+      "height": 852
+    },
+    {
+      "src": "/images/projects/lutongbahai/lutongbahai3.jpg",
+      "alt": "Lutong BahAI screenshot 3",
+      "width": 384,
+      "height": 852
+    },
+    {
+      "src": "/images/projects/lutongbahai/lutongbahai4.jpg",
+      "alt": "Lutong BahAI screenshot 4",
+      "width": 387,
+      "height": 851
+    }
+  ],
+  "pulse": [
+    {
+      "src": "/images/projects/pulse/pulse1.jpg",
+      "alt": "PULSE screenshot 1",
+      "width": 594,
+      "height": 1280
+    },
+    {
+      "src": "/images/projects/pulse/pulse2.jpg",
+      "alt": "PULSE screenshot 2",
+      "width": 595,
+      "height": 1280
+    },
+    {
+      "src": "/images/projects/pulse/pulse3.jpg",
+      "alt": "PULSE screenshot 3",
+      "width": 595,
+      "height": 1280
+    },
+    {
+      "src": "/images/projects/pulse/pulse4.jpg",
+      "alt": "PULSE screenshot 4",
+      "width": 596,
+      "height": 1280
+    },
+    {
+      "src": "/images/projects/pulse/pulse5.jpg",
+      "alt": "PULSE screenshot 5",
+      "width": 597,
+      "height": 1280
+    }
+  ],
+  "szhotpot": [
+    {
+      "src": "/images/projects/szhotpot/szhotpot1.jpg",
+      "alt": "S&Z Hot Pot Haven screenshot 1",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/szhotpot/szhotpot2.jpg",
+      "alt": "S&Z Hot Pot Haven screenshot 2",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/szhotpot/szhotpot3.jpg",
+      "alt": "S&Z Hot Pot Haven screenshot 3",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/szhotpot/szhotpot4.jpg",
+      "alt": "S&Z Hot Pot Haven screenshot 4",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/szhotpot/szhotpot5.jpg",
+      "alt": "S&Z Hot Pot Haven screenshot 5",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "src": "/images/projects/szhotpot/szhotpot6.jpg",
+      "alt": "S&Z Hot Pot Haven screenshot 6",
+      "width": 1920,
+      "height": 1080
+    }
+  ]
+}

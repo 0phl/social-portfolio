@@ -1,6 +1,7 @@
 import type { Project } from '../../data/projects';
 
 export function ProjectCard({ project }: { project: Project }) {
+  const cover = project.images[0];
   return (
     <a
       id={`project-card-${project.id}`}
@@ -9,14 +10,14 @@ export function ProjectCard({ project }: { project: Project }) {
       className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-left transition-colors hover:border-gray-300"
     >
       <div className="aspect-video overflow-hidden border-b border-gray-100 bg-gray-50">
-        {project.image && (
+        {cover && (
           <img
-            src={project.image.src}
+            src={cover.src}
             alt=""
-            width={project.image.width}
-            height={project.image.height}
+            width={cover.width}
+            height={cover.height}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.02]"
+            className={`h-full w-full transition-transform duration-300 motion-safe:group-hover:scale-[1.02] ${cover.height > cover.width ? 'object-contain' : 'object-cover'}`}
           />
         )}
       </div>

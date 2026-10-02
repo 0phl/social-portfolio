@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { ArrowLeftIcon, ArrowUpRightIcon, GithubIcon } from 'lucide-react';
 import type { Project } from '../data/projects';
+import { ProjectGallery } from '../components/projects/ProjectGallery';
 
 export function ProjectPage({ project }: { project: Project }) {
   const heading = useRef<HTMLHeadingElement>(null);
@@ -33,9 +34,7 @@ export function ProjectPage({ project }: { project: Project }) {
           )}
         </div>
       </header>
-      {project.image && (
-        <img src={project.image.src} alt={project.image.alt} width={project.image.width} height={project.image.height} className="h-auto w-full rounded-lg border border-gray-200" />
-      )}
+      <ProjectGallery key={project.id} images={project.images} title={project.title} />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_300px] lg:gap-14">
         <section>
           <h2 className="mb-3 text-lg font-semibold">Overview</h2>
