@@ -1,4 +1,18 @@
 {
+  "hushmap": [
+    {
+      "src": "/images/projects/hushmap/dashboard.png",
+      "alt": "HushMap dashboard showing a library floor-plan heatmap and noise readings from live and simulated sensor nodes.",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "src": "/images/projects/hushmap/sign-in.png",
+      "alt": "HushMap sign-in page for the St. Dominic College of Asia library noise monitoring dashboard.",
+      "width": 1914,
+      "height": 938
+    }
+  ],
   "adjauto": [
     {
       "src": "/images/projects/adjauto/adj-automotive.jpg",
