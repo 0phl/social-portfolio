@@ -7,14 +7,14 @@ import { PostCard } from './PostCard';
 export function FeedTab({ postId }: { postId?: string }) {
   const [previews, setPreviews] = useState<Post[]>([]);
   const [likes, setLikes] = useState<Record<string, boolean>>({});
-  const [sort, setSort] = useState('top');
+  const [sort, setSort] = useState('recent');
   const [composing, setComposing] = useState(false);
   const [draft, setDraft] = useState('');
   const editor = useRef<HTMLTextAreaElement>(null);
   const composeButton = useRef<HTMLButtonElement>(null);
   const reduceMotion = useReducedMotion();
   const visible = [...posts, ...previews].sort((a, b) => {
-    const score = sort === 'top' ? Number(Boolean(likes[b.id])) - Number(Boolean(likes[a.id])) : 0;
+    const score = sort === 'top' ? (b.engagement?.likes ?? 0) + Number(Boolean(likes[b.id])) - (a.engagement?.likes ?? 0) - Number(Boolean(likes[a.id])) : 0;
     return score || Date.parse(b.publishedAt) - Date.parse(a.publishedAt);
   });
 

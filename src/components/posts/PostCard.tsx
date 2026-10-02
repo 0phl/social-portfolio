@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { BookmarkIcon, HeartIcon, MessageCircleIcon, MoreHorizontalIcon, SendIcon, Share2Icon } from 'lucide-react';
+import { ArrowRightIcon, BookmarkIcon, ClockIcon, HeartIcon, MessageCircleIcon, MoreHorizontalIcon, SendIcon, Share2Icon } from 'lucide-react';
 import { profile } from '../../data/profile';
+import { blogPosts, formatBlogDate } from '../../data/blog';
 import type { Post } from '../../data/posts';
+import { projects } from '../../data/projects';
+import { ProjectPostPreview } from './ProjectPostPreview';
 import { VisitorAvatar } from '../shared/VisitorAvatar';
 import { LocalComment } from '../shared/LocalComment';
 
@@ -14,6 +17,8 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
   const [status, setStatus] = useState('');
   const options = useRef<HTMLDetailsElement>(null);
   const reduceMotion = useReducedMotion();
+  const blog = blogPosts.find((item) => item.id === post.blogPostId);
+  const project = projects.find((item) => item.id === post.projectId);
 
   useEffect(() => {
     if (!status) return;
@@ -53,15 +58,31 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
           </div>
         </details>
       </header>
-      <p className="whitespace-pre-wrap break-words text-[15px] leading-relaxed text-gray-900">{post.content}</p>
+      {post.content && <p className="whitespace-pre-wrap break-words text-[15px] leading-relaxed text-gray-900">{post.content}</p>}
+      {project && <ProjectPostPreview project={project} />}
+      {blog && (
+        <a href={`#blog/${blog.id}`} className="group mt-3 flex gap-4 rounded-lg border border-gray-200 p-4 text-left transition-colors hover:bg-gray-50">
+          <div className="min-w-0 flex-1">
+            <h4 className="line-clamp-2 text-base font-bold text-gray-900 transition-colors group-hover:text-brand">{blog.title}</h4>
+            <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-gray-600">{blog.excerpt}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-medium text-gray-500">
+              <span className="flex items-center gap-1"><ClockIcon aria-hidden="true" className="h-3.5 w-3.5" />{blog.readTime}</span>
+              <span aria-hidden="true">•</span>
+              <time dateTime={blog.publishedAt}>{formatBlogDate(blog.publishedAt)}</time>
+              <span className="ml-1 flex items-center gap-1 text-brand">Read blog <ArrowRightIcon aria-hidden="true" className="h-3.5 w-3.5" /></span>
+            </div>
+          </div>
+          <img src={blog.cover.src} alt={blog.cover.alt} width={96} height={96} loading="lazy" className="hidden h-24 w-24 shrink-0 rounded border border-gray-200 object-cover sm:block" />
+        </a>
+      )}
       <div className="relative mt-3 flex items-center justify-between border-t border-gray-100 pt-3">
         <p role="status" className={status ? 'absolute bottom-full left-0 mb-2 rounded-md bg-gray-900 px-3 py-2 text-xs text-white shadow' : 'sr-only'}>{status}</p>
         <div className="flex items-center gap-3 sm:gap-6">
           <motion.button type="button" whileTap={reduceMotion ? undefined : { scale: 0.85 }} aria-label="Like post" aria-pressed={liked} onClick={onLike} className={`flex min-h-11 items-center gap-1.5 text-xs font-medium ${liked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}`}>
-            <HeartIcon aria-hidden="true" className={`h-4 w-4 ${liked ? 'fill-red-500' : ''}`} />{Number(liked)}
+            <HeartIcon aria-hidden="true" className={`h-4 w-4 ${liked ? 'fill-red-500' : ''}`} />{(post.engagement?.likes ?? 0) + Number(liked)}
           </motion.button>
-          <button type="button" aria-label="Comments" aria-expanded={commentsOpen} aria-controls={`comments-${post.id}`} onClick={() => setCommentsOpen(!commentsOpen)} className="flex min-h-11 items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-brand"><MessageCircleIcon aria-hidden="true" className="h-4 w-4" />{comments.length}</button>
-          <button type="button" aria-label="Share post" onClick={copyLink} className="flex h-11 w-8 items-center justify-center text-gray-500 hover:text-gray-900"><Share2Icon aria-hidden="true" className="h-4 w-4" /></button>
+          <button type="button" aria-label="Comments" aria-expanded={commentsOpen} aria-controls={`comments-${post.id}`} onClick={() => setCommentsOpen(!commentsOpen)} className="flex min-h-11 items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-brand"><MessageCircleIcon aria-hidden="true" className="h-4 w-4" />{(post.engagement?.comments ?? 0) + comments.length}</button>
+          <button type="button" aria-label="Share post" onClick={copyLink} className="flex min-h-11 items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-900"><Share2Icon aria-hidden="true" className="h-4 w-4" />{post.engagement?.shares ?? 0}</button>
         </div>
         <motion.button type="button" whileTap={reduceMotion ? undefined : { scale: 0.85 }} aria-label="Save post" aria-pressed={saved} onClick={() => setSaved(!saved)} className={`flex h-11 w-8 items-center justify-center rounded-full ${saved ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'}`}><BookmarkIcon aria-hidden="true" className={`h-4 w-4 ${saved ? 'fill-gray-900' : ''}`} /></motion.button>
       </div>

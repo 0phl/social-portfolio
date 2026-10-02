@@ -27,7 +27,7 @@ export const blogPosts: BlogPost[] = [{
   id: 'starting-before-i-felt-ready',
   title: 'Starting before I felt ready',
   excerpt: 'I finished college without feeling completely ready for real work. This is how I started as an IT intern and slowly became a server administrator.',
-  publishedAt: '2026-10-02',
+  publishedAt: '2026-08-18',
   readTime: `${Math.max(1, Math.ceil(wordCount / 200))} min read`,
   cover: {
     src: '/images/blog/starting-before-i-felt-ready/graduation-1600.jpg',
