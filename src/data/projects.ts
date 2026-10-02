@@ -42,7 +42,7 @@ export const projects: Project[] = [
     note: 'Built on the BetterLocalGov starter, with original credits preserved in the repository.',
     highlights: ['Local services and requirements in one place.', 'Guides for residents preparing to visit government offices.', 'Unofficial and community-run.'],
     images: [{
-      src: '/images/projects/betterbacoor.png',
+      src: '/images/projects/betterbacoor/betterbacoor.png',
       alt: 'BetterBacoor home page with service search and guides for business permits, civil records, and working permits.',
       width: 1898,
       height: 919,
