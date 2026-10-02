@@ -1,7 +1,7 @@
 export const profileTabs = [
   { id: 'posts', label: 'Posts' },
   { id: 'projects', label: 'Projects' },
-  { id: 'articles', label: 'Articles' },
+  { id: 'blog', label: 'Blog' },
   { id: 'about', label: 'About' },
 ] as const;
 

@@ -21,6 +21,7 @@ export function App() {
       </a>
       <TopBar onHomeClick={(event) => {
         if (window.location.hash.startsWith('#projects/')) window.location.hash = 'projects';
+        if (/^#(?:blog|articles)\//.test(window.location.hash)) window.location.hash = 'blog';
         focusContent(event);
       }} />
       <main

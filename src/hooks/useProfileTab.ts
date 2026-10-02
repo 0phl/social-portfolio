@@ -8,12 +8,20 @@ function subscribe(onChange: () => void) {
 
 export function useProfileTab() {
   const hash = useSyncExternalStore(subscribe, () => window.location.hash.slice(1));
-  const [tabId, projectId] = hash.split('/');
+  const [route, itemId] = hash.split('/');
+  const tabId = route === 'articles' ? 'blog' : route;
   const activeTab = profileTabs.find((tab) => tab.id === tabId)?.id ?? 'posts';
 
   const selectTab = (tab: ProfileTab) => {
     window.location.hash = tab;
   };
 
-  return { activeTab, selectTab, projectId: activeTab === 'projects' ? projectId : undefined, postId: activeTab === 'posts' ? projectId : undefined, aboutSection: activeTab === 'about' ? projectId : undefined };
+  return {
+    activeTab,
+    selectTab,
+    projectId: activeTab === 'projects' ? itemId : undefined,
+    postId: activeTab === 'posts' ? itemId : undefined,
+    aboutSection: activeTab === 'about' ? itemId : undefined,
+    blogId: activeTab === 'blog' ? itemId : undefined,
+  };
 }
