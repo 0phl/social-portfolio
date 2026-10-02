@@ -34,7 +34,7 @@ export const projects: Project[] = [
       title: 'Sole Full-Stack Developer',
       description: 'I designed and developed the frontend, backend, database, and deployment as part of my role at Seaversity. My work covered the applicant portal, staff tools, Moodle integration, automated tests, and server setup.',
     },
-    note: 'Developed for PMMA Graduate School through Seaversity. The system belongs to PMMA; this page presents my development contribution.',
+    note: 'Developed at Seaversity for PMMA Graduate School. This page presents my contribution as the developer.',
     images: projectImages['pmma-enrollment'],
     highlights: ['Online applications and staff review workflows.', 'Fee assessment and payment recording.', 'Automated Moodle account and course provisioning.'],
     featureGroups: [
