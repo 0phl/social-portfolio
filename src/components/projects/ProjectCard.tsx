@@ -10,7 +10,7 @@ export function ProjectCard({ project }: { project: Project }) {
       aria-labelledby={`project-${project.id}`}
       className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-left transition-colors hover:border-gray-300"
     >
-      <div className="aspect-video overflow-hidden border-b border-gray-100 bg-gray-50">
+      <div className="relative aspect-video overflow-hidden border-b border-gray-100 bg-gray-50">
         {cover ? (
           <img
             src={cover.src}
@@ -21,6 +21,7 @@ export function ProjectCard({ project }: { project: Project }) {
             className={`h-full w-full transition-transform duration-300 motion-safe:group-hover:scale-[1.02] ${cover.height > cover.width ? 'object-contain' : 'object-cover'}`}
           />
         ) : <ProjectImagePlaceholder />}
+        {project.images.length > 1 && <span className="absolute bottom-2 right-2 rounded-full bg-gray-900/80 px-2 py-0.5 text-[11px] font-medium text-white">{project.images.length} images</span>}
       </div>
       <div className="flex flex-1 flex-col p-4">
         <p className="text-xs text-gray-500">

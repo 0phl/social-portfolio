@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { CheckIcon, GithubIcon, LinkedinIcon, MapPinIcon, MoreHorizontalIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { MessagePanel } from './MessagePanel';
 
 export function ProfileHeader() {
+  const reduceMotion = useReducedMotion();
   const [isFollowing, setIsFollowing] = useState(false);
   const [hoveringFollow, setHoveringFollow] = useState(false);
   const [messageOpen, setMessageOpen] = useState(false);
@@ -12,6 +13,7 @@ export function ProfileHeader() {
   const [status, setStatus] = useState('');
   const menu = useRef<HTMLDivElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const messageButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -53,8 +55,9 @@ export function ProfileHeader() {
         <img
           src={profile.cover}
           alt=""
-          width={2172}
-          height={724}
+          width={2048}
+          height={683}
+          fetchPriority="high"
           className="h-32 w-full border-b border-gray-200 bg-gray-100 object-cover object-center sm:h-48"
         />
 
@@ -72,15 +75,18 @@ export function ProfileHeader() {
               <button ref={menuButton} type="button" aria-label="More profile options" aria-expanded={menuOpen} aria-controls="profile-options" onClick={() => setMenuOpen(!menuOpen)} className="flex h-11 w-9 items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 focus-visible:outline-brand sm:h-[38px] sm:w-[38px]">
                 <MoreHorizontalIcon aria-hidden="true" className="h-5 w-5" />
               </button>
+              <AnimatePresence>
               {menuOpen && (
-                <div id="profile-options" className="absolute left-0 top-full z-20 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg sm:left-auto sm:right-0">
+                <motion.div id="profile-options" initial={reduceMotion ? false : { opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.95 }} transition={{ duration: reduceMotion ? 0 : 0.1 }} className="absolute left-0 top-full z-20 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg sm:left-auto sm:right-0">
                   <button type="button" onClick={copyLink} className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50">Copy profile link</button>
                   <button type="button" onClick={() => { setMenuOpen(false); setStatus('Reporting is not connected in this demo.'); menuButton.current?.focus(); }} className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50">Report</button>
                   <button type="button" onClick={() => { setMenuOpen(false); setStatus('Blocking is not connected in this demo.'); menuButton.current?.focus(); }} className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50">Block</button>
-                </div>
+                </motion.div>
               )}
+              </AnimatePresence>
             </div>
             <button
+              ref={messageButton}
               type="button"
               onClick={() => setMessageOpen(true)}
               className="inline-flex min-h-11 items-center justify-center rounded-full border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 sm:min-h-[38px]"
@@ -125,12 +131,12 @@ export function ProfileHeader() {
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
               <p><span className="font-semibold tabular-nums">{profile.mockStats.connections.toLocaleString('en-US')}</span> <span className="text-gray-500">Connections</span></p>
-              <p><span className="font-semibold tabular-nums">{(profile.mockStats.followers + Number(isFollowing)).toLocaleString('en-US')}</span> <span className="text-gray-500">Followers</span></p>
+              <p className="flex items-center gap-1"><span className="relative inline-flex overflow-hidden font-semibold tabular-nums"><AnimatePresence initial={false} mode="popLayout"><motion.span key={Number(isFollowing)} initial={{ y: reduceMotion ? 0 : '100%', opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: reduceMotion ? 0 : '-100%', opacity: 0 }} transition={{ duration: reduceMotion ? 0 : 0.22, ease: [0.23, 1, 0.32, 1] }}>{(profile.mockStats.followers + Number(isFollowing)).toLocaleString('en-US')}</motion.span></AnimatePresence></span><span className="text-gray-500">Followers</span></p>
             </div>
           </div>
         </div>
       </section>
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={() => requestAnimationFrame(() => messageButton.current?.focus({ preventScroll: true }))}>
         {messageOpen && <MessagePanel key="messages" onClose={() => setMessageOpen(false)} />}
       </AnimatePresence>
     </>

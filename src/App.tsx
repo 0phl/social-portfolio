@@ -20,8 +20,7 @@ export function App() {
         Skip to content
       </a>
       <TopBar onHomeClick={(event) => {
-        if (window.location.hash.startsWith('#projects/')) window.location.hash = 'projects';
-        if (/^#(?:blog|articles)\//.test(window.location.hash)) window.location.hash = 'blog';
+        window.location.hash = 'posts';
         focusContent(event);
       }} />
       <main

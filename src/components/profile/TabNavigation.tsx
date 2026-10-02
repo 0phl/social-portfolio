@@ -1,4 +1,5 @@
 import type { KeyboardEvent } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { profileTabs, type ProfileTab } from '../../data/profileTabs';
 
 interface TabNavigationProps {
@@ -7,6 +8,7 @@ interface TabNavigationProps {
 }
 
 export function TabNavigation({ activeTab, onSelect }: TabNavigationProps) {
+  const reduceMotion = useReducedMotion();
   const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     let nextIndex: number;
 
@@ -51,7 +53,7 @@ export function TabNavigation({ activeTab, onSelect }: TabNavigationProps) {
               className={`relative min-w-0 flex-1 rounded-md px-2 py-4 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-brand sm:flex-none sm:px-6 ${selected ? 'text-brand' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
             >
               {tab.label}
-              {selected && <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-0.5 bg-brand" />}
+              {selected && <motion.span aria-hidden="true" layoutId="activeTabIndicator" initial={false} transition={reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 500, damping: 30 }} className="absolute inset-x-0 bottom-0 h-0.5 bg-brand" />}
             </button>
           );
         })}
