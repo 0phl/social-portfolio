@@ -11,12 +11,7 @@ export function TopBar({ onHomeClick }: TopBarProps) {
     <header className="fixed inset-x-0 top-0 z-50 h-14 border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-full max-w-5xl items-center justify-between gap-4 px-4 lg:px-0">
         <a href="#main-content" onClick={onHomeClick} className="flex min-w-0 items-center gap-2 rounded-md">
-          <span
-            aria-hidden="true"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-brand text-lg font-bold text-white"
-          >
-            {profile.name.charAt(0)}
-          </span>
+          <img src="/logo.png" alt="" width={48} height={48} className="h-8 w-8 shrink-0 object-contain sm:h-12 sm:w-12" />
           <span className="truncate text-sm font-semibold sm:text-base">{profile.name}</span>
         </a>
 
