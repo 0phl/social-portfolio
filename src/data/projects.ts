@@ -88,13 +88,12 @@ export const projects: Project[] = [
   {
     id: 'sz-hotpot-haven',
     title: 'S&Z Hot Pot Haven',
-    category: 'Online store',
-    type: 'personal',
-    description: 'An online store for hotpot ingredients in Bacoor. Customers can browse products, add items to a cart, and place orders, with an admin interface for managing the store.',
+    category: 'Freelance project',
+    type: 'professional',
+    description: 'A freelance online store for hotpot ingredients in Bacoor. Customers can browse products, add items to a cart, and place orders, with an admin interface for managing the store.',
     images: projectImages.szhotpot,
     highlights: ['Product browsing, a shopping cart, and order placement.', 'Admin tools for managing the store.'],
     technologies: ['PHP', 'MySQL', 'HTML', 'CSS', 'JavaScript', 'Bootstrap'],
-    repository: 'https://github.com/0phl/sz-hotpot-store',
   },
   {
     id: 'linkfolio',
