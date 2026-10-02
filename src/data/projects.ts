@@ -8,10 +8,25 @@ export interface Project {
   image?: { src: string; alt: string; width: number; height: number };
   website?: string;
   technologies: string[];
-  repository: string;
+  repository?: string;
 }
 
 export const projects: Project[] = [
+  {
+    id: 'adj-automotive',
+    title: 'ADJ Automotive',
+    category: 'Freelance project',
+    type: 'professional',
+    description: 'A freelance web application for ADJ Automotive Repair Services, with service bookings, quote requests, cars-for-sale listings, and an admin dashboard for appointments and vehicle inventory.',
+    image: {
+      src: '/images/projects/adj-automotive.jpg',
+      alt: 'ADJ Automotive home page with repair services, appointment booking, and cars-for-sale links.',
+      width: 1920,
+      height: 1080,
+    },
+    website: 'https://adjauto.com/',
+    technologies: ['React', 'TypeScript', 'Laravel', 'MySQL', 'Tailwind CSS'],
+  },
   {
     id: 'betterbacoor',
     title: 'BetterBacoor',
@@ -32,9 +47,9 @@ export const projects: Project[] = [
   {
     id: 'pulse',
     title: 'PULSE',
-    category: 'Community mobile app',
+    category: 'College capstone',
     type: 'personal',
-    description: 'A community app that brings announcements, local buying and selling, volunteer activities, and community reports into one place.',
+    description: 'My college capstone project: a community mobile app that brings announcements, local buying and selling, volunteer activities, and community reports into one place.',
     technologies: ['Flutter', 'Dart', 'Firebase'],
     repository: 'https://github.com/0phl/Pulse-App',
   },

@@ -21,9 +21,11 @@ export function ProjectPage({ project }: { project: Project }) {
           <h1 ref={heading} tabIndex={-1} className="mt-2 text-3xl font-bold tracking-tight focus:outline-none sm:text-4xl">{project.title}</h1>
         </div>
         <div className="flex flex-wrap gap-2">
-          <a href={project.repository} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-            <GithubIcon aria-hidden="true" className="h-4 w-4" /> Source<span className="sr-only"> (opens in a new tab)</span>
-          </a>
+          {project.repository && (
+            <a href={project.repository} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              <GithubIcon aria-hidden="true" className="h-4 w-4" /> Source<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          )}
           {project.website && (
             <a href={project.website} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover">
               Visit live<span className="sr-only"> (opens in a new tab)</span><ArrowUpRightIcon aria-hidden="true" className="h-4 w-4" />
