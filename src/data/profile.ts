@@ -1,6 +1,6 @@
 export const profile = {
   name: 'Ronan Dela Cruz',
-  title: 'Server Administrator & Developer',
+  title: 'Server Administrator & Full Stack Developer',
   bio: 'I work with Linux servers and build web applications. This is where I share my projects, things I\'m learning, and the occasional fix that took longer than it should have.',
   location: 'Philippines',
   avatar: '/images/profile/ronan-512.jpg',
