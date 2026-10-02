@@ -10,8 +10,8 @@ export function TopBar({ onHomeClick }: TopBarProps) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-14 border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-full max-w-5xl items-center justify-between gap-4 px-4 lg:px-0">
-        <a href="#main-content" onClick={onHomeClick} className="flex min-w-0 w-80 items-center rounded-md">
-          <img src="/wordmark.png" alt={profile.name} width={2172} height={724} className="h-11 w-full object-cover object-center" />
+        <a href="#main-content" onClick={onHomeClick} className="flex h-12 w-12 shrink-0 items-center rounded-md">
+          <img src="/logo.png" alt={profile.name} width={48} height={48} className="h-12 w-12 object-contain" />
         </a>
 
         <nav aria-label="Social links" className="flex shrink-0 items-center gap-1 sm:gap-2">
