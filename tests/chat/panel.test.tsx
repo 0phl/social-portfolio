@@ -14,6 +14,27 @@ beforeEach(() => {
   HTMLDialogElement.prototype.close = function () { this.open = false; };
 });
 afterEach(() => { cleanup(); localStorage.clear(); vi.useRealTimers(); vi.unstubAllGlobals(); });
+it('sends empty history after New chat even when the previous conversation was Tagalog', async () => {
+  const fetcher = vi.fn().mockImplementation((url) => Promise.resolve(url.endsWith('/config') ? Response.json({ turnstileSiteKey: 'test' }) : new Response('{"type":"delta","text":"Ako ang assistant ni Ronan. OLD_CHAT_MARKER"}\n{"type":"done"}\n')));
+  vi.stubGlobal('fetch', fetcher);
+  render(<ChatProvider><MessagePanel onClose={vi.fn()} onNavigate={vi.fn()} /></ChatProvider>);
+  fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'sino ka? OLD_CHAT_MARKER' } });
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Send message' }).hasAttribute('disabled')).toBe(false));
+  vi.useFakeTimers();
+  await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Send message' })));
+  await act(async () => { await vi.advanceTimersByTimeAsync(5000); });
+  vi.useRealTimers();
+  expect(screen.getByText('Ako ang assistant ni Ronan. OLD_CHAT_MARKER')).toBeTruthy();
+  fireEvent.click(screen.getByRole('button', { name: 'New chat' }));
+  expect(screen.queryByText(/OLD_CHAT_MARKER/)).toBeNull();
+  fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Who are you?' } });
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Send message' }).hasAttribute('disabled')).toBe(false));
+  fireEvent.click(screen.getByRole('button', { name: 'Send message' }));
+  const requests = fetcher.mock.calls.filter(([url]) => url === '/api/chat');
+  expect(requests).toHaveLength(2);
+  expect(JSON.parse(requests[1][1].body)).toEqual({ message: 'Who are you?', history: [], turnstileToken: 'token-2' });
+  expect(requests[1][1].body).not.toContain('OLD_CHAT_MARKER');
+});
 it.each(['Show me a project', 'How did Ronan get started?', 'What does he work with?'])('sends the quick suggestion "%s" directly after verification', async (prompt) => {
   const fetcher = vi.fn().mockImplementation((url) => Promise.resolve(url.endsWith('/config') ? Response.json({ turnstileSiteKey: 'test' }) : new Response('{"type":"delta","text":"Hello"}\n{"type":"done"}\n')));
   vi.stubGlobal('fetch', fetcher);

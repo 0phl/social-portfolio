@@ -67,6 +67,20 @@ it('ignores a late response after reset and retains conversation across hook con
   await act(async () => { resolve(new Response('{"type":"delta","text":"old"}\n{"type":"done"}\n')); });
   expect(result.current.messages).toEqual([]); expect(result.current.pending).toBe(false);
 });
+it('does not let an old in-flight response alter a new conversation', async () => {
+  const resolvers: Array<(response: Response) => void> = [];
+  const fetcher = vi.fn().mockImplementation(() => new Promise<Response>((resolve) => { resolvers.push(resolve); }));
+  vi.stubGlobal('fetch', fetcher);
+  const { result } = renderHook(useChat, { wrapper: ChatProvider });
+  act(() => { void result.current.send('lumang usapan', 'old-token'); });
+  const oldSignal = fetcher.mock.calls[0][1].signal as AbortSignal;
+  act(() => { result.current.reset(); void result.current.send('Who are you?', 'new-token'); });
+  expect(oldSignal.aborted).toBe(true);
+  expect(JSON.parse(fetcher.mock.calls[1][1].body).history).toEqual([]);
+  await act(async () => { resolvers[0](new Response('{"type":"delta","text":"Lumang sagot"}\n{"type":"done"}\n')); });
+  expect(result.current.pending).toBe(true);
+  expect(result.current.messages.map(({ text }) => text)).toEqual(['Who are you?', '']);
+});
 it('bounds UTF-8 history and excludes incomplete exchanges', () => {
   const messages = Array.from({ length: 20 }, (_, i) => ({ id: String(i), role: i % 2 ? 'assistant' as const : 'user' as const, text: 'あ'.repeat(1900), time: '', status: 'complete' as const }));
   const request = buildRequest(messages, 'hello', 'token');
