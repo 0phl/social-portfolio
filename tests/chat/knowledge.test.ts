@@ -32,8 +32,18 @@ describe('published portfolio reference', () => {
       blogPosts: [...blogPosts, { ...blogPosts[0], id: 'new-blog', title: 'New blog' }],
     });
     expect(result.links['/#projects/new-project']).toBe('New project');
+    expect(result.projectLinks.find((project) => project.title === 'New project')?.url).toBe('/#projects/new-project');
     expect(result.links['/#posts/new-post']).toBeTruthy();
     expect(result.links['/#blog/new-blog']).toBe('New blog');
+  });
+  it('publishes separate detail, repository, and website destinations without inventing access', () => {
+    const { projectLinks } = buildKnowledge(source);
+    for (const project of projects) {
+      expect(projectLinks.find((item) => item.url === `/#projects/${project.id}`)).toEqual({
+        title: project.title, url: `/#projects/${project.id}`, repository: project.repository, website: project.website,
+      });
+    }
+    expect(projectLinks.find((item) => item.url === '/#projects/lms-billing')?.repository).toBeUndefined();
   });
   it('rejects duplicate routes and oversized references', () => {
     expect(() => buildKnowledge({ ...source, projects: [...projects, projects[0]] })).toThrow(/duplicate/i);

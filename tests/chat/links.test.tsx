@@ -41,8 +41,66 @@ Read [Projects](/#projects) for more.`} onNavigate={vi.fn()} />);
   expect(screen.getByRole('heading', { name: '1. BetterBacoor' })).toBeTruthy();
   expect(container.querySelector('blockquote')?.textContent).toContain('HushMap');
   expect(container.querySelector('pre')?.textContent).toContain('3. PULSE');
-  expect(container.querySelector('.assistant-link-row')).toBeNull();
+  expect(screen.getByRole('link', { name: 'Projects' }).parentElement?.className).not.toContain('assistant-link-row');
   expect(screen.getByText('Install dependencies.').tagName).toBe('LI');
+});
+it('uses verified project actions even when model links are missing, wrong, or unavailable', () => {
+  const navigate = vi.fn();
+  const { container } = render(<AssistantMessage text={`### 1. PMMA Graduate School Enrollment System
+
+A professional case study.
+
+[View project](/projects/pmma) [Source](https://example.com/private-repo)
+
+### 2. LMS Billing
+
+An internal tool.
+
+View project
+
+### 3. IskedyulKo
+
+A booking app.
+
+View project at [Source](https://github.com/0phl/Pulse-App).
+
+[View project](/#projects/iskedyulko)`} onNavigate={navigate} />);
+  const details = screen.getAllByRole('link', { name: 'Project details' });
+  expect(details.map((link) => link.getAttribute('href'))).toEqual([
+    '/#projects/pmma-enrollment', '/#projects/lms-billing', '/#projects/iskedyulko',
+  ]);
+  expect(screen.getAllByRole('link', { name: 'Source code' })).toHaveLength(1);
+  expect(screen.getByRole('link', { name: 'Source code' }).getAttribute('href')).toBe('https://github.com/0phl/IskedyulKo');
+  expect(screen.queryByRole('link', { name: 'Live website' })).toBeNull();
+  expect(container.textContent).not.toContain('View project');
+  fireEvent.click(details[0]);
+  expect(navigate).toHaveBeenCalledWith('/#projects/pmma-enrollment');
+});
+it('does not invent actions for unknown projects or quoted project headings', () => {
+  render(<AssistantMessage text={`### Unknown project
+
+View project
+
+> ### LMS Billing
+>
+> View project`} onNavigate={vi.fn()} />);
+  expect(screen.queryByRole('link')).toBeNull();
+});
+it('combines labeled links with descriptive anchor text into one project action row', () => {
+  const { container } = render(<AssistantMessage text={`### IskedyulKo
+
+A booking app.
+
+Project details: [IskedyulKo](/#projects/iskedyulko)
+
+Source code: [IskedyulKo source](https://github.com/0phl/IskedyulKo)
+
+Start with this project.`} onNavigate={vi.fn()} />);
+  expect(screen.getAllByRole('link')).toHaveLength(2);
+  expect(container.querySelectorAll('.assistant-link-row')).toHaveLength(1);
+  expect(screen.getByRole('link', { name: 'Project details' })).toBeTruthy();
+  expect(screen.getByRole('link', { name: 'Source code' })).toBeTruthy();
+  expect(screen.getByText('Start with this project.').previousElementSibling?.className).toBe('assistant-link-row');
 });
 it('preserves readable Markdown sections, emphasis, steps, and code', () => {
   const { container } = render(<AssistantMessage text={`A little context first.

@@ -49,5 +49,6 @@ export function buildKnowledge(source: KnowledgeSource) {
     skills: source.skillGroups, projects: publicProjects, posts: publicPosts, blogs,
   }, null, 2);
   if (new TextEncoder().encode(reference).length > 200 * 1024) throw new Error('Assistant reference is too large (200 KiB). Review the published content before building.');
-  return { reference, links };
+  const projectLinks = publicProjects.map(({ title, url, repository, website }) => ({ title, url, repository, website }));
+  return { reference, links, projectLinks };
 }

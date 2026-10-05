@@ -71,6 +71,8 @@ Multi-item recommendations with descriptions use a separate heading per item, wi
 
 The renderer also separates top-level numbered project labels that match the catalog and lays out link-only paragraphs with wrapping gaps. Ordinary inline links, quoted text, and code retain their original structure.
 
+Recognized project sections get verified actions from generated project data: Project details for the portfolio page, Source code only when a repository is published, and Live website only when a website is published. Missing or malformed model action rows are replaced with those destinations. The assistant treats projects without public repositories as case studies, not code the visitor can inspect.
+
 Source wording is presented as a complete short quote, a labeled excerpt, or an explicitly introduced summary. Quotes retain their original wording without added bold emphasis; the assistant's commentary and source link stay separate. Bold is reserved for useful emphasis in its own explanations.
 
 References reviewed on October 5, 2026:

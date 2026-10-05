@@ -1,9 +1,8 @@
 import type { Root, RootContent, Paragraph, PhrasingContent } from 'mdast';
-import catalog from '../../.generated/assistant-links.json';
+import projectLinks from '../../.generated/assistant-project-links.json';
 
-const projectTitles = new Set(Object.entries(catalog)
-  .filter(([url]) => url.startsWith('/#projects/'))
-  .map(([, title]) => title));
+const projectTitles = new Set(projectLinks.map(({ title }) => title));
+type ProjectLinks = { title: string; url: string; repository?: string; website?: string };
 
 function textOf(node: PhrasingContent): string {
   if ('value' in node) return node.value;
@@ -43,10 +42,53 @@ function splitProjectLabels(paragraph: Paragraph): RootContent[] {
   return result;
 }
 
+function actionRow(project: ProjectLinks): Paragraph {
+  const links = [
+    { label: 'Project details', url: project.url },
+    ...(project.website ? [{ label: 'Live website', url: project.website }] : []),
+    ...(project.repository ? [{ label: 'Source code', url: project.repository }] : []),
+  ];
+  return { type: 'paragraph', children: links.flatMap(({ label, url }, index): PhrasingContent[] => [
+    ...(index ? [{ type: 'text' as const, value: ' ' }] : []),
+    { type: 'link', url, children: [{ type: 'text', value: label }] },
+  ]) };
+}
+
+function isActionRow(node: RootContent): boolean {
+  if (node.type !== 'paragraph') return false;
+  // Restrict replacement to action labels, never descriptions or quoted prose.
+  const text = node.children.map((child) => child.type === 'link' ? 'link' : textOf(child)).join('').trim();
+  return /^(?:(?:view project|project details|live website|live site|website|source code|source|repository|repo|links?)|\s|[·|:.,]|\bat\b|\band\b)+$/i.test(text);
+}
+
+function addProjectActions(nodes: RootContent[]): RootContent[] {
+  const result: RootContent[] = [];
+  let current: ProjectLinks | undefined;
+  let added = false;
+  const addActions = () => {
+    if (current && !added) { result.push(actionRow(current)); added = true; }
+  };
+  for (const node of nodes) {
+    if (node.type === 'heading') {
+      addActions();
+      const title = node.children.map(textOf).join('').trim().replace(/^\d+[.)]\s+/, '');
+      current = projectLinks.find((project) => project.title === title);
+      added = false;
+    }
+    if (current && isActionRow(node)) {
+      addActions();
+      continue;
+    }
+    result.push(node);
+  }
+  addActions();
+  return result;
+}
+
 // Only repair top-level, catalog-matched labels; never reinterpret quotes or code.
 export function projectSections() {
   return (tree: Root) => {
-    tree.children = tree.children.flatMap((node): RootContent[] => {
+    const sections = tree.children.flatMap((node): RootContent[] => {
       if (node.type === 'paragraph') return splitProjectLabels(node);
       if (node.type === 'list' && node.ordered && node.children.length === 1) {
         const [first, ...rest] = node.children[0].children;
@@ -56,5 +98,6 @@ export function projectSections() {
       }
       return [node];
     });
+    tree.children = addProjectActions(sections);
   };
 }

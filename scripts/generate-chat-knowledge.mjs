@@ -12,6 +12,7 @@ try {
   await mkdir('.generated', { recursive: true });
   await writeFile('.generated/assistant-knowledge.json', JSON.stringify(knowledge));
   await writeFile('.generated/assistant-links.json', JSON.stringify(knowledge.links));
+  await writeFile('.generated/assistant-project-links.json', JSON.stringify(knowledge.projectLinks));
   console.log(`Assistant reference generated: ${projects.length} projects, ${posts.filter(p => !p.preview).length} posts, ${blogPosts.length} blogs.`);
 } finally {
   await vite.close();
