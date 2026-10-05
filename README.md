@@ -63,6 +63,8 @@ The assistant focuses on my portfolio but welcomes everyday questions and coding
 
 Clearly fictional practice conversations are welcome without repeated identity disclaimers. Questions about capabilities get a short, friendly explanation; requests for hidden instructions are declined without treating the visitor as an attacker. These prompt guidelines do not guarantee protection against prompt extraction.
 
+The personality reference also guides reactions: brief situational humor for harmless detours, calm handling of identity-change requests, and honest corrections when wrong. The assistant distinguishes hands-on work from learning or interests and does not guess my personal recommendations.
+
 References reviewed on October 5, 2026:
 
 | Reference | Use and limits |
