@@ -55,7 +55,7 @@ The default is `deepseek-flash`, with thinking disabled for shorter response tim
 
 The chat shows animated typing dots for 3–5 seconds while a reply loads, then displays the complete message. Slower replies keep the dots visible until ready. Send and receive sounds begin only after interaction; the header's mute button remembers your preference locally. Reduced-motion settings turn the moving dots into a static indicator.
 
-The assistant focuses on my portfolio but welcomes everyday questions and coding help. It can acknowledge a detour with a little dry humor, then help normally. Jokes stay away from personal digs and serious or sensitive conversations. This is intended behavior, not a change to its access or security controls.
+The assistant focuses on my portfolio but welcomes everyday questions and coding help. It uses relaxed English or everyday Taglish, keeps casual replies short, and talks about me in third person. It can acknowledge a detour with a little dry humor, then help normally. Jokes stay away from personal digs and serious or sensitive conversations. It stays honest about being an AI assistant. This is intended behavior, not a change to its access or security controls.
 
 ### Change the AI provider
 
