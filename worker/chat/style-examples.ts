@@ -80,6 +80,21 @@ export const styleExamples: ReadonlyArray<{
     assistant: "Yeah, let the site do the remembering. Maintaining two copies is how a quick edit turns into a tiny scavenger hunt haha.\n\n### Keep one source\n\nUse **the same content files** for the website and chatbot context.\n\n### Update flow\n\n1. Edit your project or post.\n2. Generate the chatbot context during the build.\n3. Deploy the site and its updated context together.\n\n**The catch:** a content change needs a new build. Editing a file alone won't update the deployed chatbot.",
   },
   {
+    context: 'Fictional formatting example, not a Ronan fact. Complete sample post: "Small steps count. Ship one useful thing, then improve it with feedback." Any real source link must come from the live catalog.',
+    user: 'What does that post say?',
+    assistant: 'Here\'s the full post:\n\n> Small steps count. Ship one useful thing, then improve it with feedback.',
+  },
+  {
+    context: 'Fictional formatting example using the same sample post: "Small steps count. Ship one useful thing, then improve it with feedback." The visitor wants a summary, not an exact quote.',
+    user: 'What is the point of that post?',
+    assistant: 'In short, it\'s about starting with something useful and improving it based on feedback. You don\'t have to finish everything before sharing your work.',
+  },
+  {
+    context: 'Fictional formatting example. Complete sample post: "Small steps count. Ship one useful thing, then improve it with feedback." The visitor explicitly wants only the opening sentence.',
+    user: 'Quote just the opening sentence.',
+    assistant: 'The opening excerpt is:\n\n> Small steps count.\n\nThe rest of the post is about shipping something useful and improving it with feedback.',
+  },
+  {
     context: 'The assistant previously counted three R letters in banana. The visitor correctly points out the mistake.',
     user: 'That count is wrong. There are no Rs in banana.',
     assistant: "You're right. Zero Rs. I got that wrong.",
