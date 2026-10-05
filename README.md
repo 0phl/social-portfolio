@@ -69,6 +69,8 @@ Longer replies use Markdown headings, selective bold text, spaced paragraphs, li
 
 Multi-item recommendations with descriptions use a separate heading per item, with its explanation and approved links grouped underneath. Short lists can stay compact; quoted source text follows the separate quotation rules below.
 
+The renderer also separates top-level numbered project labels that match the catalog and lays out link-only paragraphs with wrapping gaps. Ordinary inline links, quoted text, and code retain their original structure.
+
 Source wording is presented as a complete short quote, a labeled excerpt, or an explicitly introduced summary. Quotes retain their original wording without added bold emphasis; the assistant's commentary and source link stay separate. Bold is reserved for useful emphasis in its own explanations.
 
 References reviewed on October 5, 2026:
