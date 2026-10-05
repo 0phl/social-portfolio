@@ -118,3 +118,16 @@ Open `http://127.0.0.1:8787`. Wrangler runs the Worker and serves the built port
 - [Local secrets](https://developers.cloudflare.com/workers/local-development/environment-variables/)
 - [Official Turnstile testing keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/)
 - [Static Assets SPA routing](https://developers.cloudflare.com/workers/static-assets/routing/single-page-application/)
+
+## Implementation verification (October 5, 2026)
+
+- Knowledge generation includes 14 projects, four published posts, and the full first blog. New-content fixtures, duplicate IDs, and the size ceiling are tested.
+- 40 deterministic tests pass, including request rejection, streaming Unicode, thought filtering, interrupted replies, cancellation, timeouts, history bounds, safe links, IME input, and chat state.
+- Frontend and Worker typechecks, scoped ESLint, production build, and Wrangler deployment dry run pass.
+- Local Wrangler serves the site on `127.0.0.1:8787`. Unknown API paths return JSON 404; GET on the chat endpoint returns JSON 405. Missing secrets produce a clear configuration error.
+- Desktop and 390px mobile dialog layouts checked. Closing restores focus, reopening retains conversation, starters populate the composer, and New chat clears it.
+- An isolated client build with a test-only server secret marker confirms that the marker is absent from client assets. Real local secrets and generated reference files remain ignored.
+- A real Gemini key was configured privately. Google accepted the key and `gemini-3.8-flash`; live portfolio requests encountered provider high-demand 503 responses, including after an initial streamed fragment. A complete live response and its browser link navigation remain unverified.
+- Current tooling reports 15 dependency audit findings (12 high, three moderate), involving the existing Vite, Tailwind, ESLint dependency families and the added Vitest/Vite dependency. Major toolchain upgrades are outside this change. The client build also reports a 506 kB chunk warning.
+- No push, deployment, or DNS changes were performed.
+- Final review findings addressed with regression tests: keep reading consecutive non-text SSE frames, enforce the deadline from request parsing through generation, and preserve destination-page heading focus.

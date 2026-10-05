@@ -4,7 +4,7 @@ import { ChatError } from './request';
 import { instructions } from './instructions';
 import { sseFrames } from './sse';
 
-export async function streamGemini(input: ChatRequest, env: Env, parentSignal: AbortSignal, fetcher: typeof fetch = fetch, onFinish = () => undefined): Promise<Response> {
+export async function streamGemini(input: ChatRequest, env: Env, parentSignal: AbortSignal, fetcher: typeof fetch = fetch, onFinish: () => void = () => undefined): Promise<Response> {
   const abort = new AbortController();
   const onAbort = () => abort.abort();
   parentSignal.addEventListener('abort', onAbort, { once: true });
