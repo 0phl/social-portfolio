@@ -1,12 +1,13 @@
 // @vitest-environment jsdom
-import { act, renderHook, waitFor, cleanup } from '@testing-library/react';
+import { act, renderHook, cleanup } from '@testing-library/react';
 import { afterEach, it, expect, vi } from 'vitest';
 import { ChatProvider } from '../../src/chat/ChatProvider';
 import { useChat } from '../../src/chat/useChat';
 import { buildRequest } from '../../src/chat/history';
-afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+afterEach(() => { cleanup(); vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 const emit = (c: ReadableStreamDefaultController, value: unknown) => c.enqueue(new TextEncoder().encode(JSON.stringify(value) + '\n'));
-it('streams, prevents duplicate sends, stops and retries without duplicating the visitor', async () => {
+it('buffers replies, prevents duplicate sends, stops and retries without duplicating the visitor', async () => {
+  vi.useFakeTimers(); vi.spyOn(Math, 'random').mockReturnValue(0.5);
   let controller: ReadableStreamDefaultController;
   const fetcher = vi.fn().mockImplementation(() => Promise.resolve(new Response(new ReadableStream({ start(c) { controller = c; } }))));
   vi.stubGlobal('fetch', fetcher);
@@ -14,15 +15,49 @@ it('streams, prevents duplicate sends, stops and retries without duplicating the
   act(() => { void result.current.send('Hi', 'token'); void result.current.send('duplicate', 'token'); });
   expect(fetcher).toHaveBeenCalledTimes(1);
   await act(async () => { emit(controller, { type: 'delta', text: 'Hello' }); });
-  expect(result.current.messages[1].text).toBe('Hello');
+  expect(result.current.messages[1].text).toBe('');
   act(() => result.current.stop());
   expect(result.current.messages[1].status).toBe('incomplete');
   act(() => { void result.current.retry('fresh-token'); });
   await act(async () => { emit(controller, { type: 'delta', text: 'Hello again' }); emit(controller, { type: 'done' }); controller.close(); });
-  await waitFor(() => expect(result.current.pending).toBe(false));
+  expect(result.current.pending).toBe(true);
+  await act(async () => { await vi.advanceTimersByTimeAsync(3999); });
+  expect(result.current.messages[1].text).toBe('');
+  await act(async () => { await vi.advanceTimersByTimeAsync(1); });
+  expect(result.current.pending).toBe(false);
   expect(result.current.messages).toHaveLength(2);
   expect(result.current.messages[1].text).toBe('Hello again');
   expect(result.current.messages[1].status).toBe('complete');
+});
+it.each(['stop', 'reset'] as const)('cancels a buffered reply during its typing pause on %s', async (action) => {
+  vi.useFakeTimers();
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{"type":"delta","text":"Hidden reply"}\n{"type":"done"}\n')));
+  const { result } = renderHook(useChat, { wrapper: ChatProvider });
+  await act(async () => { void result.current.send('Hi', 'token'); });
+  expect(result.current.messages[1].text).toBe('');
+  act(() => result.current[action]());
+  await act(async () => { await vi.advanceTimersByTimeAsync(6000); });
+  expect(result.current.pending).toBe(false);
+  expect(result.current.messages.some(m => m.text === 'Hidden reply')).toBe(false);
+  if (action === 'reset') expect(result.current.messages).toEqual([]);
+});
+it('keeps typing for slow replies and displays the complete result without another delay', async () => {
+  vi.useFakeTimers();
+  let controller: ReadableStreamDefaultController;
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(new ReadableStream({ start(c) { controller = c; } }))));
+  const { result } = renderHook(useChat, { wrapper: ChatProvider });
+  await act(async () => { void result.current.send('Hi', 'token'); emit(controller, { type: 'delta', text: 'Hello' }); await vi.advanceTimersByTimeAsync(6000); });
+  expect(result.current.messages[1].text).toBe(''); expect(result.current.pending).toBe(true);
+  await act(async () => { emit(controller, { type: 'delta', text: ' there' }); emit(controller, { type: 'done' }); controller.close(); });
+  expect(result.current.messages[1].text).toBe('Hello there'); expect(result.current.pending).toBe(false);
+});
+it('shows errors immediately without displaying an unfinished buffered answer', async () => {
+  vi.useFakeTimers();
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{"type":"delta","text":"Partial"}\n{"type":"error","message":"Please retry."}\n')));
+  const { result } = renderHook(useChat, { wrapper: ChatProvider });
+  await act(async () => { void result.current.send('Hi', 'token'); });
+  expect(result.current.pending).toBe(false);
+  expect(result.current.messages[1]).toMatchObject({ text: '', status: 'error', error: 'Please retry.' });
 });
 it('ignores a late response after reset and retains conversation across hook consumers', async () => {
   let resolve: (r: Response) => void = () => undefined;

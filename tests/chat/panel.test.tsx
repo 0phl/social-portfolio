@@ -13,7 +13,22 @@ beforeEach(() => {
   HTMLDialogElement.prototype.showModal = function () { this.open = true; };
   HTMLDialogElement.prototype.close = function () { this.open = false; };
 });
-afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+afterEach(() => { cleanup(); localStorage.clear(); vi.useRealTimers(); vi.unstubAllGlobals(); });
+it('keeps typing feedback visible when verification resizes the conversation without pulling readers down', async () => {
+  let onResize = () => undefined;
+  const disconnect = vi.fn();
+  vi.stubGlobal('ResizeObserver', class { constructor(callback: () => void) { onResize = callback; } observe = vi.fn(); disconnect = disconnect; });
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ turnstileSiteKey: 'test' })));
+  const { unmount } = render(<ChatProvider><MessagePanel onClose={() => undefined} onNavigate={() => undefined} /></ChatProvider>);
+  await act(async () => undefined);
+  const scroller = screen.getByRole('log').parentElement as HTMLDivElement;
+  Object.defineProperties(scroller, { scrollHeight: { value: 800, configurable: true }, clientHeight: { value: 300 } });
+  act(() => onResize()); expect(scroller.scrollTop).toBe(800);
+  scroller.scrollTop = 0; fireEvent.scroll(scroller);
+  Object.defineProperty(scroller, 'scrollHeight', { value: 900 });
+  act(() => onResize()); expect(scroller.scrollTop).toBe(0);
+  unmount(); expect(disconnect).toHaveBeenCalled();
+});
 it('supports IME, navigation, fresh tokens, close and reopening history', async () => {
   const fetcher = vi.fn().mockImplementation((url) => Promise.resolve(url.endsWith('/config') ? Response.json({ turnstileSiteKey: 'test' }) : new Response('{"type":"delta","text":"[Projects](/#projects)"}\n{"type":"done"}\n')));
   vi.stubGlobal('fetch', fetcher);
@@ -26,7 +41,16 @@ it('supports IME, navigation, fresh tokens, close and reopening history', async 
   fireEvent.keyDown(screen.getByLabelText('Message'), { key: 'Enter', isComposing: true });
   expect(fetcher).toHaveBeenCalledTimes(1);
   await waitFor(() => expect(screen.getByRole('button', { name: 'Send message' }).hasAttribute('disabled')).toBe(false));
+  vi.useFakeTimers();
   await act(async () => fireEvent.keyDown(screen.getByLabelText('Message'), { key: 'Enter' }));
+  expect(screen.getByLabelText("Ronan's assistant is typing")).toBeTruthy();
+  expect(screen.queryByText('Thinking...')).toBeNull();
+  expect(screen.queryByRole('link', { name: 'Projects' })).toBeNull();
+  expect(screen.getByRole('button', { name: 'Mute chat sounds' })).toBeTruthy();
+  fireEvent.click(screen.getByRole('button', { name: 'Mute chat sounds' }));
+  expect(screen.getByRole('button', { name: 'Unmute chat sounds' })).toBeTruthy();
+  await act(async () => { await vi.advanceTimersByTimeAsync(5000); });
+  vi.useRealTimers();
   await screen.findByRole('link', { name: 'Projects' });
   fireEvent.click(screen.getByRole('link', { name: 'Projects' })); expect(navigate).toHaveBeenCalledWith('/#projects');
   rerender(<ChatProvider><div>Other page</div></ChatProvider>);

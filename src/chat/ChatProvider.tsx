@@ -3,6 +3,16 @@ import { ChatContext } from './useChat';
 import { buildRequest, type Message } from './history';
 import { readChatStream } from './stream';
 
+function waitForReply(delay: number, signal: AbortSignal) {
+  signal.throwIfAborted();
+  if (delay <= 0) return Promise.resolve();
+  return new Promise<void>((resolve, reject) => {
+    const abort = () => { clearTimeout(timer); reject(signal.reason); };
+    const timer = window.setTimeout(() => { signal.removeEventListener('abort', abort); resolve(); }, delay);
+    signal.addEventListener('abort', abort, { once: true });
+  });
+}
+
 export function ChatProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [pending, setPending] = useState(false);
@@ -26,14 +36,18 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     const user: Message = retry ? current.current[current.current.length - 2] : { id: crypto.randomUUID(), role: 'user', text: text.trim(), time, status: 'complete' };
     update(() => [...before, user, { id: answerId, role: 'assistant', text: '', time, status: 'pending' }]);
     setPending(true);
+    const revealAt = Date.now() + 3000 + Math.random() * 2000;
     const timer = window.setTimeout(() => controller.abort(), 65000);
     try {
       const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: controller.signal });
       if (generation.current !== id) { await response.body?.cancel(); return; }
-      await readChatStream(response, (event) => {
-        if (generation.current !== id) return;
-        update((old) => old.map((m) => m.id !== answerId ? m : event.type === 'delta' ? { ...m, text: m.text + event.text, status: 'streaming' } : event.type === 'done' ? { ...m, status: 'complete' } : m));
-      }, controller.signal);
+      let answer = '';
+      await readChatStream(response, (event) => { if (event.type === 'delta') answer += event.text; }, controller.signal);
+      if (!answer.trim()) throw new Error('No reply received. Please try again.');
+      await waitForReply(revealAt - Date.now(), controller.signal);
+      if (generation.current !== id) return;
+      const receivedAt = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      update((old) => old.map((m) => m.id === answerId ? { ...m, text: answer, time: receivedAt, status: 'complete' } : m));
     } catch (error) {
       if (generation.current === id) update((old) => old.map((m) => m.id !== answerId ? m : { ...m, status: m.text ? 'incomplete' : 'error', error: controller.signal.aborted ? 'The reply took too long. Please try again.' : error instanceof Error ? error.message : 'Something went wrong. Please try again.' }));
     } finally { clearTimeout(timer); if (generation.current === id) { active.current = null; setPending(false); } }

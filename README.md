@@ -10,7 +10,7 @@ Built with React, TypeScript, Vite, Tailwind CSS, and Framer Motion.
 - Personal and freelance projects with screenshots and detail pages.
 - Blog posts written in Markdown.
 - A post feed with likes, comments, bookmarks, and sharing.
-- Portfolio update notifications and an AI assistant with streamed replies and project links.
+- Portfolio update notifications and an AI assistant with typing indicators, message sounds, and project links.
 - Responsive layouts for desktop and mobile.
 
 Social interactions are browser-side demos and engagement counts are sample data. The AI assistant runs through a Cloudflare Worker and sends messages to the configured AI service, not directly to me. There is no account system.
@@ -52,6 +52,8 @@ npm run dev:chat
 Open **http://127.0.0.1:8787**. Wrangler serves the built site and `/api/chat` locally. Real replies still call the configured AI service and use your API quota; verification also needs an internet connection. Without a key, the site works and chat shows a configuration message. Restart this command after changing content or secrets.
 
 The default is `deepseek-flash`, with thinking disabled for shorter response times. Conversations stay in browser memory until reload. Stop and closing the dialog cancel a reply; New chat clears the conversation. Messages are processed under the selected service's data policies, so do not send sensitive information.
+
+The chat shows animated typing dots for 3–5 seconds while a reply loads, then displays the complete message. Slower replies keep the dots visible until ready. Send and receive sounds begin only after interaction; the header's mute button remembers your preference locally. Reduced-motion settings turn the moving dots into a static indicator.
 
 ### Change the AI provider
 

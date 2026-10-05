@@ -1,11 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { GithubIcon, LinkedinIcon, SendIcon, XIcon } from 'lucide-react';
+import { GithubIcon, LinkedinIcon, MessageSquarePlusIcon, SendIcon, Volume2Icon, VolumeXIcon, XIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { VisitorAvatar } from '../shared/VisitorAvatar';
 import { useChat } from '../../chat/useChat';
 import { AssistantMessage } from '../chat/AssistantMessage';
 import { TurnstileChallenge } from '../chat/TurnstileChallenge';
+import { TypingIndicator } from '../chat/TypingIndicator';
+import { useChatSounds } from '../../chat/useChatSounds';
 
 export function MessagePanel({ onClose, onNavigate }: { onClose: () => void; onNavigate: (url: string) => void }) {
   const reduceMotion = useReducedMotion();
@@ -14,6 +16,7 @@ export function MessagePanel({ onClose, onNavigate }: { onClose: () => void; onN
   const input = useRef<HTMLTextAreaElement>(null);
   const [draft, setDraft] = useState('');
   const { messages, pending, send: sendMessage, retry, stop, reset } = useChat();
+  const { soundsEnabled, toggleSounds, playSend, prepare } = useChatSounds(messages);
   const [token, setToken] = useState('');
   const [revision, setRevision] = useState(0);
   const [siteKey, setSiteKey] = useState('');
@@ -48,10 +51,20 @@ export function MessagePanel({ onClose, onNavigate }: { onClose: () => void; onN
     const element = conversation.current;
     if (element && nearBottom.current) element.scrollTop = element.scrollHeight;
   }, [messages]);
+  useEffect(() => {
+    const element = conversation.current;
+    if (!element || typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(() => {
+      if (nearBottom.current) element.scrollTop = element.scrollHeight;
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   const send = () => {
     if (!draft.trim() || pending || !tokenRef.current) return;
     const freshToken = tokenRef.current; acceptToken('');
+    playSend();
     void sendMessage(draft, freshToken); setRevision((value) => value + 1);
     nearBottom.current = true;
     setDraft('');
@@ -81,13 +94,14 @@ export function MessagePanel({ onClose, onNavigate }: { onClose: () => void; onN
         transition={{ duration: reduceMotion ? 0 : 0.2, ease: 'easeOut' }}
         className="relative flex h-[640px] max-h-full w-[920px] max-w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl"
       >
-        <header className="flex h-20 shrink-0 items-center justify-between gap-3 border-b border-gray-100 px-5 sm:px-8">
+        <header className="flex h-20 shrink-0 items-center justify-between gap-2 border-b border-gray-100 px-4 sm:gap-3 sm:px-8">
           <div>
             <h2 id="message-title" className="text-base font-semibold tracking-tight">Messages</h2>
             <p className="mt-1 text-xs text-gray-500">Ronan's assistant <span aria-hidden="true">·</span> AI</p>
           </div>
-          <div className="flex items-center gap-1">
-            <button type="button" onClick={() => { reset(); setDraft(''); acceptToken(''); setRevision((value) => value + 1); }} disabled={!messages.length} className="min-h-11 px-2 text-xs text-gray-500 hover:text-brand disabled:opacity-40">New chat</button>
+          <div className="flex items-center sm:gap-1">
+            <button type="button" onClick={toggleSounds} aria-label={soundsEnabled ? 'Mute chat sounds' : 'Unmute chat sounds'} title={soundsEnabled ? 'Mute chat sounds' : 'Unmute chat sounds'} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">{soundsEnabled ? <Volume2Icon aria-hidden="true" className="h-4 w-4" /> : <VolumeXIcon aria-hidden="true" className="h-4 w-4" />}</button>
+            <button type="button" aria-label="New chat" title="New chat" onClick={() => { reset(); setDraft(''); acceptToken(''); setRevision((value) => value + 1); }} disabled={!messages.length} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-xs text-gray-500 hover:bg-gray-50 hover:text-brand disabled:opacity-40 sm:w-auto sm:px-2"><MessageSquarePlusIcon aria-hidden="true" className="h-4 w-4 sm:hidden" /><span className="hidden sm:inline">New chat</span></button>
             <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" title="LinkedIn" className="flex h-11 w-11 items-center justify-center rounded-full text-gray-500 hover:bg-gray-50 hover:text-brand md:hidden"><LinkedinIcon aria-hidden="true" className="h-4 w-4" /></a>
             <button type="button" onClick={close} aria-label="Close messages" className="flex h-11 w-11 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900"><XIcon aria-hidden="true" className="h-5 w-5" /></button>
           </div>
@@ -121,9 +135,9 @@ export function MessagePanel({ onClose, onNavigate }: { onClose: () => void; onN
                       <div className="min-w-0 max-w-[85%] sm:max-w-[80%]">
                         <p className="mb-2 text-xs font-medium text-gray-600">Ronan's assistant <span className="ml-2 text-[11px] font-normal text-gray-400">{message.time}</span></p>
                         <div className="rounded-2xl rounded-tl-sm border border-gray-100 bg-white px-4 py-3 text-gray-700">
-                          {message.text ? <AssistantMessage text={message.text} onNavigate={navigate} /> : message.status === 'pending' ? <span className="text-gray-400">Thinking...</span> : null}
+                          {message.text ? <AssistantMessage text={message.text} onNavigate={navigate} /> : message.status === 'pending' ? <TypingIndicator /> : null}
                           {message.error && <p className="mt-2 text-xs text-gray-500">{message.error}</p>}
-                          {message.id === messages[messages.length - 1]?.id && ['error', 'incomplete'].includes(message.status) && <button type="button" disabled={!token || pending} onClick={() => { const freshToken = tokenRef.current; acceptToken(''); void retry(freshToken); setRevision((value) => value + 1); nearBottom.current = true; }} className="mt-2 min-h-9 text-xs font-medium text-brand disabled:text-gray-400">Retry reply</button>}
+                          {message.id === messages[messages.length - 1]?.id && ['error', 'incomplete'].includes(message.status) && <button type="button" disabled={!token || pending} onClick={() => { const freshToken = tokenRef.current; acceptToken(''); prepare(); void retry(freshToken); setRevision((value) => value + 1); nearBottom.current = true; }} className="mt-2 min-h-9 text-xs font-medium text-brand disabled:text-gray-400">Retry reply</button>}
                         </div>
                       </div>
                     </div>
@@ -133,7 +147,7 @@ export function MessagePanel({ onClose, onNavigate }: { onClose: () => void; onN
               </div>
               {messages.length === 0 && <div className="ml-11 mt-4 flex flex-wrap gap-2">{['Show me a project', 'How did Ronan get started?', 'What does he work with?'].map((prompt) => <button key={prompt} type="button" onClick={() => { setDraft(prompt); input.current?.focus({ preventScroll: true }); }} className="min-h-9 rounded-full border border-gray-200 bg-white px-3 text-xs text-gray-500 transition-colors hover:border-brand hover:text-brand">{prompt}</button>)}</div>}
             </div>
-            <p className="sr-only" role="status">{pending ? 'Assistant is replying.' : messages.length ? messages[messages.length - 1].status === 'complete' ? 'Reply complete.' : 'Reply stopped or unavailable.' : ''}</p>
+            <p className="sr-only" role="status">{pending ? "Ronan's assistant is typing." : messages.length ? messages[messages.length - 1].status === 'complete' ? 'Reply complete.' : 'Reply stopped or unavailable.' : ''}</p>
 
             <form onSubmit={(event) => { event.preventDefault(); send(); }} className="shrink-0 px-4 pb-4 pt-3 sm:px-8 sm:pb-5">
               <div className="mb-2">{siteKey ? <TurnstileChallenge siteKey={siteKey} revision={revision} onToken={acceptToken} /> : <p className="text-xs text-gray-500">{configError || 'Loading verification...'} {configError && <button type="button" className="text-brand underline" onClick={() => setConfigAttempt((value) => value + 1)}>Try again</button>}</p>}</div>
