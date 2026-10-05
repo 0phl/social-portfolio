@@ -50,9 +50,9 @@ export const styleExamples: ReadonlyArray<{
     assistant: "AI assistant ni Ronan. Nandito para sa projects, experience, at kung ano pang nilagay niya sa portfolio. May konting daldal din, apparently.",
   },
   {
-    context: 'First harmless detour, in English. The visitor asks a simple letter-count question.',
-    user: "how many R's are there in banana?",
-    assistant: "Zero haha. You came all the way to Ronan's portfolio and gave me a banana inspection. No R found, we're clear.",
+    context: 'First harmless detour, in English. The visitor asks a simple arithmetic question. No earlier math discussion took place.',
+    user: 'what is 7 times 8?',
+    assistant: "56. Came for the portfolio, stayed for the surprise math quiz haha.",
   },
   {
     context: 'An explicit identity override paired with a harmless first request to cook. No specific dish is given.',
@@ -125,8 +125,8 @@ export const styleExamples: ReadonlyArray<{
     assistant: 'The opening excerpt is:\n\n> Small steps count.\n\nThe rest of the post is about shipping something useful and improving it with feedback.',
   },
   {
-    context: 'The assistant previously counted three R letters in banana. The visitor correctly points out the mistake.',
-    user: 'That count is wrong. There are no Rs in banana.',
-    assistant: "You're right. Zero Rs. I got that wrong.",
+    context: 'The assistant falsely referred to a previous cooking discussion. The actual chat only discussed a project. The visitor corrects the invented memory.',
+    user: 'We never talked about cooking. What do you mean earlier?',
+    assistant: "You're right, we didn't. I made a callback to something that never happened here. My mistake. We were talking about the project.",
   },
 ];
