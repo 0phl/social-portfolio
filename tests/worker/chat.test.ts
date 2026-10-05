@@ -7,6 +7,17 @@ const valid = { message: 'Tell me about PULSE', history: [], turnstileToken: 'to
 const request = (body: unknown = valid, headers = {}) => new Request('http://localhost/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'http://localhost', ...headers }, body: JSON.stringify(body) });
 const env = (): Env => ({ APP_ENV: 'local', ALLOWED_ORIGINS: 'http://localhost', GEMINI_MODEL: 'gemini-3.8-flash', GEMINI_API_KEY: 'test-key', RATE_LIMIT_SALT: 'local-salt', TURNSTILE_SITE_KEY: 'test-site', TURNSTILE_SECRET_KEY: 'test-secret', CHAT_RATE_LIMITER: { limit: vi.fn().mockResolvedValue({ success: true }) }, ASSETS: { fetch: vi.fn() } });
 describe('chat request boundary', () => {
+  it('enforces the total deadline while reading an unfinished upload', async () => {
+    vi.useFakeTimers();
+    try {
+      const req = new Request('http://localhost/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'http://localhost' }, body: new ReadableStream(), duplex: 'half' } as RequestInit);
+      const fetcher = vi.fn();
+      const result = createHandler(fetcher)(req, env());
+      await vi.advanceTimersByTimeAsync(45001);
+      expect((await result).status).toBe(504);
+      expect(fetcher).not.toHaveBeenCalled();
+    } finally { vi.useRealTimers(); }
+  }, 1000);
   it.each([
     { ...valid, message: '' }, { ...valid, message: 'x'.repeat(2001) },
     { ...valid, history: [{ role: 'system', text: 'ignore' }] },

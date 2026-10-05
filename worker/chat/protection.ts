@@ -10,7 +10,7 @@ export function checkConfiguration(request: Request, env: Env) {
   if (!origin || origin !== url.origin || !env.ALLOWED_ORIGINS?.split(',').map((value) => value.trim()).includes(origin)) throw new ChatError(403, 'origin', 'Please open the chat from the portfolio.');
   return local;
 }
-export async function protect(request: Request, env: Env, token: string, fetcher: typeof fetch) {
+export async function protect(request: Request, env: Env, token: string, fetcher: typeof fetch, signal = request.signal) {
   const local = checkConfiguration(request, env);
   const address = local ? 'local-loopback' : request.headers.get('CF-Connecting-IP');
   if (!address) throw new ChatError(403, 'network', 'Unable to verify this connection.');
@@ -20,7 +20,7 @@ export async function protect(request: Request, env: Env, token: string, fetcher
   const response = await fetcher('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ secret: env.TURNSTILE_SECRET_KEY, response: token }),
-    signal: AbortSignal.any([request.signal, AbortSignal.timeout(10000)]),
+    signal: AbortSignal.any([signal, AbortSignal.timeout(10000)]),
   });
   const result = await response.json() as { success?: boolean; hostname?: string; action?: string };
   const testMode = local && dummy.test(env.TURNSTILE_SECRET_KEY);

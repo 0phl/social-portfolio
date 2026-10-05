@@ -4,13 +4,13 @@ import { ChatError } from './request';
 import { instructions } from './instructions';
 import { sseFrames } from './sse';
 
-export async function streamGemini(input: ChatRequest, env: Env, parentSignal: AbortSignal, fetcher: typeof fetch = fetch): Promise<Response> {
+export async function streamGemini(input: ChatRequest, env: Env, parentSignal: AbortSignal, fetcher: typeof fetch = fetch, onFinish = () => undefined): Promise<Response> {
   const abort = new AbortController();
   const onAbort = () => abort.abort();
   parentSignal.addEventListener('abort', onAbort, { once: true });
   if (parentSignal.aborted) abort.abort();
   const timer = setTimeout(() => abort.abort(), 45000);
-  const cleanup = () => { clearTimeout(timer); parentSignal.removeEventListener('abort', onAbort); };
+  const cleanup = () => { clearTimeout(timer); parentSignal.removeEventListener('abort', onAbort); onFinish(); };
   let upstream: Response;
   try {
     upstream = await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(env.GEMINI_MODEL)}:streamGenerateContent?alt=sse`, {
@@ -35,20 +35,24 @@ export async function streamGemini(input: ChatRequest, env: Env, parentSignal: A
     async pull(controller) {
       const emit = (event: ChatEvent) => controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
       try {
-        const { value, done } = await frames.next();
-        if (done) throw new Error('incomplete');
-        if (value.promptFeedback?.blockReason || value.error) throw new Error('blocked');
-        const candidate = value.candidates?.[0];
-        for (const part of candidate?.content?.parts ?? []) {
-          if (!part.thought && typeof part.text === 'string' && part.text) {
-            textLength += part.text.length;
-            if (textLength > 32768) throw new Error('too long');
-            emit({ type: 'delta', text: part.text });
+        let emitted = false;
+        while (!emitted && !finished) {
+          const { value, done } = await frames.next();
+          if (done) throw new Error('incomplete');
+          if (value.promptFeedback?.blockReason || value.error) throw new Error('blocked');
+          const candidate = value.candidates?.[0];
+          for (const part of candidate?.content?.parts ?? []) {
+            if (!part.thought && typeof part.text === 'string' && part.text) {
+              textLength += part.text.length;
+              if (textLength > 32768) throw new Error('too long');
+              emit({ type: 'delta', text: part.text });
+              emitted = true;
+            }
           }
-        }
-        if (candidate?.finishReason) {
-          if (candidate.finishReason !== 'STOP' || !textLength) throw new Error('incomplete');
-          emit({ type: 'done' }); finished = true; controller.close(); cleanup(); await frames.return();
+          if (candidate?.finishReason) {
+            if (candidate.finishReason !== 'STOP' || !textLength) throw new Error('incomplete');
+            emit({ type: 'done' }); finished = true; controller.close(); cleanup(); await frames.return();
+          }
         }
       } catch {
         if (!finished) {

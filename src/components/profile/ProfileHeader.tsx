@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { CheckIcon, GithubIcon, LinkedinIcon, MapPinIcon, MoreHorizontalIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { MessagePanel } from './MessagePanel';
+import { navigateFromChat } from '../../chat/navigation';
 
 export function ProfileHeader() {
   const reduceMotion = useReducedMotion();
@@ -140,13 +141,7 @@ export function ProfileHeader() {
       <AnimatePresence onExitComplete={() => {
         const destination = chatDestination.current; chatDestination.current = null;
         if (!destination) { requestAnimationFrame(() => messageButton.current?.focus({ preventScroll: true })); return; }
-        const hash = destination.slice(1);
-        window.location.hash = hash;
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          const [section, id] = hash.slice(1).split('/');
-          const target = document.getElementById(section === 'posts' && id ? `post-${id}` : section === 'about' && id ? `about-${id}` : 'main-content');
-          target?.focus({ preventScroll: true }); target?.scrollIntoView({ block: 'start' });
-        }));
+        navigateFromChat(destination);
       }}>
         {messageOpen && <MessagePanel key="messages" onClose={() => setMessageOpen(false)} onNavigate={(url) => { chatDestination.current = url; setMessageOpen(false); }} />}
       </AnimatePresence>

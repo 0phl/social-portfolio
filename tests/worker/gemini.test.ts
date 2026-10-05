@@ -9,6 +9,11 @@ const frame = (parts: unknown[], finishReason?: string) => `data: ${JSON.stringi
 function upstream(text: string) { const bytes = new TextEncoder().encode(text); return new Response(new ReadableStream({ start(c) { for (const byte of bytes) c.enqueue(new Uint8Array([byte])); c.close(); } })); }
 async function collect(response: Response) { const events: ChatEvent[] = []; await readChatStream(response, (e) => events.push(e), new AbortController().signal); return events; }
 describe('Gemini streaming', () => {
+  it('continues past several thought-only and metadata-only frames', async () => {
+    const raw = frame([{ thought: true, text: 'private' }]).repeat(3) + 'data: {"usageMetadata":{"totalTokenCount":10}}\n\n' + frame([{ text: 'Public answer' }], 'STOP');
+    const response = await streamGemini(input, env, new AbortController().signal, vi.fn().mockResolvedValue(upstream(raw)));
+    expect(await collect(response)).toEqual([{ type: 'delta', text: 'Public answer' }, { type: 'done' }]);
+  }, 1000);
   it('handles split Unicode and hides thinking, keys and verification tokens', async () => {
     const fetcher = vi.fn().mockResolvedValue(upstream(frame([{ text: 'private thoughts', thought: true }, { text: 'Hi 👋' }]) + frame([{ text: ' kumusta!' }], 'STOP')));
     const response = await streamGemini(input, env, new AbortController().signal, fetcher);

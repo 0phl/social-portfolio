@@ -6,14 +6,17 @@ export class ChatError extends Error {
 export function jsonError(error: ChatError) {
   return Response.json({ code: error.code, message: error.message }, { status: error.status, headers: { 'Cache-Control': 'no-store' } });
 }
-export async function readChatRequest(request: Request): Promise<ChatRequest> {
+export async function readChatRequest(request: Request, signal = request.signal): Promise<ChatRequest> {
   if (request.headers.get('Content-Type')?.split(';')[0].trim() !== 'application/json') throw new ChatError(415, 'media', 'Please send a JSON message.');
   const reader = request.body?.getReader();
   if (!reader) throw new ChatError(400, 'body', 'A message is required.');
   let bytes = 0; let raw = ''; const decoder = new TextDecoder('utf-8', { fatal: true, ignoreBOM: false });
+  const abort = () => { void reader.cancel(); };
+  signal.addEventListener('abort', abort, { once: true });
   try {
     for (;;) {
-      const { done, value } = await reader.read(); if (done) break;
+      signal.throwIfAborted();
+      const { done, value } = await reader.read(); signal.throwIfAborted(); if (done) break;
       bytes += value.byteLength;
       if (bytes > 32768) throw new ChatError(413, 'size', 'This conversation is too large. Start a new chat.');
       raw += decoder.decode(value, { stream: true });
@@ -31,5 +34,5 @@ export async function readChatRequest(request: Request): Promise<ChatRequest> {
   } catch (error) {
     if (error instanceof ChatError) throw error;
     throw new ChatError(400, 'invalid', 'Please send a message under 2,000 characters with a valid conversation.');
-  } finally { await reader.cancel().catch(() => undefined); reader.releaseLock(); }
+  } finally { signal.removeEventListener('abort', abort); await reader.cancel().catch(() => undefined); reader.releaseLock(); }
 }
