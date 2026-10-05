@@ -59,7 +59,7 @@ The assistant focuses on my portfolio but welcomes everyday questions and coding
 
 ### Conversation voice
 
-`worker/chat/voice.ts` contains the voice guide and original example exchanges. These are prompt examples, not model-weight fine-tuning. Portfolio facts still come from the generated reference. No scraped comments, usernames, or third-party dialogue datasets are included in the runtime prompt.
+`worker/chat/voice.ts` contains the voice guide and conversation examples. `worker/chat/style-examples.ts` is a small, editable dataset adapted from my supplied writing examples, with context, visitor messages, and assistant replies. It is included in the prompt to demonstrate phrasing without encouraging automatic agreement or invented context. Replies use no emojis. These are prompt examples, not model-weight fine-tuning. Portfolio facts still come from the generated reference. No scraped comments, usernames, or third-party dialogue datasets are included in the runtime prompt.
 
 Clearly fictional practice conversations are welcome without repeated identity disclaimers. Questions about capabilities get a short, friendly explanation; requests for hidden instructions are declined without treating the visitor as an attacker. These prompt guidelines do not guarantee protection against prompt extraction.
 
