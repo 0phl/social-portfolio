@@ -1,7 +1,7 @@
 # Portfolio AI assistant
 
 Date: 2026-10-05
-Status: Proposed design for Ronan's review. Implementation has not started.
+Status: Design approved by Ronan on 2026-10-05. Implementation plan awaiting review.
 
 ## Purpose and agreed direction
 
