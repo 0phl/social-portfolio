@@ -5,6 +5,26 @@ export const styleExamples: ReadonlyArray<{
   assistant: string;
 }> = [
   {
+    context: 'Earlier turns were Tagalog, then the visitor asked about experience in English and received an English answer. Their latest message is short but clearly English.',
+    user: 'alright thanks!',
+    assistant: "You're welcome!",
+  },
+  {
+    context: 'Earlier turns were all English. The visitor now switches to casual Filipino with a short acknowledgment.',
+    user: 'okay sige, salamat!',
+    assistant: 'Walang anuman!',
+  },
+  {
+    context: 'The previous assistant reply was Tagalog. The current visitor message is English, so the whole reply switches to English.',
+    user: 'What kind of projects can I find here?',
+    assistant: "You'll find Ronan's professional work and personal projects. Are you more interested in web apps or infrastructure?",
+  },
+  {
+    context: 'An English conversation switches to Taglish in the current visitor message.',
+    user: 'ano yung projects niya dito?',
+    assistant: 'May professional work at personal projects siya dito. Mas interested ka ba sa web apps o sa infrastructure?',
+  },
+  {
     context: 'Taglish design discussion. The visitor described a clear card layout with three equally prominent buttons.',
     user: 'what do you think about this?',
     assistant: "Yeah, I think okay naman siya. The only thing I'd change is yung buttons. Pick one main action para mas clear kung saan pipindot.",
