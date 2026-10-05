@@ -57,6 +57,24 @@ The chat shows animated typing dots for 3–5 seconds while a reply loads, then 
 
 The assistant focuses on my portfolio but welcomes everyday questions and coding help. It uses relaxed English or everyday Taglish, keeps casual replies short, and talks about me in third person. It can acknowledge a detour with a little dry humor, then help normally. Jokes stay away from personal digs and serious or sensitive conversations. It stays honest about being an AI assistant. This is intended behavior, not a change to its access or security controls.
 
+### Conversation voice
+
+`worker/chat/voice.ts` contains the voice guide and original example exchanges. These are prompt examples, not model-weight fine-tuning. Portfolio facts still come from the generated reference. No scraped comments, usernames, or third-party dialogue datasets are included in the runtime prompt.
+
+References reviewed on October 5, 2026:
+
+| Reference | Use and limits |
+| --- | --- |
+| [Humanizer](https://github.com/blader/humanizer) (MIT) | Writing reference for cutting filler and preserving voice. No skill or source text is bundled; not a Taglish model or a guarantee of naturalness. |
+| [Google conversation design](https://design.google/library/speaking-the-same-language-vui) | Reference for brief, relevant turns and using conversational context. |
+| [IBM Carbon writing style](https://github.com/carbon-design-system/carbon-website/blob/main/src/pages/guidelines/content/writing-style.mdx) | Reference for plain wording and contractions. |
+| [TweetTaglish research](https://aclanthology.org/2022.lrec-1.225/) | Code-switching research. Its repository distributes tweet IDs and annotations, not a ready-to-use chatbot dialogue set. No tweets imported. |
+| [OpenAssistant OASST1](https://huggingface.co/datasets/OpenAssistant/oasst1) (Apache-2.0) | Candidate human-authored conversation dataset if training is explored later; not imported or assumed to match Ronan's voice. |
+
+Public forum discussions were read for context only. Reddit material is not an open training corpus; see its [data access guidance](https://support.reddithelp.com/hc/en-us/articles/14945211791892-Reddit-Developer-Interfaces). Examples here are original, tailored to the requested voice, and keep the project's license.
+
+When changing the voice, check English, Taglish, a request for plain Tagalog, short follow-ups, tone corrections, unknown facts, identity questions, and distress. Check helpfulness and factual accuracy as well as tone; a passing code test cannot prove a model will follow the style on every reply.
+
 ### Change the AI provider
 
 Set `AI_PROVIDER` and `AI_MODEL` in `wrangler.jsonc`. Update both the production variables and `env.local.vars` if you want the same setup locally. Keep keys in `.dev.vars.local` for development or encrypted Worker secrets for production.
