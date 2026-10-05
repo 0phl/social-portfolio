@@ -67,6 +67,8 @@ The personality reference also guides reactions: brief situational humor for har
 
 Longer replies use Markdown headings, selective bold text, spaced paragraphs, lists, and code blocks. Short banter stays conversational. The chat renderer styles these elements while continuing to block raw HTML, images, and links outside the approved catalog.
 
+Multi-item recommendations with descriptions use a separate heading per item, with its explanation and approved links grouped underneath. Short lists can stay compact; quoted source text follows the separate quotation rules below.
+
 Source wording is presented as a complete short quote, a labeled excerpt, or an explicitly introduced summary. Quotes retain their original wording without added bold emphasis; the assistant's commentary and source link stay separate. Bold is reserved for useful emphasis in its own explanations.
 
 References reviewed on October 5, 2026:
