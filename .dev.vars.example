@@ -1,5 +1,9 @@
-# Copy to .dev.vars.local. Add your Gemini key privately. Never use a VITE_ prefix.
-GEMINI_API_KEY=""
+# Copy to .dev.vars.local. Add the active provider's key privately. Never use a VITE_ prefix.
+DEEPSEEK_API_KEY=""
+# Optional, only used when AI_PROVIDER is gemini:
+# GEMINI_API_KEY=""
+# Optional, only used when AI_PROVIDER is openai-compatible:
+# AI_API_KEY=""
 # Official Cloudflare always-pass testing secret. Local development only.
 TURNSTILE_SECRET_KEY="1x0000000000000000000000000000000AA"
 RATE_LIMIT_SALT="local-development-only"

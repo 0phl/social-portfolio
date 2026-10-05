@@ -14,7 +14,7 @@ export async function* sseFrames(body: ReadableStream<Uint8Array>, signal: Abort
         if (match.index > 65536) throw new Error('frame too large');
         const frame = buffer.slice(0, match.index); buffer = buffer.slice(match.index + match[0].length);
         const data = frame.split(/\r?\n/).filter((line) => line.startsWith('data:')).map((line) => line.slice(5).trimStart()).join('\n');
-        if (data) yield JSON.parse(data);
+        if (data) yield data === '[DONE]' ? data : JSON.parse(data);
       }
       if (buffer.length > 65536) throw new Error('frame too large');
       if (done) { if (buffer.trim()) throw new Error('truncated frame'); return; }

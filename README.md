@@ -10,10 +10,10 @@ Built with React, TypeScript, Vite, Tailwind CSS, and Framer Motion.
 - Personal and freelance projects with screenshots and detail pages.
 - Blog posts written in Markdown.
 - A post feed with likes, comments, bookmarks, and sharing.
-- Portfolio update notifications and a Gemini AI assistant with streamed replies and project links.
+- Portfolio update notifications and an AI assistant with streamed replies and project links.
 - Responsive layouts for desktop and mobile.
 
-Social interactions are browser-side demos and engagement counts are sample data. The AI assistant runs through a Cloudflare Worker. Messages go to Google Gemini, not directly to me. There is no account system.
+Social interactions are browser-side demos and engagement counts are sample data. The AI assistant runs through a Cloudflare Worker and sends messages to the configured AI service, not directly to me. There is no account system.
 
 ## Run locally
 
@@ -43,15 +43,29 @@ No Cloudflare deployment is needed. Copy the example secrets file:
 Copy-Item .dev.vars.example .dev.vars.local
 ```
 
-Edit `.dev.vars.local` privately and set `GEMINI_API_KEY` to your Gemini Developer API key. Keep the included Turnstile testing secret and local salt. This file is ignored by Git. Never put the key in a `VITE_` variable, browser code, or a commit.
+Edit `.dev.vars.local` privately and set `DEEPSEEK_API_KEY` to your DeepSeek API key. Keep the included Turnstile testing secret and local salt. This file is ignored by Git. Never put the key in a `VITE_` variable, browser code, or a commit. If the file already exists, edit it rather than copying over it.
 
 ```sh
 npm run dev:chat
 ```
 
-Open **http://127.0.0.1:8787**. Wrangler serves the built site and `/api/chat` locally. Real replies still call Google and use your API quota; verification also needs an internet connection. Without a key, the site works and chat shows a configuration message. Restart this command after changing content or secrets.
+Open **http://127.0.0.1:8787**. Wrangler serves the built site and `/api/chat` locally. Real replies still call the configured AI service and use your API quota; verification also needs an internet connection. Without a key, the site works and chat shows a configuration message. Restart this command after changing content or secrets.
 
-The assistant uses `gemini-3.8-flash`, configured in `wrangler.jsonc`. It keeps conversations in browser memory until reload. Stop and closing the dialog cancel a reply; New chat clears the conversation. Google may use free-tier messages to improve its products, including human review, so do not send sensitive information.
+The default is `deepseek-flash`, with thinking disabled for shorter response times. Conversations stay in browser memory until reload. Stop and closing the dialog cancel a reply; New chat clears the conversation. Messages are processed under the selected service's data policies, so do not send sensitive information.
+
+### Change the AI provider
+
+Set `AI_PROVIDER` and `AI_MODEL` in `wrangler.jsonc`. Update both the production variables and `env.local.vars` if you want the same setup locally. Keep keys in `.dev.vars.local` for development or encrypted Worker secrets for production.
+
+| `AI_PROVIDER` | API key secret | Endpoint |
+| --- | --- | --- |
+| `deepseek` | `DEEPSEEK_API_KEY` | DeepSeek API, built in |
+| `gemini` | `GEMINI_API_KEY` | Gemini Developer API, built in |
+| `openai-compatible` | `AI_API_KEY` | Set `AI_BASE_URL`, including any `/v1` prefix |
+
+The compatible adapter appends `/chat/completions` to the HTTPS base URL. Choose a service/model that supports streaming Chat Completions, system messages, and `max_tokens`. The Gemini adapter uses Gemini 3's low thinking setting. Other API formats or model-specific options may need a change in `worker/chat/providers.ts`; the frontend stays the same. Only the selected provider's key is used, with no automatic fallback. Provider and model names are kept out of the chat UI.
+
+See the [DeepSeek Chat Completions API](https://api-docs.deepseek.com/api/create-chat-completion/) for the default provider's request format.
 
 ### How content stays current
 
@@ -60,7 +74,7 @@ Every build generates the assistant reference from `src/data/` and `src/content/
 ### Checks without an API key
 
 ```sh
-npm test                 # Mock Google and Turnstile; no API quota
+npm test                 # Mock AI services and Turnstile; no API quota
 npm run typecheck
 npm run check:worker
 npm run build
@@ -71,11 +85,11 @@ Tests cover content generation, request validation, streaming, cancellation, con
 
 ### Production setup, when ready
 
-Hosting uses Workers with Static Assets. Set a real Turnstile site key and allowed public origins in `wrangler.jsonc`, then store `GEMINI_API_KEY`, `TURNSTILE_SECRET_KEY`, and a random `RATE_LIMIT_SALT` as encrypted Worker secrets. Production rejects Turnstile testing keys and missing protection. The local environment is only for loopback testing; never deploy it.
+Hosting uses Workers with Static Assets. Set a real Turnstile site key and allowed public origins in `wrangler.jsonc`, then store the selected provider's API key (`DEEPSEEK_API_KEY` by default), `TURNSTILE_SECRET_KEY`, and a random `RATE_LIMIT_SALT` as encrypted Worker secrets. Production rejects Turnstile testing keys and missing protection. The local environment is only for loopback testing; never deploy it.
 
 Requests are limited to 2,000 characters, six completed exchanges, and five requests per minute per anonymous network identifier. The rate limit is best-effort and location-local, not a global billing cap. There is no automatic retry or paid fallback. No server-side message-history storage or application message logging is configured.
 
-See [Cloudflare local development](https://developers.cloudflare.com/workers/local-development/), [Turnstile testing keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/), and [Gemini API data use](https://ai.google.dev/gemini-api/terms).
+See [Cloudflare local development](https://developers.cloudflare.com/workers/local-development/) and [Turnstile testing keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/).
 
 ## Make it yours
 

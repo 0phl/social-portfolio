@@ -1,10 +1,12 @@
 import type { ChatRequest, ChatEvent } from '../../src/chat/protocol';
 import type { Env } from '../env';
 import { ChatError } from './request';
-import { instructions } from './instructions';
+import { getProvider } from './providers';
 import { sseFrames } from './sse';
 
-export async function streamGemini(input: ChatRequest, env: Env, parentSignal: AbortSignal, fetcher: typeof fetch = fetch, onFinish: () => void = () => undefined): Promise<Response> {
+export async function streamAssistant(input: ChatRequest, env: Env, parentSignal: AbortSignal, fetcher: typeof fetch = fetch, onFinish: () => void = () => undefined): Promise<Response> {
+  const provider = getProvider(env);
+  const request = provider.request(input);
   const abort = new AbortController();
   const onAbort = () => abort.abort();
   parentSignal.addEventListener('abort', onAbort, { once: true });
@@ -13,14 +15,10 @@ export async function streamGemini(input: ChatRequest, env: Env, parentSignal: A
   const cleanup = () => { clearTimeout(timer); parentSignal.removeEventListener('abort', onAbort); onFinish(); };
   let upstream: Response;
   try {
-    upstream = await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(env.GEMINI_MODEL)}:streamGenerateContent?alt=sse`, {
-      method: 'POST', signal: abort.signal,
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: instructions }] },
-        contents: [...input.history.map(({ role, text }) => ({ role: role === 'assistant' ? 'model' : 'user', parts: [{ text }] })), { role: 'user', parts: [{ text: input.message }] }],
-        generationConfig: { maxOutputTokens: 4096, thinkingConfig: { thinkingLevel: 'low' } },
-      }),
+    upstream = await fetcher(request.url, {
+      method: 'POST', signal: abort.signal, redirect: 'manual',
+      headers: request.headers,
+      body: JSON.stringify(request.body),
     });
     if (!upstream.ok || !upstream.body) {
       await upstream.body?.cancel();
@@ -39,18 +37,15 @@ export async function streamGemini(input: ChatRequest, env: Env, parentSignal: A
         while (!emitted && !finished) {
           const { value, done } = await frames.next();
           if (done) throw new Error('incomplete');
-          if (value.promptFeedback?.blockReason || value.error) throw new Error('blocked');
-          const candidate = value.candidates?.[0];
-          for (const part of candidate?.content?.parts ?? []) {
-            if (!part.thought && typeof part.text === 'string' && part.text) {
-              textLength += part.text.length;
-              if (textLength > 32768) throw new Error('too long');
-              emit({ type: 'delta', text: part.text });
-              emitted = true;
-            }
+          const result = provider.decode(value);
+          if (result.text) {
+            textLength += result.text.length;
+            if (textLength > 32768) throw new Error('too long');
+            emit({ type: 'delta', text: result.text });
+            emitted = true;
           }
-          if (candidate?.finishReason) {
-            if (candidate.finishReason !== 'STOP' || !textLength) throw new Error('incomplete');
+          if (result.finished) {
+            if (!textLength) throw new Error('incomplete');
             emit({ type: 'done' }); finished = true; controller.close(); cleanup(); await frames.return();
           }
         }

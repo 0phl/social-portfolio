@@ -19,6 +19,8 @@ it('supports IME, navigation, fresh tokens, close and reopening history', async 
   vi.stubGlobal('fetch', fetcher);
   const close = vi.fn(); const navigate = vi.fn();
   const { rerender } = render(<ChatProvider><MessagePanel onClose={close} onNavigate={navigate} /></ChatProvider>);
+  expect(screen.getByText(/AI assistant\. Replies can be wrong\./)).toBeTruthy();
+  expect(document.body.textContent).not.toMatch(/Google|Gemini|DeepSeek|deepseek-flash/);
   await waitFor(() => expect(screen.getByRole('button', { name: 'Send message' }).hasAttribute('disabled')).toBe(true));
   fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hi' } });
   fireEvent.keyDown(screen.getByLabelText('Message'), { key: 'Enter', isComposing: true });

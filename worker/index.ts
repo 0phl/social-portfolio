@@ -1,7 +1,7 @@
 import type { Env } from './env';
 import { ChatError, jsonError, readChatRequest } from './chat/request';
 import { checkConfiguration, protect } from './chat/protection';
-import { streamGemini } from './chat/gemini';
+import { streamAssistant } from './chat/stream';
 
 export function createHandler(fetcher: typeof fetch) {
   return async (request: Request, env: Env): Promise<Response> => {
@@ -21,7 +21,7 @@ export function createHandler(fetcher: typeof fetch) {
       const input = await readChatRequest(request, controller.signal);
       await protect(request, env, input.turnstileToken, fetcher, controller.signal);
       controller.signal.throwIfAborted();
-      return await streamGemini(input, env, controller.signal, fetcher, cleanup);
+      return await streamAssistant(input, env, controller.signal, fetcher, cleanup);
     } catch (error) {
       cleanup();
       if (controller.signal.aborted) return jsonError(new ChatError(504, 'timeout', 'The request took too long. Please try again.'));
