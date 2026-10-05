@@ -77,6 +77,8 @@ The renderer also separates top-level numbered project labels that match the cat
 
 Recognized project sections get verified actions from generated project data: Project details for the portfolio page, Source code only when a repository is published, and Live website only when a website is published. Missing or malformed model action rows are replaced with those destinations. The assistant treats projects without public repositories as case studies, not code the visitor can inspect.
 
+Standalone link actions also use the destination type: Read blog for blog entries, View post for feed posts, and Project details for project pages. The renderer corrects mismatched action labels on approved links while preserving article titles, ordinary prose, and quotations.
+
 Source wording is presented as a complete short quote, a labeled excerpt, or an explicitly introduced summary. Quotes retain their original wording without added bold emphasis; the assistant's commentary and source link stay separate. Bold is reserved for useful emphasis in its own explanations.
 
 References reviewed on October 5, 2026:

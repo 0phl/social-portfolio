@@ -3,6 +3,23 @@ import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { afterEach, it, expect, vi } from 'vitest';
 import { AssistantMessage } from '../../src/components/chat/AssistantMessage';
 afterEach(cleanup);
+it('labels blog and post actions by their destination while preserving titles and quotes', () => {
+  const navigate = vi.fn();
+  const { container } = render(<AssistantMessage text={`Project details: [Starting before I felt ready](/#blog/starting-before-i-felt-ready)
+
+[Project details](${location.origin}/#posts/building-betterbacoor)
+
+> Project details: [Starting before I felt ready](/#blog/starting-before-i-felt-ready)
+
+The phrase "Project details" is unrelated prose.`} onNavigate={navigate} />);
+  const title = screen.getAllByRole('link', { name: 'Starting before I felt ready' })[0];
+  expect(title.parentElement?.textContent).toBe('Read blog: Starting before I felt ready');
+  fireEvent.click(title);
+  expect(navigate).toHaveBeenCalledWith('/#blog/starting-before-i-felt-ready');
+  expect(screen.getByRole('link', { name: 'View post' }).getAttribute('href')).toBe('/#posts/building-betterbacoor');
+  expect(container.querySelector('blockquote')?.textContent).toContain('Project details:');
+  expect(screen.getByText('The phrase "Project details" is unrelated prose.')).toBeTruthy();
+});
 it('separates plain project labels from adjacent introductions and link rows', () => {
   const { container } = render(<AssistantMessage text={`Here are some projects.
 1\\. BetterBacoor
