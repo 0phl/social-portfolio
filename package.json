@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "chat:knowledge": "node scripts/generate-chat-knowledge.mjs",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "dev:chat": "npm run build && wrangler dev --env local --ip 127.0.0.1 --port 8787",
+    "check:worker": "tsc -p tsconfig.worker.json",
+    "deploy:dry-run": "npm run build && wrangler deploy --dry-run"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
