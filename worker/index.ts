@@ -1,6 +1,7 @@
 import type { Env } from './env';
 import { ChatError, jsonError, readChatRequest } from './chat/request';
 import { checkConfiguration, protect } from './chat/protection';
+import { streamGemini } from './chat/gemini';
 
 export function createHandler(fetcher: typeof fetch) {
   return async (request: Request, env: Env): Promise<Response> => {
@@ -13,7 +14,7 @@ export function createHandler(fetcher: typeof fetch) {
       checkConfiguration(request, env);
       const input = await readChatRequest(request);
       await protect(request, env, input.turnstileToken, fetcher);
-      throw new ChatError(503, 'unavailable', 'The assistant is temporarily unavailable. Please try again later.');
+      return await streamGemini(input, env, request.signal, fetcher);
     } catch (error) {
       return jsonError(error instanceof ChatError ? error : new ChatError(503, 'unavailable', 'The assistant is temporarily unavailable. Please try again later.'));
     }
