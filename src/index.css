@@ -11,3 +11,69 @@
     @apply outline outline-2 outline-offset-4 outline-brand;
   }
 }
+
+@layer components {
+  .assistant-markdown {
+    @apply min-w-0 break-words text-sm leading-7;
+  }
+
+  .assistant-markdown > * + * {
+    @apply mt-3;
+  }
+
+  .assistant-markdown :is(h1, h2, h3, h4, h5, h6) {
+    @apply mt-5 font-semibold leading-snug text-gray-900;
+  }
+
+  .assistant-markdown :is(h1, h2) {
+    @apply text-lg;
+  }
+
+  .assistant-markdown :is(h3, h4, h5, h6) {
+    @apply text-base;
+  }
+
+  .assistant-markdown > :first-child {
+    @apply mt-0;
+  }
+
+  .assistant-markdown :is(h1, h2, h3, h4, h5, h6) + * {
+    @apply mt-2;
+  }
+
+  .assistant-markdown strong {
+    @apply font-semibold text-gray-900;
+  }
+
+  .assistant-markdown :is(ul, ol) {
+    @apply space-y-1.5 pl-5;
+  }
+
+  .assistant-markdown ul {
+    @apply list-disc;
+  }
+
+  .assistant-markdown ol {
+    @apply list-decimal;
+  }
+
+  .assistant-markdown li > * + * {
+    @apply mt-2;
+  }
+
+  .assistant-markdown blockquote {
+    @apply border-l-2 border-gray-300 pl-3 text-gray-600;
+  }
+
+  .assistant-markdown code {
+    @apply rounded bg-gray-100 px-1 py-0.5 text-xs;
+  }
+
+  .assistant-markdown pre {
+    @apply overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-3 leading-6;
+  }
+
+  .assistant-markdown pre code {
+    @apply rounded-none bg-transparent p-0;
+  }
+}

@@ -11,8 +11,8 @@ function approvedLink(href: string) {
   return Object.prototype.hasOwnProperty.call(catalog, key) ? key : null;
 }
 export function AssistantMessage({ text, onNavigate }: { text: string; onNavigate: (url: string) => void }) {
-  return <div className="break-words [&_p+p]:mt-3 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_pre]:my-2 [&_pre]:overflow-x-auto [&_pre]:rounded [&_pre]:bg-gray-50 [&_pre]:p-2 [&_code]:text-xs">
-    <Markdown skipHtml allowedElements={['p', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'code', 'pre', 'blockquote', 'br']} unwrapDisallowed components={{
+  return <div className="assistant-markdown">
+    <Markdown skipHtml allowedElements={['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'code', 'pre', 'blockquote', 'br']} unwrapDisallowed components={{
       a: ({ href, children }) => {
         const url = href && approvedLink(href);
         if (!url) return <span>{children}</span>;

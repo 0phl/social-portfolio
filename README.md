@@ -65,6 +65,8 @@ Clearly fictional practice conversations are welcome without repeated identity d
 
 The personality reference also guides reactions: brief situational humor for harmless detours, calm handling of identity-change requests, and honest corrections when wrong. The assistant distinguishes hands-on work from learning or interests and does not guess my personal recommendations.
 
+Longer replies use Markdown headings, selective bold text, spaced paragraphs, lists, and code blocks. Short banter stays conversational. The chat renderer styles these elements while continuing to block raw HTML, images, and links outside the approved catalog.
+
 References reviewed on October 5, 2026:
 
 | Reference | Use and limits |
