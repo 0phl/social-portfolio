@@ -12,7 +12,7 @@ export async function readChatRequest(request: Request): Promise<ChatRequest> {
   if (!reader) throw new ChatError(400, 'body', 'A message is required.');
   let bytes = 0; let raw = ''; const decoder = new TextDecoder('utf-8', { fatal: true, ignoreBOM: false });
   try {
-    while (true) {
+    for (;;) {
       const { done, value } = await reader.read(); if (done) break;
       bytes += value.byteLength;
       if (bytes > 32768) throw new ChatError(413, 'size', 'This conversation is too large. Start a new chat.');

@@ -27,7 +27,9 @@ export async function streamGemini(input: ChatRequest, env: Env, parentSignal: A
       throw new ChatError(upstream.status === 429 ? 429 : 503, 'provider', upstream.status === 429 ? 'The assistant is busy. Please try again in a little while.' : 'The assistant is unavailable right now. Please try again later.');
     }
   } catch (error) { cleanup(); abort.abort(); throw error instanceof ChatError ? error : new ChatError(503, 'connection', 'Could not connect to the assistant. Please try again.'); }
-  const frames = sseFrames(upstream.body!, abort.signal);
+  const body = upstream.body;
+  if (!body) { cleanup(); throw new ChatError(503, 'empty', 'No response received.'); }
+  const frames = sseFrames(body, abort.signal);
   const encoder = new TextEncoder(); let textLength = 0; let finished = false;
   const stream = new ReadableStream<Uint8Array>({
     async pull(controller) {

@@ -30,7 +30,7 @@ describe('Gemini streaming', () => {
     let signal: AbortSignal | undefined;
     const fetcher = vi.fn(async (_url, options) => { signal = options.signal; return new Response(new ReadableStream({ start(c) { c.enqueue(new TextEncoder().encode(frame([{ text: 'hi' }]))); } })); });
     const response = await streamGemini(input, env, new AbortController().signal, fetcher);
-    await response.body!.cancel(); expect(signal?.aborted).toBe(true);
+    await response.body?.cancel(); expect(signal?.aborted).toBe(true);
   });
   it('times out even after the response headers arrive', async () => {
     vi.useFakeTimers();
