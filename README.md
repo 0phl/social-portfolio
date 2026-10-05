@@ -55,7 +55,7 @@ The default is `deepseek-flash`, with thinking disabled for shorter response tim
 
 The chat shows animated typing dots for 3–5 seconds while a reply loads, then displays the complete message. Slower replies keep the dots visible until ready. Send and receive sounds begin only after interaction; the header's mute button remembers your preference locally. Reduced-motion settings turn the moving dots into a static indicator.
 
-The assistant focuses on my portfolio but welcomes everyday questions and coding help. It uses relaxed English or everyday Taglish, keeps casual replies short, and talks about me in third person. The first harmless off-topic request gets a short, playful aside before the answer; follow-ups continue normally. Direct-answer requests, frustration, and serious or sensitive conversations skip the banter. Jokes stay away from personal digs. It stays honest about being an AI assistant. This is intended behavior, not a change to its access or security controls.
+The assistant focuses on my portfolio but welcomes everyday questions and coding help. It uses warm, playful English or everyday Taglish and talks about me in third person. Replies have room for banter and useful detail, without a fixed sentence limit. The first harmless off-topic request gets a playful reaction; follow-ups can carry the joke forward without repeating that the topic is unrelated. Direct-answer requests, frustration, and serious or sensitive conversations skip the banter. Jokes stay away from personal digs. It stays honest about being an AI assistant. This is intended behavior, not a change to its access or security controls.
 
 ### Conversation voice
 
