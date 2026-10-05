@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react';
 import { TopBar } from './components/layout/TopBar';
 import { ProfilePage } from './pages/ProfilePage';
+import { ChatProvider } from './chat/ChatProvider';
 
 export function App() {
   const focusContent = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -11,7 +12,7 @@ export function App() {
   };
 
   return (
-    <>
+    <ChatProvider>
       <a
         href="#main-content"
         onClick={focusContent}
@@ -30,6 +31,6 @@ export function App() {
       >
         <ProfilePage />
       </main>
-    </>
+    </ChatProvider>
   );
 }

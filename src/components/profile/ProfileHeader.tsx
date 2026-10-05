@@ -14,6 +14,7 @@ export function ProfileHeader() {
   const menu = useRef<HTMLDivElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const messageButton = useRef<HTMLButtonElement>(null);
+  const chatDestination = useRef<string | null>(null);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -136,8 +137,18 @@ export function ProfileHeader() {
           </div>
         </div>
       </section>
-      <AnimatePresence onExitComplete={() => requestAnimationFrame(() => messageButton.current?.focus({ preventScroll: true }))}>
-        {messageOpen && <MessagePanel key="messages" onClose={() => setMessageOpen(false)} />}
+      <AnimatePresence onExitComplete={() => {
+        const destination = chatDestination.current; chatDestination.current = null;
+        if (!destination) { requestAnimationFrame(() => messageButton.current?.focus({ preventScroll: true })); return; }
+        const hash = destination.slice(1);
+        window.location.hash = hash;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const [section, id] = hash.slice(1).split('/');
+          const target = document.getElementById(section === 'posts' && id ? `post-${id}` : section === 'about' && id ? `about-${id}` : 'main-content');
+          target?.focus({ preventScroll: true }); target?.scrollIntoView({ block: 'start' });
+        }));
+      }}>
+        {messageOpen && <MessagePanel key="messages" onClose={() => setMessageOpen(false)} onNavigate={(url) => { chatDestination.current = url; setMessageOpen(false); }} />}
       </AnimatePresence>
     </>
   );
