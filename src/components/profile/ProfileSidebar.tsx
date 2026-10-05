@@ -19,7 +19,7 @@ export function ProfileSidebar({ onReadBio }: { onReadBio: () => void }) {
       <section className="rounded-lg border border-gray-200 bg-white p-5">
         <h2 className="mb-4 font-semibold">Top Skills</h2>
         <ul className="flex flex-wrap gap-2">
-          {['Linux', 'Bash', 'PostgreSQL', 'React', 'TypeScript', 'Flutter'].map((skill) => (
+          {['Linux Administration', 'Bash', 'PostgreSQL', 'React', 'TypeScript', 'Docker'].map((skill) => (
             <li key={skill} className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700">{skill}</li>
           ))}
           <li><a href="#about/skills" onClick={onReadBio} className="inline-block rounded-full px-3 py-1 text-xs font-medium text-brand hover:bg-brand-light">+{skillCount - 6} more</a></li>

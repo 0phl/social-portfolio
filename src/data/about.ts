@@ -56,9 +56,9 @@ export const experience = [
 ];
 
 export const skillGroups = [
-  { label: 'Infrastructure & operations', skills: ['Linux', 'Rocky Linux', 'Sangfor MCS', 'Nginx', 'PostgreSQL', 'Redis', 'Moodle'] },
-  { label: 'Development', skills: ['React', 'TypeScript', 'Tailwind CSS', 'Flutter', 'Dart', 'Express', 'MySQL', 'Firebase'] },
-  { label: 'Automation & tools', skills: ['Bash', 'Git', 'Cloudflare', 'NPMplus', 'Tailscale', 'MinIO', 'NFS'] },
+  { label: 'Infrastructure & Operations', skills: ['Linux Administration', 'Rocky Linux', 'Sangfor MCS', 'Moodle', 'Nginx', 'NPMplus', 'Cloudflare', 'Tailscale', 'MinIO'] },
+  { label: 'Application Development', skills: ['TypeScript', 'React', 'Tailwind CSS', 'Express.js', 'PostgreSQL', 'MySQL', 'Redis', 'Firebase', 'Supabase'] },
+  { label: 'Automation & Tools', skills: ['Bash', 'Ansible', 'Git', 'Docker', 'Claude Code', 'Codex', 'Hermes Agent'] },
 ];
 
 export const education = {
