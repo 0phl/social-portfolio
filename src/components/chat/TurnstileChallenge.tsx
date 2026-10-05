@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 interface Turnstile {
-  render(element: HTMLElement, options: { sitekey: string; action: string; size: string; callback(token: string): void; 'expired-callback'(): void; 'error-callback'(): void }): string;
+  render(element: HTMLElement, options: { sitekey: string; action: string; size: string; appearance: 'interaction-only'; callback(token: string): void; 'expired-callback'(): void; 'error-callback'(): void }): string;
   remove(id: string): void;
 }
 declare global { interface Window { turnstile?: Turnstile } }
@@ -25,7 +25,7 @@ export function TurnstileChallenge({ siteKey, revision, onToken }: { siteKey: st
     setFailed(false); callbacks.current('');
     void loadScript().then(() => {
       if (cancelled || !element.current || !window.turnstile) return;
-      id = window.turnstile.render(element.current, { sitekey: siteKey, action: 'chat', size: 'flexible', callback: (token) => { if (!cancelled) callbacks.current(token); }, 'expired-callback': () => { if (!cancelled) { callbacks.current(''); setAttempt((v) => v + 1); } }, 'error-callback': () => { if (!cancelled) { callbacks.current(''); setFailed(true); } } });
+      id = window.turnstile.render(element.current, { sitekey: siteKey, action: 'chat', size: 'flexible', appearance: 'interaction-only', callback: (token) => { if (!cancelled) callbacks.current(token); }, 'expired-callback': () => { if (!cancelled) { callbacks.current(''); setAttempt((v) => v + 1); } }, 'error-callback': () => { if (!cancelled) { callbacks.current(''); setFailed(true); } } });
     }).catch(() => { if (!cancelled) setFailed(true); });
     return () => { cancelled = true; if (id) window.turnstile?.remove(id); };
   }, [siteKey, revision, attempt]);
