@@ -61,11 +61,11 @@ export function MessagePanel({ onClose, onNavigate }: { onClose: () => void; onN
     return () => observer.disconnect();
   }, []);
 
-  const send = () => {
-    if (!draft.trim() || pending || !tokenRef.current) return;
+  const send = (text = draft) => {
+    if (!text.trim() || pending || !tokenRef.current) return;
     const freshToken = tokenRef.current; acceptToken('');
     playSend();
-    void sendMessage(draft, freshToken); setRevision((value) => value + 1);
+    void sendMessage(text, freshToken); setRevision((value) => value + 1);
     nearBottom.current = true;
     setDraft('');
     input.current?.focus({ preventScroll: true });
@@ -145,7 +145,7 @@ export function MessagePanel({ onClose, onNavigate }: { onClose: () => void; onN
                   </div>
                 ))}
               </div>
-              {messages.length === 0 && <div className="ml-11 mt-4 flex flex-wrap gap-2">{['Show me a project', 'How did Ronan get started?', 'What does he work with?'].map((prompt) => <button key={prompt} type="button" onClick={() => { setDraft(prompt); input.current?.focus({ preventScroll: true }); }} className="min-h-9 rounded-full border border-gray-200 bg-white px-3 text-xs text-gray-500 transition-colors hover:border-brand hover:text-brand">{prompt}</button>)}</div>}
+              {messages.length === 0 && <div className="ml-11 mt-4 flex flex-wrap gap-2">{['Show me a project', 'How did Ronan get started?', 'What does he work with?'].map((prompt) => <button key={prompt} type="button" disabled={!token || pending} onClick={() => send(prompt)} className="min-h-9 rounded-full border border-gray-200 bg-white px-3 text-xs text-gray-500 transition-colors hover:border-brand hover:text-brand disabled:cursor-wait disabled:opacity-50">{prompt}</button>)}</div>}
             </div>
             <p className="sr-only" role="status">{pending ? "Ronan's assistant is typing." : messages.length ? messages[messages.length - 1].status === 'complete' ? 'Reply complete.' : 'Reply stopped or unavailable.' : ''}</p>
 

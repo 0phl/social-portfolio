@@ -14,6 +14,21 @@ beforeEach(() => {
   HTMLDialogElement.prototype.close = function () { this.open = false; };
 });
 afterEach(() => { cleanup(); localStorage.clear(); vi.useRealTimers(); vi.unstubAllGlobals(); });
+it.each(['Show me a project', 'How did Ronan get started?', 'What does he work with?'])('sends the quick suggestion "%s" directly after verification', async (prompt) => {
+  const fetcher = vi.fn().mockImplementation((url) => Promise.resolve(url.endsWith('/config') ? Response.json({ turnstileSiteKey: 'test' }) : new Response('{"type":"delta","text":"Hello"}\n{"type":"done"}\n')));
+  vi.stubGlobal('fetch', fetcher);
+  render(<ChatProvider><MessagePanel onClose={vi.fn()} onNavigate={vi.fn()} /></ChatProvider>);
+  const suggestion = screen.getByRole('button', { name: prompt });
+  expect(suggestion.hasAttribute('disabled')).toBe(true);
+  await waitFor(() => expect(suggestion.hasAttribute('disabled')).toBe(false));
+  fireEvent.click(suggestion);
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  expect(JSON.parse(fetcher.mock.calls[1][1].body)).toMatchObject({ message: prompt, turnstileToken: 'token-0' });
+  expect((screen.getByLabelText('Message') as HTMLTextAreaElement).value).toBe('');
+  expect(screen.getByText(prompt)).toBeTruthy();
+  expect(screen.getByLabelText("Ronan's assistant is typing")).toBeTruthy();
+  expect(screen.queryByRole('button', { name: prompt })).toBeNull();
+});
 it('keeps typing feedback visible when verification resizes the conversation without pulling readers down', async () => {
   let onResize = () => undefined;
   const disconnect = vi.fn();
