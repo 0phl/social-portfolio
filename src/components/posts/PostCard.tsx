@@ -8,6 +8,7 @@ import { projects } from '../../data/projects';
 import { ProjectPostPreview } from './ProjectPostPreview';
 import { VisitorAvatar } from '../shared/VisitorAvatar';
 import { LocalComment } from '../shared/LocalComment';
+import { PostMedia } from './PostMedia';
 
 export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; onLike: () => void }) {
   const [saved, setSaved] = useState(false);
@@ -59,13 +60,7 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
         </details>
       </header>
       {post.content && <p className="whitespace-pre-wrap break-words text-[15px] leading-relaxed text-gray-900">{post.content}</p>}
-      {post.image && (
-        <figure className="mt-4">
-          <a href={post.image.src} target="_blank" rel="noopener noreferrer" aria-label="Open post image at full size (opens in a new tab)" className="block overflow-hidden rounded-lg border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
-            <img src={post.image.src} alt={post.image.alt} width={post.image.width} height={post.image.height} loading="lazy" className="h-auto w-full" />
-          </a>
-        </figure>
-      )}
+      <PostMedia post={post} />
       {project && <ProjectPostPreview project={project} />}
       {blog && (
         <a href={`#blog/${blog.id}`} className="group mt-3 flex gap-4 rounded-lg border border-gray-200 p-4 text-left transition-colors hover:bg-gray-50">

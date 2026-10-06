@@ -1,9 +1,16 @@
+export interface PostImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface Post {
   id: string;
   content: string;
   title?: string;
   publishedAt: string;
-  image?: { src: string; alt: string; width: number; height: number };
+  images?: PostImage[];
   blogPostId?: string;
   projectId?: string;
   engagement?: { likes: number; comments: number; shares: number };
@@ -16,12 +23,12 @@ export const posts: Post[] = [
     title: 'Automating LMS provisioning with Ansible',
     publishedAt: '2026-03',
     content: "Just automated something I used to do manually\n\nI've been managing LMS servers for clients, and every time we provision a new one, it meant SSH-ing in, editing config files, updating databases, restarting services... the same steps every single time.\n\nThis week I finally tried Ansible for the first time.\n\nOne playbook. One command. Done.\n\nStill a lot to learn, but this is a huge step up from manual configs.",
-    image: {
+    images: [{
       src: '/images/posts/ansible-provisioning/playbook-run.png',
       alt: 'Ansible playbook output showing Moodle post-clone provisioning tasks for PostgreSQL, Moodle configuration, Nginx, and PHP-FPM, ending with zero failed or unreachable tasks.',
       width: 787,
       height: 739,
-    },
+    }],
     engagement: { likes: 36, comments: 5, shares: 3 },
   },
   {
