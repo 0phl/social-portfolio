@@ -5,13 +5,13 @@ import { ProjectGallery } from '../components/projects/ProjectGallery';
 import { ProjectImagePlaceholder } from '../components/projects/ProjectImagePlaceholder';
 
 const stackCategories = [
-  { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui'] },
+  { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui', 'Framer Motion', 'React Markdown'] },
   { label: 'Mobile', items: ['Flutter', 'Dart'] },
   { label: 'Backend', items: ['Laravel', 'Express', 'PHP', 'NestJS', 'Node.js', 'Zod', 'pg-boss'] },
-  { label: 'Data', items: ['MySQL', 'Firebase', 'IndexedDB', 'PostgreSQL', 'Prisma', 'MinIO', 'Drizzle ORM'] },
-  { label: 'Integrations & files', items: ['Moodle Web Services', 'PDFKit', 'Nodemailer', 'Sharp', 'write-excel-file'] },
-  { label: 'Deployment', items: ['Docker Compose', 'Nginx', 'Rocky Linux', 'NPMplus', 'Cloudflare'] },
-  { label: 'Development & testing', items: ['Vitest', 'pnpm', 'Turborepo', 'PGlite'] },
+  { label: 'Data', items: ['MySQL', 'Firebase', 'IndexedDB', 'PostgreSQL', 'Prisma', 'MinIO', 'Drizzle ORM', 'Durable Objects', 'SQLite'] },
+  { label: 'Integrations & files', items: ['Moodle Web Services', 'PDFKit', 'Nodemailer', 'Sharp', 'write-excel-file', 'Cloudflare Turnstile'] },
+  { label: 'Deployment', items: ['Docker Compose', 'Nginx', 'Rocky Linux', 'NPMplus', 'Cloudflare', 'Cloudflare Workers', 'Wrangler'] },
+  { label: 'Development & testing', items: ['Vitest', 'pnpm', 'Turborepo', 'PGlite', 'Vite', 'React Testing Library'] },
   { label: 'AI', items: ['Google Gemini'] },
   { label: 'Maps', items: ['Leaflet.js'] },
 ];

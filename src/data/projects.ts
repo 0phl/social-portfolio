@@ -200,6 +200,84 @@ export const projects: Project[] = [
     technologies: ['React', 'TypeScript', 'Laravel', 'MySQL', 'Tailwind CSS'],
   },
   {
+    id: 'social-portfolio',
+    title: 'Social Portfolio',
+    category: 'Personal portfolio & AI assistant',
+    type: 'personal',
+    description: 'My personal portfolio, built around the feel of a social profile. It brings together projects, quick updates, longer write-ups, and an AI assistant that helps visitors explore my work through conversation. I wanted the site itself to show how I build, not just display the finished projects.',
+    contribution: {
+      title: 'Full-Stack Developer',
+      description: 'I built the portfolio interface, content structure, and server-side chat integration. My work includes the assistant\'s conversational style, generated portfolio reference, verified navigation links, usage controls, and automated tests. The code is open source so others can use it too.',
+    },
+    note: 'Social interactions and engagement counts are demos; there is no visitor account system. The AI chat makes real API requests. Cloudflare deployment is configured and tested locally; publishing is a separate step.',
+    images: projectImages['social-portfolio'],
+    repository: 'https://github.com/0phl/social-portfolio',
+    highlights: [
+      'A social profile with project case studies, posts, and a blog.',
+      'A conversational AI assistant grounded in the portfolio content.',
+      'Generated knowledge, verified links, and server-side usage limits.',
+    ],
+    featureGroups: [
+      {
+        title: 'A portfolio with a social feel',
+        items: [
+          'Profile, experience, education, and grouped skills sit alongside a post feed, blog, and filterable professional and personal projects.',
+          'Project pages combine screenshots, my contribution, feature breakdowns, and grouped technology lists. Direct links open individual projects, posts, and articles.',
+          'Demo posting, comments, likes, bookmarks, sharing, and update notifications make the interface feel interactive while keeping the content easy to browse.',
+        ],
+      },
+      {
+        title: 'A conversational portfolio assistant',
+        items: [
+          'Visitors can ask about my projects, experience, skills, or writing and follow links directly to the relevant content.',
+          'A voice guide and original conversation examples shape a warm, playful tone in English and casual Filipino or Taglish. The assistant speaks about me in third person and stays clear that it is AI.',
+          'Harmless questions outside the portfolio are welcome, with situational humor where appropriate. The guidance avoids jokes for serious conversations and discourages guessing facts about me.',
+        ],
+      },
+      {
+        title: 'Knowledge that follows the content',
+        items: [
+          'A build script reads the same structured profile, experience, skills, projects, posts, and blog content used by the site to generate the assistant\'s reference.',
+          'Content changes reach the assistant on the next build and deployment, without manually maintaining a second biography or project list.',
+          'The reference is supplied as context, not model training or live web browsing. A generated link catalog keeps navigation tied to published portfolio routes and approved external destinations.',
+        ],
+      },
+      {
+        title: 'Chat interface & navigation',
+        items: [
+          'Quick prompts send immediately. Animated typing dots, a short natural delay, optional message sounds, and reduced-motion support make the chat feel part of the social interface.',
+          'Markdown replies support headings, lists, quotations, and code blocks. Project recommendations include verified actions, showing source and live-site links only when they exist in the project data.',
+          'Stop and close cancel an active response; New chat clears the conversation. History stays in browser memory until reload, with no server-side conversation history storage.',
+        ],
+      },
+      {
+        title: 'API integration & architecture',
+        items: [
+          'React and TypeScript handle the interface, with Vite, Tailwind CSS, and Framer Motion. A Cloudflare Worker serves static assets and the /api/chat endpoint from the same origin.',
+          'A provider adapter separates the chat flow from the AI service, allowing supported providers and models to be selected through server configuration. API keys stay in server-side secrets.',
+          'The Worker processes the provider\'s response stream and forwards a common event format to the client, which buffers the answer while showing typing feedback. Timeouts, cancellation, and incomplete-response handling keep failures recoverable.',
+        ],
+      },
+      {
+        title: 'Abuse controls & safe rendering',
+        items: [
+          'Server-side Turnstile verification, origin checks, request validation, and a network-based burst limit run before an AI request is made.',
+          'Persistent daily allowances use a SQLite-backed Durable Object to reserve network and site-wide quotas atomically. Starting a new chat or refreshing does not reset them.',
+          'The renderer blocks raw HTML, images, and unapproved links. Conversation guidance treats visitor content as untrusted and discourages instruction disclosure or invented portfolio facts; it is not a guarantee against prompt injection.',
+        ],
+      },
+      {
+        title: 'Testing & open-source setup',
+        items: [
+          'Vitest and React Testing Library cover chat state, cancellation, response streams, provider adapters, generated knowledge, link handling, and user interactions.',
+          'Quota tests use real SQLite to check concurrent requests, persistence, daily resets, and failures before provider calls. Local Cloudflare runtime checks exercise the Durable Object implementation.',
+          'Wrangler runs the frontend and Worker together locally before deployment. The repository includes setup instructions, an assistant guide, environment examples, and an MIT license.',
+        ],
+      },
+    ],
+    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'React Markdown', 'Cloudflare Workers', 'Durable Objects', 'SQLite', 'Cloudflare Turnstile', 'Vitest', 'React Testing Library', 'Wrangler'],
+  },
+  {
     id: 'betterbacoor',
     title: 'BetterBacoor',
     category: 'Community guide',

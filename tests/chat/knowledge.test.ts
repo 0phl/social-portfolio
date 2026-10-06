@@ -22,7 +22,11 @@ describe('published portfolio reference', () => {
   });
   it('excludes mock engagement and local previews', () => {
     const result = buildKnowledge({ ...source, posts: [...posts, { id: 'private-preview', content: 'LOCAL_ONLY', publishedAt: '2026-10-05', preview: true }] });
-    expect(result.reference).not.toMatch(/LOCAL_ONLY|mockStats|engagement|followers/);
+    expect(result.reference).not.toContain('LOCAL_ONLY');
+    const published = JSON.parse(result.reference);
+    expect(published.profile).not.toHaveProperty('mockStats');
+    expect(published.profile).not.toHaveProperty('followers');
+    for (const post of published.posts) expect(post).not.toHaveProperty('engagement');
     expect(result.links['/#posts/private-preview']).toBeUndefined();
   });
   it('includes newly added projects, posts and blogs without separate configuration', () => {

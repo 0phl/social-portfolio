@@ -1,4 +1,12 @@
 {
+  "social-portfolio": [
+    {
+      "src": "/images/projects/social-portfolio/profile.png",
+      "alt": "Ronan Dela Cruz's Social Portfolio with a profile header, project and blog navigation, post feed, and About sidebar.",
+      "width": 1897,
+      "height": 943
+    }
+  ],
   "lms-billing": [
     {
       "src": "/images/projects/lms-billing/sign-in.png",
