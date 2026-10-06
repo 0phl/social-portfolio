@@ -95,6 +95,8 @@ Public forum discussions were read for context only. Reddit material is not an o
 
 When changing the voice, check English, Taglish, a request for plain Tagalog, short follow-ups, tone corrections, unknown facts, identity questions, and distress. Check helpfulness and factual accuracy as well as tone; a passing code test cannot prove a model will follow the style on every reply.
 
+`tests/evals/chat-boundaries.json` contains human-reviewed, multi-turn regression cases for prompt reconstruction, legitimate security questions, quoted instructions, private-data questions, and recovery to normal conversation. Run each scenario in a new local chat, in order, and compare actual replies with each turn's criteria. These live checks use API quota and are separate from `npm test`. Boundaries should be brief and friendly without listing internal behavior rules; fictional personal test data should use a fictional person.
+
 ### Change the AI provider
 
 Set `AI_PROVIDER` and `AI_MODEL` in `wrangler.jsonc`. Update both the production variables and `env.local.vars` if you want the same setup locally. Keep keys in `.dev.vars.local` for development or encrypted Worker secrets for production.
