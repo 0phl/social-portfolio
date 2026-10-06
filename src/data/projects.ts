@@ -25,6 +25,83 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'moodle-support-chatbot',
+    title: 'Moodle LMS Support Chatbot',
+    category: 'Seaversity LMS integration',
+    type: 'professional',
+    description: 'An embedded support chatbot I developed at Seaversity to help trainees use Moodle without leaving their learning environment. A custom JavaScript widget connects to self-hosted n8n workflows for contextual answers. The project includes a Pinecone-based RAG version and a separate version that selects curated manual and FAQ content through keyword matching.',
+    contribution: {
+      title: 'Full-Stack Developer',
+      description: 'I built the browser chat widget, implemented the n8n chatbot workflows, and integrated the assistant into Moodle. My work included connecting Pinecone retrieval to answer generation in the RAG version. I deployed the widget and tested the complete path from a trainee\'s message through n8n to the reply displayed in the LMS.',
+    },
+    note: 'Developed as part of my role at Seaversity. This case study describes my contribution; source code and internal deployment details are not published here.',
+    images: [],
+    highlights: [
+      'Custom chat widget embedded directly in Moodle.',
+      'Pinecone RAG and a separate curated manual/FAQ workflow.',
+      'Contextual answers with links to relevant LMS guidance.',
+    ],
+    featureGroups: [
+      {
+        title: 'Support inside the learning platform',
+        items: [
+          'A floating launcher opens a chat panel for questions about LMS navigation, course activities, account access, technical requirements, and support channels.',
+          'Configurable bot name, theme color, screen position, welcome message, and input placeholder let the same widget fit different LMS installations.',
+          'Typing feedback, automatic scrolling, Enter-to-send, and a full-screen mobile layout support everyday use. The floating launcher hides while mobile chat is open so it does not cover the conversation.',
+        ],
+      },
+      {
+        title: 'Moodle-to-n8n request flow',
+        items: [
+          'The standalone JavaScript widget sends a JSON POST request to an n8n webhook with the message, application identifier, session identifier, current LMS hostname, and recent conversation context.',
+          'The workflow validates input, selects a support topic, builds the answer context, calls the LLM, formats the result, and returns JSON for the widget to display.',
+          'The browser interface and workflow remain separate: widget settings select the endpoint, while n8n coordinates the support logic and model call.',
+        ],
+      },
+      {
+        title: 'Pinecone RAG version',
+        items: [
+          'The widget sends a trainee\'s question to a self-hosted n8n webhook, which coordinates retrieval and answer generation.',
+          'Pinecone provides vector retrieval over curated FAQ content. The retrieved context is supplied to the LLM to help ground its answer in the support material.',
+          'n8n returns the generated response to the Moodle widget. This retrieval-augmented generation flow is a separate implementation from the keyword-based manual and FAQ workflow described below.',
+        ],
+      },
+      {
+        title: 'Manual & FAQ matching version',
+        items: [
+          'The reviewed workflow contains a curated trainee-manual topic map and FAQ answers covering platform features, learning activities, completion guidance, and common technical questions.',
+          'A keyword classifier scores matching phrases, giving longer phrases more weight. Manual content wins when its score equals or exceeds the FAQ match; otherwise the strongest FAQ supplies the context.',
+          'The selected reference and a short conversation window are passed to an n8n LLM chain for a concise answer. When no topic matches, the assistant is guided to offer general LMS help or refer course-specific questions to the Help Desk or instructor.',
+        ],
+      },
+      {
+        title: 'Relevant guidance & support boundaries',
+        items: [
+          'Successful manual-based answers can include an Official guide link built from the current LMS hostname and the matched manual page, helping trainees continue to the relevant reference.',
+          'Workflow guidance focuses the assistant on platform support and navigation, with predefined responses for requests to complete academic assessments or disclose internal instructions.',
+          'The workflow rejects empty or overly long messages. Response handling provides a temporary-unavailability message with FAQ and support alternatives when the model call fails.',
+        ],
+      },
+      {
+        title: 'Conversation continuity',
+        items: [
+          'The widget stores the session identifier and conversation in browser local storage, separated by application identifier, so a conversation can be restored after navigation or reload.',
+          'A Clear action asks for confirmation before removing the saved conversation and restoring the welcome message.',
+          'Only a recent portion of the conversation is sent with each request, and the workflow narrows that context further before building the model prompt.',
+        ],
+      },
+      {
+        title: 'Implementation & deployment',
+        items: [
+          'Plain JavaScript, HTML, and CSS provide a standalone widget that injects its interface into the host page without requiring a frontend framework.',
+          'The repository includes Vercel configuration for serving the widget script, while a self-hosted n8n webhook handles the chatbot backend.',
+          'I deployed the browser widget and tested the end-to-end Moodle-to-n8n response flow. The widget repository also includes a regression check for the mobile launcher overlap fix.',
+        ],
+      },
+    ],
+    technologies: ['JavaScript', 'HTML', 'CSS', 'Moodle', 'n8n', 'Pinecone', 'RAG', 'LLM Integration', 'REST APIs', 'Browser Local Storage', 'Vercel'],
+  },
+  {
     id: 'pmma-enrollment',
     title: 'PMMA Graduate School Enrollment System',
     category: 'Seaversity client project',

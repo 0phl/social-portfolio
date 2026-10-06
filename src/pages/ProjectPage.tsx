@@ -7,12 +7,12 @@ import { ProjectImagePlaceholder } from '../components/projects/ProjectImagePlac
 const stackCategories = [
   { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui', 'Framer Motion', 'React Markdown'] },
   { label: 'Mobile', items: ['Flutter', 'Dart'] },
-  { label: 'Backend', items: ['Laravel', 'Express', 'PHP', 'NestJS', 'Node.js', 'Zod', 'pg-boss'] },
-  { label: 'Data', items: ['MySQL', 'Firebase', 'IndexedDB', 'PostgreSQL', 'Prisma', 'MinIO', 'Drizzle ORM', 'Durable Objects', 'SQLite'] },
-  { label: 'Integrations & files', items: ['Moodle Web Services', 'PDFKit', 'Nodemailer', 'Sharp', 'write-excel-file', 'Cloudflare Turnstile'] },
-  { label: 'Deployment', items: ['Docker Compose', 'Nginx', 'Rocky Linux', 'NPMplus', 'Cloudflare', 'Cloudflare Workers', 'Wrangler'] },
+  { label: 'Backend', items: ['Laravel', 'Express', 'PHP', 'NestJS', 'Node.js', 'Zod', 'pg-boss', 'n8n'] },
+  { label: 'Data', items: ['MySQL', 'Firebase', 'IndexedDB', 'PostgreSQL', 'Prisma', 'MinIO', 'Drizzle ORM', 'Durable Objects', 'SQLite', 'Browser Local Storage', 'Pinecone'] },
+  { label: 'Integrations & files', items: ['Moodle Web Services', 'PDFKit', 'Nodemailer', 'Sharp', 'write-excel-file', 'Cloudflare Turnstile', 'Moodle', 'REST APIs'] },
+  { label: 'Deployment', items: ['Docker Compose', 'Nginx', 'Rocky Linux', 'NPMplus', 'Cloudflare', 'Cloudflare Workers', 'Wrangler', 'Vercel'] },
   { label: 'Development & testing', items: ['Vitest', 'pnpm', 'Turborepo', 'PGlite', 'Vite', 'React Testing Library'] },
-  { label: 'AI', items: ['Google Gemini'] },
+  { label: 'AI', items: ['Google Gemini', 'LLM Integration', 'RAG'] },
   { label: 'Maps', items: ['Leaflet.js'] },
 ];
 
