@@ -44,7 +44,7 @@ export function ProfileSidebar({ onReadBio }: { onReadBio: () => void }) {
       <section className="rounded-lg border border-gray-200 bg-white p-5">
         <h2 className="mb-4 font-semibold">Featured Projects</h2>
         <div className="space-y-4">
-          {projects.slice(0, 2).map((project) => (
+          {projects.filter((project) => project.featured).map((project) => (
             <a key={project.id} href={`#projects/${project.id}`} className="group flex gap-3">
               <div className="h-12 w-16 shrink-0 overflow-hidden rounded border border-gray-200 bg-gray-50">
                 {project.images[0] && <img src={project.images[0].src} alt="" loading="lazy" className="h-full w-full object-cover" />}

@@ -12,6 +12,7 @@ export interface Project {
   title: string;
   category: string;
   type: 'personal' | 'professional';
+  featured?: boolean;
   description: string;
   highlights: string[];
   contribution?: { title: string; description: string };
@@ -103,6 +104,7 @@ export const projects: Project[] = [
   },
   {
     id: 'pmma-enrollment',
+    featured: true,
     title: 'PMMA Graduate School Enrollment System',
     category: 'Seaversity client project',
     type: 'professional',
@@ -185,6 +187,7 @@ export const projects: Project[] = [
   },
   {
     id: 'lms-billing',
+    featured: true,
     title: 'LMS Billing',
     category: 'Seaversity internal tool',
     type: 'professional',
