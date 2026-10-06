@@ -11,8 +11,8 @@ export function ProjectGallery({ images, title }: { images: ProjectImage[]; titl
 
   if (images.length === 0) {
     return (
-      <div className="aspect-video overflow-hidden rounded-xl border border-dashed border-gray-300 bg-gray-50">
-        <ProjectImagePlaceholder />
+      <div className="aspect-video overflow-hidden rounded-xl border border-gray-200 bg-brand-light">
+        <ProjectImagePlaceholder title={title} />
       </div>
     );
   }

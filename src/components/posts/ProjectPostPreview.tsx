@@ -10,7 +10,7 @@ export function ProjectPostPreview({ project }: { project: Project }) {
       <div className="aspect-video overflow-hidden border-b border-gray-200 bg-gray-100">
         {cover ? (
           <img src={cover.src} alt={cover.alt} width={cover.width} height={cover.height} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.02]" />
-        ) : <ProjectImagePlaceholder />}
+        ) : <ProjectImagePlaceholder title={project.title} />}
       </div>
       <div className="p-4">
         <h4 className="text-sm font-semibold text-gray-900 transition-colors group-hover:text-brand">{project.title}</h4>

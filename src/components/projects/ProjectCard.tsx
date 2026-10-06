@@ -20,7 +20,7 @@ export function ProjectCard({ project }: { project: Project }) {
             loading="lazy"
             className={`h-full w-full transition-transform duration-300 motion-safe:group-hover:scale-[1.02] ${cover.height > cover.width ? 'object-contain' : 'object-cover'}`}
           />
-        ) : <ProjectImagePlaceholder />}
+        ) : <ProjectImagePlaceholder title={project.title} />}
         {project.images.length > 1 && <span className="absolute bottom-2 right-2 rounded-full bg-gray-900/80 px-2 py-0.5 text-[11px] font-medium text-white">{project.images.length} images</span>}
       </div>
       <div className="flex flex-1 flex-col p-4">

@@ -105,7 +105,7 @@ export function ProjectPage({ project }: { project: Project }) {
               return (
                 <a key={item.id} href={`#projects/${item.id}`} className="group min-w-0 rounded-lg text-left">
                   <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
-                    {cover ? <img src={cover.src} alt="" width={cover.width} height={cover.height} loading="lazy" className={`h-full w-full transition-transform duration-300 motion-safe:group-hover:scale-[1.02] ${cover.height > cover.width ? 'object-contain' : 'object-cover'}`} /> : <ProjectImagePlaceholder />}
+                    {cover ? <img src={cover.src} alt="" width={cover.width} height={cover.height} loading="lazy" className={`h-full w-full transition-transform duration-300 motion-safe:group-hover:scale-[1.02] ${cover.height > cover.width ? 'object-contain' : 'object-cover'}`} /> : <ProjectImagePlaceholder title={item.title} />}
                   </div>
                   <h3 className="mt-3 text-sm font-semibold transition-colors group-hover:text-brand">{item.title}</h3>
                   <p className="mt-1 line-clamp-2 text-xs text-gray-600">{item.description}</p>
