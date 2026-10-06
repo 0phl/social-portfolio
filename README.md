@@ -82,7 +82,7 @@ The production Turnstile site key is currently blank. Chat intentionally stays u
 
 ## Make it yours
 
-Post photos use an `images` array in `src/data/posts.ts`, with `src`, `alt`, `width`, and `height` for each image. The feed shows a collage; clicking opens a photo viewer with arrows, thumbnails, swipe navigation, and keyboard controls (Left/Right and Escape). To try three photos, choose **Start a post → Try a sample with 3 photos**, or open `/?photo-demo=1#posts/photo-demo`. The sample is a local preview and is excluded from published posts and chatbot knowledge.
+Post photos use an `images` array in `src/data/posts.ts`, with `src`, `alt`, `width`, and `height` for each image. The feed shows a collage; clicking opens a photo viewer with arrows, thumbnails, swipe navigation, and keyboard controls (Left/Right and Escape). Choose **Start a post** for samples with **3, 5, or 10 photos**, or open `/?photo-demo=3#posts/photo-demo`, `/?photo-demo=5#posts/photo-demo-5`, or `/?photo-demo=10#posts/photo-demo-10`. Samples are local previews and are excluded from published posts and chatbot knowledge.
 
 Replace my content in `src/data/` and `src/content/blog/`, and my images and branding in `public/`. Update `index.html`, `public/social-preview.jpg`, the favicon, and the domain settings for your site.
 
