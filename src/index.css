@@ -5,7 +5,10 @@
 .post-media { overflow: hidden; border: 1px solid #e5e7eb; border-radius: 8px; }
 .post-media-single > button { display: block; width: 100%; }
 .post-media-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; aspect-ratio: 1; border-radius: 0; border-left: 0; border-right: 0; background: white; }
-.post-media-grid[data-layout="columns"] { aspect-ratio: 4 / 5; }
+.post-media-grid[data-layout="columns"] { width: calc(100% + 2rem); aspect-ratio: 3 / 2; max-height: 420px; }
+@media (min-width: 640px) {
+  .post-media-grid[data-layout="columns"] { width: calc(100% + 2.5rem); }
+}
 .post-media-grid[data-count="2"][data-layout="rows"] { aspect-ratio: 3 / 1; }
 .post-media-grid[data-count="2"][data-layout="columns"] { aspect-ratio: 1; }
 .post-media-grid[data-count="4"][data-wide="true"] { aspect-ratio: 3 / 2; }
