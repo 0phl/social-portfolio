@@ -382,6 +382,70 @@ export const projects: Project[] = [
     highlights: ['Community announcements and reports.', 'Local buying and selling.', 'Volunteer activities in one mobile app.'],
     technologies: ['Flutter', 'Dart', 'Firebase'],
     repository: 'https://github.com/0phl/Pulse-App',
+    website: 'https://pulseeapp.vercel.app/',
+  },
+  {
+    id: 'pulse-promotional',
+    title: 'PULSE Promotional Website',
+    category: 'Capstone companion website',
+    type: 'personal',
+    description: 'A promotional website I built for our PULSE college capstone, giving visitors a place to explore the community app and find its Android APK download. It presents the resident experience and administrator tools through app screenshots, feature explanations, and an interactive showcase.',
+    contribution: {
+      title: 'Frontend Developer',
+      description: 'I built the website to introduce our capstone beyond the mobile app itself. My work covered the responsive landing page, reusable phone mockups, animated feature sections, interactive administrator preview, and links to the Android installation page.',
+    },
+    note: 'The companion website for PULSE, our community mobile app capstone. The screens shown here demonstrate the app; community management, accounts, and transactions run in the separate PULSE application.',
+    images: projectImages['pulse-promotional'],
+    website: 'https://pulseeapp.vercel.app/',
+    repository: 'https://github.com/0phl/pulse-web-promotional',
+    highlights: [
+      'Resident and administrator feature showcases with app screenshots.',
+      'Interactive admin preview and responsive phone mockups.',
+      'Android APK download entry points through AppsOnAir.',
+    ],
+    featureGroups: [
+      {
+        title: 'Introducing the PULSE capstone',
+        items: [
+          'A single-page introduction to PULSE: Public Updates, Local Services, and Engagement. The hero combines the app\'s login screenshot, community-focused messaging, and a clear Android download action.',
+          'Dedicated sections explain community notices, the local marketplace, volunteer opportunities, and community reports using screenshots from the mobile app.',
+          'A short How it Works section introduces the journey from downloading the app to creating an account and participating in a community.',
+        ],
+      },
+      {
+        title: 'Interactive administrator showcase',
+        items: [
+          'Visitors can select dashboard, user management, broadcast updates, volunteer programs, and issue-resolution previews.',
+          'Selecting a feature updates the active description and phone screenshot, with an animated transition driven by React state and Framer Motion.',
+          'The section shows what community administrators can do inside PULSE through a visual walkthrough rather than a live administration interface.',
+        ],
+      },
+      {
+        title: 'Android download flow',
+        items: [
+          'Download actions in the navigation, hero, main download section, and footer point to the app\'s external AppsOnAir installation page.',
+          'The website serves as the public entry point for finding the Android APK; the app distribution service handles delivery rather than storing the APK in the website repository.',
+          'The download section identifies Android as the supported platform, keeping the next step visible after visitors explore the features.',
+        ],
+      },
+      {
+        title: 'Responsive presentation & motion',
+        items: [
+          'A fixed navigation bar links to page sections and switches to an expandable menu on smaller screens. The hero\'s Learn more action scrolls to the feature showcase.',
+          'Reusable phone mockups frame the app screenshots consistently. Alternating feature layouts and responsive grids organize the longer page for desktop and mobile.',
+          'Framer Motion provides section entrances, screenshot transitions, and button feedback, while Tailwind CSS carries the PULSE teal color palette and responsive styling.',
+        ],
+      },
+      {
+        title: 'Implementation & hosting',
+        items: [
+          'Built with React, TypeScript, Vite, and Tailwind CSS, with Lucide icons and reusable button and phone-mockup components.',
+          'Feature content is defined in arrays and rendered through shared components; the administrator selector uses local component state.',
+          'Hosted on Vercel as a frontend website, with public source code in a separate repository from the Flutter and Firebase mobile application.',
+        ],
+      },
+    ],
+    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Lucide', 'Vercel'],
   },
   {
     id: 'hushmap',

@@ -5,7 +5,7 @@ import { ProjectGallery } from '../components/projects/ProjectGallery';
 import { ProjectImagePlaceholder } from '../components/projects/ProjectImagePlaceholder';
 
 const stackCategories = [
-  { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui', 'Framer Motion', 'React Markdown'] },
+  { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui', 'Framer Motion', 'React Markdown', 'Lucide'] },
   { label: 'Mobile', items: ['Flutter', 'Dart'] },
   { label: 'Backend', items: ['Laravel', 'Express', 'PHP', 'NestJS', 'Node.js', 'Zod', 'pg-boss', 'n8n'] },
   { label: 'Data', items: ['MySQL', 'Firebase', 'IndexedDB', 'PostgreSQL', 'Prisma', 'MinIO', 'Drizzle ORM', 'Durable Objects', 'SQLite', 'Browser Local Storage', 'Pinecone'] },

@@ -1,4 +1,12 @@
 {
+  "pulse-promotional": [
+    {
+      "src": "/images/projects/pulse-promotional/landing.png",
+      "alt": "PULSE promotional website with a community-focused introduction, Android download button, and mobile app preview in a phone mockup.",
+      "width": 1901,
+      "height": 939
+    }
+  ],
   "social-portfolio": [
     {
       "src": "/images/projects/social-portfolio/profile.png",
