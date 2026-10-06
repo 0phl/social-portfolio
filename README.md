@@ -2,147 +2,85 @@
 
 My personal portfolio with a social media feel. A place to share my projects, write about my experience, and post things I'm learning. I'm sharing the code so others can build their own version too.
 
-Built with React, TypeScript, Vite, Tailwind CSS, and Framer Motion.
+Built with React, TypeScript, Vite, Tailwind CSS, and Framer Motion. The AI assistant runs through Cloudflare Workers with Static Assets.
 
 ## Features
 
-- Profile with an about section, skills, experience, and education.
-- Personal and freelance projects with screenshots and detail pages.
-- Blog posts written in Markdown.
-- A post feed with likes, comments, bookmarks, and sharing.
-- Portfolio update notifications and an AI assistant with typing indicators, message sounds, and project links.
+- Profile, skills, experience, and education.
+- Professional, freelance, and personal projects with screenshots and detail pages.
+- Markdown blog posts and a social post feed.
+- Demo likes, comments, bookmarks, sharing, and portfolio update notifications.
+- An AI portfolio assistant with project links, typing indicators, and message sounds.
 - Responsive layouts for desktop and mobile.
 
-Social interactions are browser-side demos and engagement counts are sample data. The AI assistant runs through a Cloudflare Worker and sends messages to the configured AI service, not directly to me. There is no account system.
+Social interactions are browser-side demos, and engagement counts are sample data. There is no account system. AI messages go to the configured AI service, not directly to me; chat history stays in browser memory until reload.
 
 ## Run locally
 
-You'll need Node.js 22 or newer and npm.
+Use Node.js 22 or newer and npm. Run commands from the repository root.
 
 ```sh
 git clone https://github.com/0phl/social-portfolio.git
 cd social-portfolio
 npm ci
-npm run dev
 ```
 
-Open the local URL shown in the terminal.
+| Command | What it runs |
+| --- | --- |
+| `npm run dev` | Frontend development server; the AI chat API is unavailable here. |
+| `npm run dev:chat` | Built frontend and local Worker at http://127.0.0.1:8787, including AI chat. |
+| `npm run build` | Generates assistant content and builds the frontend. |
+| `npm run preview` | Previews the frontend build only; no chat API. |
 
-This is the frontend-only workflow. Use the local Worker below to test chat.
-
-```sh
-npm run build    # Create a production build
-npm run preview  # Preview the build locally
-```
-
-## Test the AI assistant locally
-
-No Cloudflare deployment is needed. Copy the example secrets file:
-
-```powershell
-Copy-Item .dev.vars.example .dev.vars.local
-```
-
-Edit `.dev.vars.local` privately and set `DEEPSEEK_API_KEY` to your DeepSeek API key. Keep the included Turnstile testing secret and local salt. This file is ignored by Git. Never put the key in a `VITE_` variable, browser code, or a commit. If the file already exists, edit it rather than copying over it.
+For chat, create `.dev.vars.local` from `.dev.vars.example` only if it does not already exist, then add your `DEEPSEEK_API_KEY` privately. Keep the supplied local Turnstile testing values. Never commit real keys or put them in a `VITE_` variable.
 
 ```sh
 npm run dev:chat
 ```
 
-Open **http://127.0.0.1:8787**. Wrangler serves the built site and `/api/chat` locally. Real replies still call the configured AI service and use your API quota; verification also needs an internet connection. Without a key, the site works and chat shows a configuration message. Restart this command after changing content or secrets.
+Open **http://127.0.0.1:8787**. No deployment is needed. Live replies use API quota and require internet. Restart this command after editing frontend content or secrets. See the [AI assistant guide](docs/ai-assistant.md) for setup, provider choices, voice, and limitations.
 
-The default is `deepseek-flash`, with thinking disabled for shorter response times. Conversations stay in browser memory until reload. Stop and closing the dialog cancel a reply; New chat clears the conversation. Messages are processed under the selected service's data policies, so do not send sensitive information.
+## Project structure
 
-The chat shows animated typing dots for 3–5 seconds while a reply loads, then displays the complete message. Slower replies keep the dots visible until ready. Send and receive sounds begin only after interaction; the header's mute button remembers your preference locally. Reduced-motion settings turn the moving dots into a static indicator.
-
-The assistant focuses on my portfolio but welcomes everyday questions and coding help. It uses warm, playful English or everyday Taglish and talks about me in third person. Replies have room for banter and useful detail, without a fixed sentence limit. The first harmless off-topic request gets a playful reaction; follow-ups can carry the joke forward without repeating that the topic is unrelated. Direct-answer requests, frustration, and serious or sensitive conversations skip the banter. Jokes stay away from personal digs. It stays honest about being an AI assistant. This is intended behavior, not a change to its access or security controls.
-
-### Conversation voice
-
-`worker/chat/voice.ts` contains the voice guide and conversation examples. `worker/chat/style-examples.ts` is a small, editable dataset adapted from my supplied writing examples, with context, visitor messages, and assistant replies. It is included in the prompt to demonstrate phrasing without encouraging automatic agreement or invented context. Replies use no emojis. These are prompt examples, not model-weight fine-tuning. Portfolio facts still come from the generated reference. No scraped comments, usernames, or third-party dialogue datasets are included in the runtime prompt.
-
-Style examples are isolated hypothetical scenes, not chat history. Callbacks and claims about earlier topics must come from the actual supplied conversation; when that context is absent, the assistant should make a fresh joke about the current message instead of inventing a shared memory.
-
-Reply language follows the latest visitor message, including short acknowledgments: “alright thanks” gets English, while “okay sige” gets casual Filipino or Taglish. Earlier conversation language does not override a clear switch. Ambiguous replies such as “haha” use the most recent visitor message with a clear language.
-
-Clearly fictional practice conversations are welcome without repeated identity disclaimers. Questions about capabilities get a short, friendly explanation. Clear override, hidden-prompt extraction, fake-authority, or fabricated-fact requests get one playful acknowledgment in English, Taglish, or casual Filipino, followed by a clear boundary and help with any harmless part. Ordinary detours, quoted security examples, bug reports, and serious topics do not get a gotcha response. Repeated attempts do not escalate into taunting or claims of being unbreakable. These are personality guidelines, not an injection detector or a guarantee against prompt extraction; server-side protections remain separate.
-
-The personality reference also guides reactions: brief situational humor for harmless detours, calm handling of identity-change requests, and honest corrections when wrong. The assistant distinguishes hands-on work from learning or interests and does not guess my personal recommendations.
-
-Longer replies use Markdown headings, selective bold text, spaced paragraphs, lists, and code blocks. Short banter stays conversational. The chat renderer styles these elements while continuing to block raw HTML, images, and links outside the approved catalog.
-
-Multi-item recommendations with descriptions use a separate heading per item, with its explanation and approved links grouped underneath. Short lists can stay compact; quoted source text follows the separate quotation rules below.
-
-The renderer also separates top-level numbered project labels that match the catalog and lays out link-only paragraphs with wrapping gaps. Ordinary inline links, quoted text, and code retain their original structure.
-
-Recognized project sections get verified actions from generated project data: Project details for the portfolio page, Source code only when a repository is published, and Live website only when a website is published. Missing or malformed model action rows are replaced with those destinations. The assistant treats projects without public repositories as case studies, not code the visitor can inspect.
-
-Standalone link actions also use the destination type: Read blog for blog entries, View post for feed posts, and Project details for project pages. The renderer corrects mismatched action labels on approved links while preserving article titles, ordinary prose, and quotations.
-
-Source wording is presented as a complete short quote, a labeled excerpt, or an explicitly introduced summary. Quotes retain their original wording without added bold emphasis; the assistant's commentary and source link stay separate. Bold is reserved for useful emphasis in its own explanations.
-
-References reviewed on October 5, 2026:
-
-| Reference | Use and limits |
+| Location | Purpose |
 | --- | --- |
-| [Humanizer](https://github.com/blader/humanizer) (MIT) | Writing reference for cutting filler and preserving voice. No skill or source text is bundled; not a Taglish model or a guarantee of naturalness. |
-| [Google conversation design](https://design.google/library/speaking-the-same-language-vui) | Reference for brief, relevant turns and using conversational context. |
-| [IBM Carbon writing style](https://github.com/carbon-design-system/carbon-website/blob/main/src/pages/guidelines/content/writing-style.mdx) | Reference for plain wording and contractions. |
-| [TweetTaglish research](https://aclanthology.org/2022.lrec-1.225/) | Code-switching research. Its repository distributes tweet IDs and annotations, not a ready-to-use chatbot dialogue set. No tweets imported. |
-| [OpenAssistant OASST1](https://huggingface.co/datasets/OpenAssistant/oasst1) (Apache-2.0) | Candidate human-authored conversation dataset if training is explored later; not imported or assumed to match Ronan's voice. |
+| `src/components/`, `src/pages/`, `src/hooks/` | Portfolio UI and navigation. |
+| `src/data/`, `src/content/blog/` | Profile, projects, posts, and blog content. |
+| `src/chat/` | Browser chat state, streaming, safe links, and shared knowledge generation. |
+| `worker/` | Chat API, provider adapters, request protection, and assistant instructions. |
+| `scripts/` | Generates the assistant reference from published portfolio content. |
+| `public/` | Images, branding, favicon, and social preview. |
+| `tests/` | Automated tests and human-reviewed live conversation cases. |
+| `docs/` | Assistant guide and implementation notes. |
 
-Public forum discussions were read for context only. Reddit material is not an open training corpus; see its [data access guidance](https://support.reddithelp.com/hc/en-us/articles/14945211791892-Reddit-Developer-Interfaces). Examples here are original, tailored to the requested voice, and keep the project's license.
+`.generated/`, `dist/`, and `.wrangler/` are generated locally and ignored by Git. The assistant reference is bundled only into the Worker; the browser receives public link catalogs. Updating portfolio content and rebuilding updates the assistant too.
 
-When changing the voice, check English, Taglish, a request for plain Tagalog, short follow-ups, tone corrections, unknown facts, identity questions, and distress. Check helpfulness and factual accuracy as well as tone; a passing code test cannot prove a model will follow the style on every reply.
-
-`tests/evals/chat-boundaries.json` contains human-reviewed, multi-turn regression cases for prompt reconstruction, legitimate security questions, quoted instructions, private-data questions, and recovery to normal conversation. Run each scenario in a new local chat, in order, and compare actual replies with each turn's criteria. These live checks use API quota and are separate from `npm test`. Boundaries should be brief and friendly without listing internal behavior rules; fictional personal test data should use a fictional person.
-
-### Change the AI provider
-
-Set `AI_PROVIDER` and `AI_MODEL` in `wrangler.jsonc`. Update both the production variables and `env.local.vars` if you want the same setup locally. Keep keys in `.dev.vars.local` for development or encrypted Worker secrets for production.
-
-| `AI_PROVIDER` | API key secret | Endpoint |
-| --- | --- | --- |
-| `deepseek` | `DEEPSEEK_API_KEY` | DeepSeek API, built in |
-| `gemini` | `GEMINI_API_KEY` | Gemini Developer API, built in |
-| `openai-compatible` | `AI_API_KEY` | Set `AI_BASE_URL`, including any `/v1` prefix |
-
-The compatible adapter appends `/chat/completions` to the HTTPS base URL. Choose a service/model that supports streaming Chat Completions, system messages, and `max_tokens`. The Gemini adapter uses Gemini 3's low thinking setting. Other API formats or model-specific options may need a change in `worker/chat/providers.ts`; the frontend stays the same. Only the selected provider's key is used, with no automatic fallback. Provider and model names are kept out of the chat UI.
-
-See the [DeepSeek Chat Completions API](https://api-docs.deepseek.com/api/create-chat-completion/) for the default provider's request format.
-
-### How content stays current
-
-Every build generates the assistant reference from `src/data/` and `src/content/blog/`, the same files used by the site. Add or edit a project, post, skill, or blog there, then rebuild. No second knowledge file to maintain. The generated reference stays on the Worker; the browser gets only a public link catalog. Demo engagement counts and visitor posts are excluded. A deployed site needs a new build/deployment to receive your changes.
-
-### Checks without an API key
+## Checks
 
 ```sh
-npm test                 # Mock AI services and Turnstile; no API quota
+npm run lint
+npm test
 npm run typecheck
 npm run check:worker
-npm run build
-npm run deploy:dry-run   # Bundle locally; does not publish
+npm run deploy:dry-run
 ```
 
-Tests cover content generation, request validation, streaming, cancellation, conversation state, and safe links. For a live check, ask about PULSE, Seaversity work, or the first blog, follow a reply link, try a casual question, and test Stop and Retry.
+These checks need no AI key or API quota. The dry run builds both the frontend and Worker without publishing. Live behavior checks are documented in the [assistant guide](docs/ai-assistant.md).
 
-### Production setup, when ready
+## Deploy
 
-Hosting uses Workers with Static Assets. Set a real Turnstile site key and allowed public origins in `wrangler.jsonc`, then store the selected provider's API key (`DEEPSEEK_API_KEY` by default), `TURNSTILE_SECRET_KEY`, and a random `RATE_LIMIT_SALT` as encrypted Worker secrets. Production rejects Turnstile testing keys and missing protection. The local environment is only for loopback testing; never deploy it.
+Use **Cloudflare Workers with Static Assets**. Before publishing:
 
-Requests are limited to 2,000 characters, six completed exchanges, and five requests per minute per anonymous network identifier. The rate limit is best-effort and location-local, not a global billing cap. There is no automatic retry or paid fallback. No server-side message-history storage or application message logging is configured.
+1. Set the real Turnstile site key and allowed portfolio origins in the top-level production configuration in `wrangler.jsonc`.
+2. Store the selected provider key, `TURNSTILE_SECRET_KEY`, and a random `RATE_LIMIT_SALT` as Cloudflare Worker secrets. Local secrets are not uploaded automatically.
+3. Run the checks above, deploy the production Worker, and connect the domain configured in `index.html` and `wrangler.jsonc`.
+4. Check a live chat reply, verification, project links, and mobile layout on the deployed domain.
 
-See [Cloudflare local development](https://developers.cloudflare.com/workers/local-development/) and [Turnstile testing keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/).
+The production Turnstile site key is currently blank. Chat intentionally stays unavailable until valid production configuration is supplied. Never deploy the `local` environment or use its testing keys in production. See [production setup](docs/ai-assistant.md#production-setup-when-ready) for commands and limits.
 
 ## Make it yours
 
-- `src/data/` contains the profile, projects, posts, and blog metadata.
-- `src/content/blog/` contains the Markdown blog posts.
-- `public/images/` contains profile photos, project screenshots, and blog images.
-- `index.html` contains the page title and social sharing metadata.
-
-Replace my personal content, photos, branding, and links with your own. Update `public/social-preview.jpg` and the favicon for your site too.
+Replace my content in `src/data/` and `src/content/blog/`, and my images and branding in `public/`. Update `index.html`, `public/social-preview.jpg`, the favicon, and the domain settings for your site.
 
 ## License
 

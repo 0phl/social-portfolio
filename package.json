@@ -13,14 +13,13 @@
     "typecheck": "tsc --noEmit",
     "dev:chat": "npm run build && wrangler dev --env local --ip 127.0.0.1 --port 8787",
     "check:worker": "tsc -p tsconfig.worker.json",
-    "deploy:dry-run": "npm run build && wrangler deploy --dry-run",
+    "deploy:dry-run": "npm run build && wrangler deploy --env=\"\" --dry-run",
     "predev": "npm run chat:knowledge",
     "pretest": "npm run chat:knowledge",
     "pretypecheck": "npm run chat:knowledge",
     "precheck:worker": "npm run chat:knowledge"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
     "framer-motion": "^11.5.4",
     "lucide-react": "0.522.0",
     "react": "^18.3.1",
