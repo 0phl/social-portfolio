@@ -120,6 +120,16 @@ npx wrangler deploy --env=""
 
 Connect the portfolio domain to the Worker, include that hostname in the Turnstile widget configuration, and ensure its origin matches `ALLOWED_ORIGINS`. If testing on a `workers.dev` address, that hostname and origin also need to be configured. The dry run only builds and bundles; it does not verify remote secrets, domain routing, or live Turnstile. Check those on the deployed site.
 
-Requests are limited to 2,000 characters, six completed exchanges, and five requests per minute per anonymous network identifier. The rate limit is best-effort and location-local, not a global billing cap. There is no automatic retry or paid fallback. No server-side message-history storage or application message logging is configured.
+Requests are limited to 2,000 characters, six completed exchanges in context, and five requests per minute per salted network identifier. This burst limiter is best-effort and location-local.
+
+### Daily usage limits
+
+The Worker also enforces **50 requests per public IP/network per day** and **1,000 across the whole site per day**, resetting at **midnight Philippine time (UTC+8)**. These limits do not change the assistant's personality, topics, answer length, or provider settings. People sharing a public IP share the network allowance; changing networks can change that allowance, while the site-wide cap still applies.
+
+A single SQLite-backed Durable Object reserves both daily allowances atomically after Turnstile verification and before contacting the AI provider. Rejected requests do not call the provider. Invalid verification does not consume daily allowance. Once reserved, an attempt counts even if it is canceled or the provider fails; retries are new attempts. New chat, reloads, and Worker restarts do not clear the counters. If quota storage is unavailable, chat fails closed while the portfolio stays available.
+
+Only the day, salted network identifiers, and counts are stored for quotas, not raw IP addresses or conversation text. Expired rows are removed by the daily alarm or the next reservation. No server-side message-history storage or application message logging is configured. There is no automatic retry or paid fallback. The daily cap bounds requests, not an exact currency amount; provider token usage and pricing still determine cost.
+
+Configure `CHAT_DAILY_NETWORK_LIMIT` and `CHAT_DAILY_SITE_LIMIT` in `wrangler.jsonc`. Both must be positive integers. The `CHAT_QUOTA` binding and SQLite migration are included for deployment. Local development uses a separate namespace and persisted state under `.wrangler/`; it does not consume production allowance. All loopback visitors share one local network identity. Local quota tests use real SQLite with small limits and never call an AI API.
 
 See [Cloudflare local development](https://developers.cloudflare.com/workers/local-development/) and [Turnstile testing keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/).

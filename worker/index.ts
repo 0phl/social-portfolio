@@ -2,6 +2,7 @@ import type { Env } from './env';
 import { ChatError, jsonError, readChatRequest } from './chat/request';
 import { checkConfiguration, protect } from './chat/protection';
 import { streamAssistant } from './chat/stream';
+export { ChatQuota } from './chat/quota';
 
 export function createHandler(fetcher: typeof fetch) {
   return async (request: Request, env: Env): Promise<Response> => {

@@ -1,10 +1,13 @@
 import type { ChatRequest } from '../../src/chat/protocol';
 
 export class ChatError extends Error {
-  constructor(public status: number, public code: string, message: string) { super(message); }
+  constructor(public status: number, public code: string, message: string, public retryAfter?: number) { super(message); }
 }
 export function jsonError(error: ChatError) {
-  return Response.json({ code: error.code, message: error.message }, { status: error.status, headers: { 'Cache-Control': 'no-store' } });
+  return Response.json({ code: error.code, message: error.message }, {
+    status: error.status,
+    headers: { 'Cache-Control': 'no-store', ...(error.retryAfter ? { 'Retry-After': String(error.retryAfter) } : {}) },
+  });
 }
 export async function readChatRequest(request: Request, signal = request.signal): Promise<ChatRequest> {
   if (request.headers.get('Content-Type')?.split(';')[0].trim() !== 'application/json') throw new ChatError(415, 'media', 'Please send a JSON message.');

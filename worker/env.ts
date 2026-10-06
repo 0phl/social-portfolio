@@ -1,6 +1,9 @@
 export interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
   CHAT_RATE_LIMITER: { limit(options: { key: string }): Promise<{ success: boolean }> };
+  CHAT_QUOTA: { getByName(name: string): { fetch(request: Request): Promise<Response> } };
+  CHAT_DAILY_NETWORK_LIMIT: string;
+  CHAT_DAILY_SITE_LIMIT: string;
   APP_ENV: string;
   ALLOWED_ORIGINS: string;
   AI_PROVIDER: string;

@@ -4,12 +4,15 @@
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-05",
   "assets": { "directory": "./dist", "binding": "ASSETS", "not_found_handling": "single-page-application", "run_worker_first": ["/api/*"] },
-  "vars": { "APP_ENV": "production", "AI_PROVIDER": "deepseek", "AI_MODEL": "deepseek-flash", "ALLOWED_ORIGINS": "https://ronandelacruz.com,https://www.ronandelacruz.com", "TURNSTILE_SITE_KEY": "" },
+  "vars": { "APP_ENV": "production", "AI_PROVIDER": "deepseek", "AI_MODEL": "deepseek-flash", "ALLOWED_ORIGINS": "https://ronandelacruz.com,https://www.ronandelacruz.com", "TURNSTILE_SITE_KEY": "", "CHAT_DAILY_NETWORK_LIMIT": "50", "CHAT_DAILY_SITE_LIMIT": "1000" },
   "ratelimits": [{ "name": "CHAT_RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+  "durable_objects": { "bindings": [{ "name": "CHAT_QUOTA", "class_name": "ChatQuota" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ChatQuota"] }],
   "observability": { "enabled": false },
   "env": {
     "local": {
-      "vars": { "APP_ENV": "local", "AI_PROVIDER": "deepseek", "AI_MODEL": "deepseek-flash", "ALLOWED_ORIGINS": "http://127.0.0.1:8787,http://localhost:8787", "TURNSTILE_SITE_KEY": "1x00000000000000000000AA" },
+      "vars": { "APP_ENV": "local", "AI_PROVIDER": "deepseek", "AI_MODEL": "deepseek-flash", "ALLOWED_ORIGINS": "http://127.0.0.1:8787,http://localhost:8787", "TURNSTILE_SITE_KEY": "1x00000000000000000000AA", "CHAT_DAILY_NETWORK_LIMIT": "50", "CHAT_DAILY_SITE_LIMIT": "1000" },
+      "durable_objects": { "bindings": [{ "name": "CHAT_QUOTA", "class_name": "ChatQuota" }] },
       "ratelimits": [{ "name": "CHAT_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }]
     }
   }

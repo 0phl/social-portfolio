@@ -17,7 +17,7 @@ Social interactions are browser-side demos, and engagement counts are sample dat
 
 ## Run locally
 
-Use Node.js 22 or newer and npm. Run commands from the repository root.
+Use Node.js 22.13 or newer and npm. Run commands from the repository root.
 
 ```sh
 git clone https://github.com/0phl/social-portfolio.git
@@ -66,6 +66,8 @@ npm run deploy:dry-run
 ```
 
 These checks need no AI key or API quota. The dry run builds both the frontend and Worker without publishing. Live behavior checks are documented in the [assistant guide](docs/ai-assistant.md).
+
+Chat allows 50 messages per public IP/network per day and 1,000 across the site, resetting at midnight Philippine time. Server-side counters survive New chat and reloads. See [daily usage limits](docs/ai-assistant.md#daily-usage-limits) for configuration and shared-network behavior.
 
 ## Deploy
 

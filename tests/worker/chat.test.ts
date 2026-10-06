@@ -5,7 +5,7 @@ import type { Env } from '../../worker/env';
 
 const valid = { message: 'Tell me about PULSE', history: [], turnstileToken: 'token' };
 const request = (body: unknown = valid, headers = {}) => new Request('http://localhost/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'http://localhost', ...headers }, body: JSON.stringify(body) });
-const env = (): Env => ({ APP_ENV: 'local', ALLOWED_ORIGINS: 'http://localhost', AI_PROVIDER: 'gemini', AI_MODEL: 'gemini-3.8-flash', GEMINI_API_KEY: 'test-key', RATE_LIMIT_SALT: 'local-salt', TURNSTILE_SITE_KEY: 'test-site', TURNSTILE_SECRET_KEY: 'test-secret', CHAT_RATE_LIMITER: { limit: vi.fn().mockResolvedValue({ success: true }) }, ASSETS: { fetch: vi.fn() } });
+const env = (): Env => ({ APP_ENV: 'local', ALLOWED_ORIGINS: 'http://localhost', AI_PROVIDER: 'gemini', AI_MODEL: 'gemini-3.8-flash', GEMINI_API_KEY: 'test-key', RATE_LIMIT_SALT: 'local-salt', TURNSTILE_SITE_KEY: 'test-site', TURNSTILE_SECRET_KEY: 'test-secret', CHAT_RATE_LIMITER: { limit: vi.fn().mockResolvedValue({ success: true }) }, CHAT_QUOTA: { getByName: () => ({ fetch: async () => Response.json({ allowed: true }) }) }, CHAT_DAILY_NETWORK_LIMIT: '50', CHAT_DAILY_SITE_LIMIT: '1000', ASSETS: { fetch: vi.fn() } });
 describe('chat request boundary', () => {
   it('enforces the total deadline while reading an unfinished upload', async () => {
     vi.useFakeTimers();
@@ -57,5 +57,68 @@ describe('chat request boundary', () => {
     const fetcher = vi.fn().mockResolvedValue(Response.json(result));
     expect((await createHandler(fetcher)(request(), env())).status).toBe(403);
     expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(['daily_network_limit', 'daily_site_limit'])('blocks %s before contacting the AI provider', async (code) => {
+    const fetcher = vi.fn().mockImplementation(async () => Response.json({ success: true, hostname: 'localhost', action: 'chat' }));
+    const settings = { ...env(), CHAT_QUOTA: { getByName: () => ({ fetch: async () => Response.json({ code }, { status: 429, headers: { 'Retry-After': '3600' } }) }) } };
+    const response = await createHandler(fetcher)(request(), settings);
+    expect(response.status).toBe(429);
+    expect(response.headers.get('Retry-After')).toBe('3600');
+    expect(await response.json()).toMatchObject({ code, message: expect.stringContaining('midnight') });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(['missing', 'unavailable', 'malformed'])('fails closed when the daily allowance service is %s', async (failure) => {
+    const fetcher = vi.fn().mockImplementation(async () => Response.json({ success: true, hostname: 'localhost', action: 'chat' }));
+    const settings = { ...env(), CHAT_QUOTA: failure === 'missing' ? undefined : { getByName: () => ({ fetch: async () => {
+      if (failure === 'unavailable') throw new Error('Storage unavailable');
+      return Response.json({ unexpected: true });
+    } }) } };
+    expect((await createHandler(fetcher)(request(), settings as Env)).status).toBe(503);
+    expect(fetcher.mock.calls.length).toBeLessThanOrEqual(1);
+  });
+
+  it('does not reserve daily allowance when verification fails', async () => {
+    const reserve = vi.fn();
+    const fetcher = vi.fn().mockResolvedValue(Response.json({ success: false }));
+    const settings = { ...env(), CHAT_QUOTA: { getByName: () => ({ fetch: reserve }) } };
+    expect((await createHandler(fetcher)(request(), settings)).status).toBe(403);
+    expect(reserve).not.toHaveBeenCalled();
+  });
+
+  it('uses the same server-derived network identity for fresh chats and ignores a supplied identity', async () => {
+    const identities: string[] = [];
+    const reserve = async (req: Request) => {
+      const input = await req.json();
+      identities.push(input.networkKey);
+      expect(Object.keys(input)).toEqual(['networkKey']);
+      return Response.json({ code: 'daily_network_limit' }, { status: 429, headers: { 'Retry-After': '60' } });
+    };
+    const settings = { ...env(), CHAT_QUOTA: { getByName: () => ({ fetch: reserve }) } };
+    const fetcher = vi.fn().mockImplementation(async () => Response.json({ success: true, hostname: 'localhost', action: 'chat' }));
+    await createHandler(fetcher)(request(), settings);
+    await createHandler(fetcher)(request({ ...valid, networkKey: 'new-identity', history: [] }), settings);
+    expect(identities).toHaveLength(2);
+    expect(identities[0]).toMatch(/^[a-f0-9]{64}$/);
+    expect(identities[0]).toBe(identities[1]);
+  });
+
+  it('streams the unchanged provider response after reserving daily allowance', async () => {
+    let reserved = false;
+    const settings = { ...env(), CHAT_QUOTA: { getByName: () => ({ fetch: async () => {
+      reserved = true;
+      return Response.json({ allowed: true });
+    } }) } };
+    const fetcher = vi.fn(async (url: string, options?: RequestInit) => {
+      if (url.includes('siteverify')) return Response.json({ success: true, hostname: 'localhost', action: 'chat' });
+      expect(reserved).toBe(true);
+      expect(JSON.parse(options?.body as string).generationConfig.maxOutputTokens).toBe(4096);
+      return new Response('data: {"candidates":[{"content":{"parts":[{"text":"Same helpful reply."}]},"finishReason":"STOP"}]}\n\n');
+    });
+    const response = await createHandler(fetcher)(request(), settings);
+    expect(response.status).toBe(200);
+    const events = (await response.text()).trim().split('\n').map(line => JSON.parse(line));
+    expect(events).toEqual([{ type: 'delta', text: 'Same helpful reply.' }, { type: 'done' }]);
   });
 });
