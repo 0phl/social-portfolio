@@ -40,5 +40,5 @@ export const blogPosts: BlogPost[] = [{
 }];
 
 export function formatBlogDate(date: string) {
-  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: date.length === 7 ? undefined : 'numeric', year: 'numeric', timeZone: 'UTC' });
 }

@@ -46,7 +46,7 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
               <h3 className="text-sm font-semibold">{post.preview ? 'You' : profile.name}</h3>
               {!post.preview && <img src={profile.badge} alt="Profile badge" className="h-3.5 w-3.5" />}
               <span aria-hidden="true" className="text-xs text-gray-500">•</span>
-              <time dateTime={post.publishedAt} className="text-xs text-gray-500">{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: post.publishedAt.length === 10 ? 'UTC' : undefined })}</time>
+              <time dateTime={post.publishedAt} className="text-xs text-gray-500">{post.publishedAt.length <= 10 ? formatBlogDate(post.publishedAt) : new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
             </div>
             <p className="line-clamp-1 text-xs text-gray-500">{post.preview ? 'Local preview · visible only to you' : profile.title}</p>
           </div>
@@ -59,6 +59,13 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
         </details>
       </header>
       {post.content && <p className="whitespace-pre-wrap break-words text-[15px] leading-relaxed text-gray-900">{post.content}</p>}
+      {post.image && (
+        <figure className="mt-4">
+          <a href={post.image.src} target="_blank" rel="noopener noreferrer" aria-label="Open post image at full size (opens in a new tab)" className="block overflow-hidden rounded-lg border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+            <img src={post.image.src} alt={post.image.alt} width={post.image.width} height={post.image.height} loading="lazy" className="h-auto w-full" />
+          </a>
+        </figure>
+      )}
       {project && <ProjectPostPreview project={project} />}
       {blog && (
         <a href={`#blog/${blog.id}`} className="group mt-3 flex gap-4 rounded-lg border border-gray-200 p-4 text-left transition-colors hover:bg-gray-50">
