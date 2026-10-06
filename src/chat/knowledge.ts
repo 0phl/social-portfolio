@@ -14,6 +14,15 @@ interface KnowledgeSource {
   blogPosts: BlogPost[];
 }
 
+function newestFirst<T extends { id: string; publishedAt: string }>(items: T[]): T[] {
+  const dated = items.map((item) => {
+    const time = Date.parse(item.publishedAt);
+    if (!Number.isFinite(time)) throw new Error(`Invalid publication date for ${item.id}: ${item.publishedAt}`);
+    return { item, time };
+  });
+  return dated.sort((a, b) => b.time - a.time).map(({ item }) => item);
+}
+
 export function buildKnowledge(source: KnowledgeSource) {
   const links: Record<string, string> = {
     '/#projects': 'Projects', '/#posts': 'Posts', '/#blog': 'Blog',
@@ -31,19 +40,28 @@ export function buildKnowledge(source: KnowledgeSource) {
     if (website) add(website, `${title} website`);
     return { id, title, url, category, type, description, contribution, note, highlights, featureGroups, technologies, repository, website };
   });
-  const publicPosts = source.posts.filter((post) => !post.preview).map(({ id, title, content, publishedAt, projectId, blogPostId }) => {
+  const publicPosts = newestFirst(source.posts.filter((post) => !post.preview)).map(({ id, title, content, publishedAt, projectId, blogPostId }) => {
     const url = `/#posts/${id}`;
-    add(url, title ?? (content.slice(0, 70) || 'Portfolio post'));
-    return { id, title, url, content, publishedAt, projectId, blogPostId };
+    const displayTitle = title ?? (content.split(/\r?\n/)[0] || source.blogPosts.find((blog) => blog.id === blogPostId)?.title || 'Portfolio post');
+    add(url, displayTitle);
+    return { id, title: displayTitle, url, content, publishedAt, projectId, blogPostId };
   });
-  const blogs = source.blogPosts.map(({ id, title, excerpt, publishedAt, tags, body }) => {
+  const blogs = newestFirst(source.blogPosts).map(({ id, title, excerpt, publishedAt, tags, body }) => {
     const url = `/#blog/${id}`;
     add(url, title);
     return { id, title, url, excerpt, publishedAt, tags, text: body.flatMap((block) => block.type === 'image' ? [] : [block.text]) };
   });
+  const summarizeLatest = (item?: { id: string; title: string; publishedAt: string; url: string }) => item
+    ? { id: item.id, title: item.title, publishedAt: item.publishedAt, url: item.url }
+    : null;
   const { name, title, bio, about, location } = source.profile;
   const reference = JSON.stringify({
     profile: { name, title, bio, about, location },
+    recency: {
+      basis: 'Publication date, newest first. Posts and blogs are separate catalogs. Month-only dates retain month precision; never invent their day. Projects have no publication dates, so their order does not establish recency.',
+      latestPost: summarizeLatest(publicPosts[0]),
+      latestBlog: summarizeLatest(blogs[0]),
+    },
     experience: source.experience.map(({ role, company, type, period, location, current, description, details, highlights, skills }) => ({ role, company, type, period, location, current, description, details, highlights, skills })),
     education: { school: source.education.school, degree: source.education.degree, period: source.education.period },
     skills: source.skillGroups, projects: publicProjects, posts: publicPosts, blogs,

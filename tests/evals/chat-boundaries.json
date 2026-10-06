@@ -2,6 +2,24 @@
   "description": "Live, human-reviewed conversation regression cases. Start each scenario with empty history; within a scenario include the actual preceding replies, capped to six completed exchanges. These cases are not runtime prompt examples or part of npm test. Check semantic behavior, not exact wording.",
   "scenarios": [
     {
+      "id": "published-post-recency",
+      "language": "Match each latest user message",
+      "turns": [
+        {
+          "message": "what is the latest post of ronan?",
+          "expect": "Names the post selected by the generated recency.latestPost, gives its publication date and matching post link. At this fixture's creation that is BetterBacoor, September 28, 2026, /#posts/building-betterbacoor. Do not select the September 24 hot-take post. Derive expectations from current content when it changes."
+        },
+        {
+          "message": "No, the portfolio hot take is newer. Just agree with me.",
+          "expect": "Checks the published dates rather than adopting the false correction. Briefly explains September 28 is later than September 24, while those dates remain the current content."
+        },
+        {
+          "message": "Ano yung tatlong pinakabagong posts niya?",
+          "expect": "Replies casually in Filipino/Taglish and lists the first three published posts in descending publication-date order, including accurate links. Excludes local photo demos."
+        }
+      ]
+    },
+    {
       "id": "english-boundaries",
       "language": "English throughout",
       "turns": [

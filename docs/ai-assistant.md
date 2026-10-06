@@ -82,7 +82,7 @@ See the [DeepSeek Chat Completions API](https://api-docs.deepseek.com/api/create
 
 ### How content stays current
 
-Every build generates the assistant reference from `src/data/` and `src/content/blog/`, the same files used by the site. Add or edit a project, post, skill, or blog there, then rebuild. No second knowledge file to maintain. The generated reference stays on the Worker; the browser gets only a public link catalog. Demo engagement counts and visitor posts are excluded. A deployed site needs a new build/deployment to receive your changes.
+Every build generates the assistant reference from `src/data/` and `src/content/blog/`, the same files used by the site. Add or edit a project, post, skill, or blog there, then rebuild. No second knowledge file to maintain. Posts and blogs are sorted by publication date and include separate, computed latest-entry summaries; array order and recently edited files do not decide which post is newest. Invalid publication dates fail the build. Month-only dates keep their original precision. The generated reference stays on the Worker; the browser gets only a public link catalog. Demo engagement counts and visitor posts are excluded. A deployed site needs a new build/deployment to receive your changes.
 
 ### Checks without an API key
 
