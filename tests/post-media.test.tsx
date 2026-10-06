@@ -16,7 +16,8 @@ afterEach(cleanup);
 
 it('opens the clicked photo, reaches hidden photos, and navigates with arrows and thumbnails', () => {
   render(<PostMedia post={post} />);
-  expect(screen.getAllByRole('button', { name: /^Open photo/ })).toHaveLength(4);
+  expect(screen.getAllByRole('button', { name: /^Open photo/ })).toHaveLength(5);
+  expect(screen.getByText('+2')).toBeTruthy();
   fireEvent.click(screen.getByRole('button', { name: 'Open photo 4 of 6' }));
   const viewer = screen.getByRole('dialog', { name: 'Post photos' });
   const current = () => within(viewer).getByRole('img', { name: /^Scene/ }).getAttribute('src');
@@ -31,6 +32,17 @@ it('opens the clicked photo, reaches hidden photos, and navigates with arrows an
   expect(current()).toBe('/photo-5.png');
   fireEvent.click(within(viewer).getByRole('button', { name: 'Show photo 2' }));
   expect(current()).toBe('/photo-1.png');
+});
+
+it('shows all five photos without an overflow label, and opens the overflow tile in a larger album', () => {
+  const { rerender } = render(<PostMedia post={{ ...post, images: post.images?.slice(0, 5) }} />);
+  expect(screen.getAllByRole('button', { name: /^Open photo/ })).toHaveLength(5);
+  expect(screen.queryByText(/^\+\d+$/)).toBeNull();
+  const images = Array.from({ length: 10 }, (_, i) => ({ src: `/ten-${i}.png`, alt: `Photo ${i + 1}`, width: 600, height: 800 }));
+  rerender(<PostMedia post={{ ...post, images }} />);
+  expect(screen.getByText('+6')).toBeTruthy();
+  fireEvent.click(screen.getByRole('button', { name: 'Open photo 5 of 10' }));
+  expect(within(screen.getByRole('dialog')).getByRole('img', { name: 'Photo 5' })).toBeTruthy();
 });
 
 it('restores page scrolling and focus on close and starts fresh when reopened', () => {

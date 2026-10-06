@@ -4,9 +4,25 @@
 
 .post-media { overflow: hidden; border: 1px solid #e5e7eb; border-radius: 8px; }
 .post-media-single > button { display: block; width: 100%; }
-.post-media-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px; aspect-ratio: 4 / 3; }
+.post-media-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; aspect-ratio: 1; border-radius: 0; border-left: 0; border-right: 0; background: white; }
+.post-media-grid[data-layout="columns"] { aspect-ratio: 4 / 5; }
+.post-media-grid[data-count="2"][data-layout="rows"] { aspect-ratio: 3 / 1; }
+.post-media-grid[data-count="2"][data-layout="columns"] { aspect-ratio: 1; }
+.post-media-grid[data-count="4"][data-wide="true"] { aspect-ratio: 3 / 2; }
 .post-media-grid[data-count="3"], .post-media-grid[data-count="4"] { grid-template-rows: repeat(2, minmax(0, 1fr)); }
 .post-media-grid[data-count="3"] > :first-child { grid-row: span 2; }
+.post-media-grid[data-count="3"][data-layout="rows"] { grid-template-rows: 2fr 1fr; }
+.post-media-grid[data-count="3"][data-layout="rows"] > :first-child { grid-row: auto; grid-column: span 2; }
+.post-media-grid[data-count="5"][data-layout="columns"] { grid-template-rows: repeat(6, minmax(0, 1fr)); }
+.post-media-grid[data-count="5"][data-layout="columns"] > :nth-child(1) { grid-area: 1 / 1 / 4 / 2; }
+.post-media-grid[data-count="5"][data-layout="columns"] > :nth-child(2) { grid-area: 4 / 1 / 7 / 2; }
+.post-media-grid[data-count="5"][data-layout="columns"] > :nth-child(3) { grid-area: 1 / 2 / 3 / 3; }
+.post-media-grid[data-count="5"][data-layout="columns"] > :nth-child(4) { grid-area: 3 / 2 / 5 / 3; }
+.post-media-grid[data-count="5"][data-layout="columns"] > :nth-child(5) { grid-area: 5 / 2 / 7 / 3; }
+.post-media-grid[data-count="5"][data-layout="rows"] { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: 3fr 2fr; aspect-ratio: 6 / 5; }
+.post-media-grid[data-count="5"][data-wide="true"] { aspect-ratio: 2 / 1; }
+.post-media-grid[data-count="5"][data-layout="rows"] > :nth-child(-n+2) { grid-column: span 3; }
+.post-media-grid[data-count="5"][data-layout="rows"] > :nth-child(n+3) { grid-column: span 2; }
 .post-media button:focus-visible { outline-offset: -4px; z-index: 1; }
 .photo-viewer { position: fixed; inset: 0; margin: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; padding: 0; border: 0; background: #111315; color: #111827; overflow: hidden; }
 .photo-viewer[open] { display: flex; flex-direction: column; }
