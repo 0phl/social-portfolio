@@ -120,7 +120,7 @@ npx wrangler deploy --env=""
 
 Connect the portfolio domain to the Worker, include that hostname in the Turnstile widget configuration, and ensure its origin matches `ALLOWED_ORIGINS`. If testing on a `workers.dev` address, that hostname and origin also need to be configured. The dry run only builds and bundles; it does not verify remote secrets, domain routing, or live Turnstile. Check those on the deployed site.
 
-Requests are limited to 2,000 characters, six completed exchanges in context, and five requests per minute per salted network identifier. This burst limiter is best-effort and location-local.
+Requests are limited to 2,000 characters, six completed exchanges in context, and ten requests per minute per salted network identifier. This burst limiter is best-effort and location-local.
 
 ### Daily usage limits
 
