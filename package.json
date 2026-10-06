@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "dev:chat": "npm run build && wrangler dev --env local --ip 127.0.0.1 --port 8787",
     "check:worker": "tsc -p tsconfig.worker.json",
+    "deploy": "npm run build && wrangler deploy --env=\"\"",
     "deploy:dry-run": "npm run build && wrangler deploy --env=\"\" --dry-run",
     "predev": "npm run chat:knowledge",
     "pretest": "npm run chat:knowledge",

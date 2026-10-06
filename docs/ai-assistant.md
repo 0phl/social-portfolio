@@ -96,7 +96,7 @@ npm run deploy:dry-run   # Bundle locally; does not publish
 
 Tests cover content generation, request validation, streaming, cancellation, conversation state, and safe links. For a live check, ask about PULSE, Seaversity work, or the first blog, follow a reply link, try a casual question, and test Stop and Retry.
 
-### Production setup, when ready
+### Production setup
 
 Hosting uses Workers with Static Assets. Set a real Turnstile site key and allowed public origins in `wrangler.jsonc`, then store the selected provider's API key (`DEEPSEEK_API_KEY` by default), `TURNSTILE_SECRET_KEY`, and a random `RATE_LIMIT_SALT` as encrypted Worker secrets. Production rejects Turnstile testing keys and missing protection. The local environment is only for loopback testing; never deploy it.
 
@@ -115,10 +115,12 @@ When ready to publish:
 
 ```sh
 npm run deploy:dry-run
-npx wrangler deploy --env=""
+npm run deploy
 ```
 
-Connect the portfolio domain to the Worker, include that hostname in the Turnstile widget configuration, and ensure its origin matches `ALLOWED_ORIGINS`. If testing on a `workers.dev` address, that hostname and origin also need to be configured. The dry run only builds and bundles; it does not verify remote secrets, domain routing, or live Turnstile. Check those on the deployed site.
+`npm run deploy` rebuilds the site and assistant reference, then publishes the top-level production environment. The custom domain routes in `wrangler.jsonc` connect `ronandelacruz.com` and `www.ronandelacruz.com`; both hostnames are included in the production Turnstile widget and `ALLOWED_ORIGINS`. The `workers.dev` address and version preview URLs are disabled. GitHub pushes do not trigger deployment.
+
+For another deployment, replace the account ID, routes, origins, and Turnstile site key. Cloudflare requires an active zone for custom domains. The dry run only builds and bundles; it does not verify remote secrets, domain routing, or live Turnstile. Check those on the deployed site.
 
 Requests are limited to 2,000 characters, six completed exchanges in context, and ten requests per minute per salted network identifier. This burst limiter is best-effort and location-local.
 

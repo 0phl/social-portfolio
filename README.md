@@ -71,14 +71,24 @@ Chat allows 50 messages per public IP/network per day and 1,000 across the site,
 
 ## Deploy
 
-Use **Cloudflare Workers with Static Assets**. Before publishing:
+Hosted on **Cloudflare Workers with Static Assets** at [ronandelacruz.com](https://ronandelacruz.com). The production configuration connects both the root domain and `www`.
+
+To publish an update after running the checks:
+
+```sh
+npm run deploy
+```
+
+This rebuilds the site and assistant knowledge before deploying. Pushing to GitHub alone does not deploy the site.
+
+When setting up your own deployment:
 
 1. Set the real Turnstile site key and allowed portfolio origins in the top-level production configuration in `wrangler.jsonc`.
 2. Store the selected provider key, `TURNSTILE_SECRET_KEY`, and a random `RATE_LIMIT_SALT` as Cloudflare Worker secrets. Local secrets are not uploaded automatically.
 3. Run the checks above, deploy the production Worker, and connect the domain configured in `index.html` and `wrangler.jsonc`.
 4. Check a live chat reply, verification, project links, and mobile layout on the deployed domain.
 
-The production Turnstile site key is currently blank. Chat intentionally stays unavailable until valid production configuration is supplied. Never deploy the `local` environment or use its testing keys in production. See [production setup](docs/ai-assistant.md#production-setup-when-ready) for commands and limits.
+The production Turnstile widget is configured for the portfolio domains. Chat intentionally stays unavailable if required production protection or secrets are missing. Never deploy the `local` environment or use its testing keys in production. See [production setup](docs/ai-assistant.md#production-setup) for commands and limits. If adapting this repository, replace the account ID, domain routes, allowed origins, and public Turnstile site key with your own values.
 
 ## Make it yours
 
