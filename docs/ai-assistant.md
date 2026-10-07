@@ -118,7 +118,9 @@ npm run deploy:dry-run
 npm run deploy
 ```
 
-`npm run deploy` rebuilds the site and assistant reference, then publishes the top-level production environment. The custom domain routes in `wrangler.jsonc` connect `ronandelacruz.com` and `www.ronandelacruz.com`; both hostnames are included in the production Turnstile widget and `ALLOWED_ORIGINS`. The `workers.dev` address and version preview URLs are disabled. GitHub pushes do not trigger deployment.
+`npm run deploy` rebuilds the site and assistant reference, then publishes the top-level production environment. The custom domain routes in `wrangler.jsonc` connect `ronandelacruz.com` and `www.ronandelacruz.com`; both hostnames are included in the production Turnstile widget and `ALLOWED_ORIGINS`. The `workers.dev` address and version preview URLs are disabled.
+
+For automatic deployment, connect `0phl/social-portfolio` in the Worker's **Settings → Builds**, select production branch `main` and root `/`, use build command `npm run build` and deploy command `npx wrangler deploy --env=""`, and disable preview builds. Each push to `main` then rebuilds the assistant reference along with the site. Runtime API keys stay in the existing Worker secrets; they are not needed during the build. Build status and logs appear under **Deployments**.
 
 For another deployment, replace the account ID, routes, origins, and Turnstile site key. Cloudflare requires an active zone for custom domains. The dry run only builds and bundles; it does not verify remote secrets, domain routing, or live Turnstile. Check those on the deployed site.
 

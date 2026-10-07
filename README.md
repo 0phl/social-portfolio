@@ -73,13 +73,22 @@ Chat allows 50 messages per public IP/network per day and 1,000 across the site,
 
 Hosted on **Cloudflare Workers with Static Assets** at [ronandelacruz.com](https://ronandelacruz.com). The production configuration connects both the root domain and `www`.
 
-To publish an update after running the checks:
+Cloudflare Workers Builds uses the following Git integration settings:
+
+- Repository: `0phl/social-portfolio`; production branch: `main`.
+- Root directory: `/`; build command: `npm run build`.
+- Deploy command: `npx wrangler deploy --env=""`.
+- Preview builds: disabled.
+
+Once connected, pushing committed changes to `main` rebuilds the site and assistant knowledge and deploys to the existing Worker. Check progress under **Workers & Pages → social-portfolio → Deployments**. Runtime secrets remain in Cloudflare; do not add them to Git or build variables.
+
+To publish manually after running the checks:
 
 ```sh
 npm run deploy
 ```
 
-This rebuilds the site and assistant knowledge before deploying. Pushing to GitHub alone does not deploy the site.
+This runs the same build and production deployment from your local checkout.
 
 When setting up your own deployment:
 
