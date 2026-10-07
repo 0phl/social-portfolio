@@ -80,7 +80,7 @@ Cloudflare Workers Builds uses the following Git integration settings:
 - Deploy command: `npx wrangler deploy --env=""`.
 - Preview builds: disabled.
 
-Once connected, pushing committed changes to `main` rebuilds the site and assistant knowledge and deploys to the existing Worker. Check progress under **Workers & Pages → social-portfolio → Deployments**. Runtime secrets remain in Cloudflare; do not add them to Git or build variables.
+The repository is connected: pushing committed changes to `main` rebuilds the site and assistant knowledge and deploys to the existing Worker. Check progress under **Workers & Pages → social-portfolio → Deployments**. Runtime secrets remain in Cloudflare; do not add them to Git or build variables.
 
 To publish manually after running the checks:
 
