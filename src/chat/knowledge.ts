@@ -25,29 +25,29 @@ function newestFirst<T extends { id: string; publishedAt: string }>(items: T[]):
 
 export function buildKnowledge(source: KnowledgeSource) {
   const links: Record<string, string> = {
-    '/#projects': 'Projects', '/#posts': 'Posts', '/#blog': 'Blog',
-    '/#about/bio': 'About Ronan', '/#about/experience': 'Experience', '/#about/skills': 'Skills',
+    '/projects': 'Projects', '/': 'Posts', '/blog': 'Blog',
+    '/about#bio': 'About Ronan', '/about#experience': 'Experience', '/about#skills': 'Skills',
   };
   const add = (url: string, label: string) => {
-    if (Object.prototype.hasOwnProperty.call(links, url) && url.startsWith('/#')) throw new Error(`Duplicate portfolio route: ${url}`);
-    if (url.startsWith('/#') || url.startsWith('https://')) links[url] = label;
+    if (Object.prototype.hasOwnProperty.call(links, url) && url.startsWith('/')) throw new Error(`Duplicate portfolio route: ${url}`);
+    if (url.startsWith('/') || url.startsWith('https://')) links[url] = label;
   };
   for (const [label, url] of Object.entries(source.profile.links)) add(url, label);
   const publicProjects = source.projects.map(({ id, title, category, type, description, contribution, note, highlights, featureGroups, technologies, repository, website }) => {
-    const url = `/#projects/${id}`;
+    const url = `/projects/${id}`;
     add(url, title);
     if (repository) add(repository, `${title} source`);
     if (website) add(website, `${title} website`);
     return { id, title, url, category, type, description, contribution, note, highlights, featureGroups, technologies, repository, website };
   });
   const publicPosts = newestFirst(source.posts.filter((post) => !post.preview)).map(({ id, title, content, publishedAt, projectId, blogPostId }) => {
-    const url = `/#posts/${id}`;
+    const url = `/posts/${id}`;
     const displayTitle = title ?? (content.split(/\r?\n/)[0] || source.blogPosts.find((blog) => blog.id === blogPostId)?.title || 'Portfolio post');
     add(url, displayTitle);
     return { id, title: displayTitle, url, content, publishedAt, projectId, blogPostId };
   });
   const blogs = newestFirst(source.blogPosts).map(({ id, title, excerpt, publishedAt, tags, body }) => {
-    const url = `/#blog/${id}`;
+    const url = `/blog/${id}`;
     add(url, title);
     return { id, title, url, excerpt, publishedAt, tags, text: body.flatMap((block) => block.type === 'image' ? [] : [block.text]) };
   });

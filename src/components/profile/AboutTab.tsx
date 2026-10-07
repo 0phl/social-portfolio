@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ChevronDownIcon, MapPinIcon } from 'lucide-react';
 import { education, experience, skillGroups } from '../../data/about';
 import { profile } from '../../data/profile';
@@ -87,12 +87,10 @@ export function AboutTab({ active, section, bioRequest }: { active: boolean; sec
                     </button>
                   </h3>
                   <div id={`details-${role.id}`} role="region" aria-labelledby={`role-${role.id}`}>
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
                         <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
+                          initial={false}
+                          animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+                          aria-hidden={!isOpen}
                           transition={{ duration: reduceMotion ? 0 : 0.25, ease }}
                           className="overflow-hidden"
                         >
@@ -113,8 +111,6 @@ export function AboutTab({ active, section, bioRequest }: { active: boolean; sec
                             </div>
                           </div>
                         </motion.div>
-                      )}
-                    </AnimatePresence>
                   </div>
                 </div>
               </li>

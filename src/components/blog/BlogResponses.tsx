@@ -21,7 +21,7 @@ export function BlogResponses({ postId }: { postId: string }) {
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${window.location.href.split('#')[0]}#blog/${postId}`);
+      await navigator.clipboard.writeText(`${window.location.origin}/blog/${postId}`);
       setStatus('Blog link copied!');
     } catch {
       setStatus('Could not copy the link. Try copying it from your address bar.');

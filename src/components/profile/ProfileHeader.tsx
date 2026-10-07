@@ -43,7 +43,7 @@ export function ProfileHeader() {
     setMenuOpen(false);
     menuButton.current?.focus();
     try {
-      await navigator.clipboard.writeText(`${window.location.href.split('#')[0]}#posts`);
+      await navigator.clipboard.writeText(`${window.location.origin}/`);
       setStatus('Profile link copied!');
     } catch {
       setStatus('Could not copy the link. Copy it from your address bar.');
@@ -59,7 +59,7 @@ export function ProfileHeader() {
           alt=""
           width={2048}
           height={683}
-          fetchPriority="high"
+          {...{ fetchpriority: 'high' }}
           className="h-32 w-full border-b border-gray-200 bg-gray-100 object-cover object-center sm:h-48"
         />
 

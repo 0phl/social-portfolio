@@ -88,7 +88,7 @@ it('supports IME, navigation, fresh tokens, close and reopening history', async 
   await act(async () => { await vi.advanceTimersByTimeAsync(5000); });
   vi.useRealTimers();
   await screen.findByRole('link', { name: 'Projects' });
-  fireEvent.click(screen.getByRole('link', { name: 'Projects' })); expect(navigate).toHaveBeenCalledWith('/#projects');
+  fireEvent.click(screen.getByRole('link', { name: 'Projects' })); expect(navigate).toHaveBeenCalledWith('/projects');
   rerender(<ChatProvider><div>Other page</div></ChatProvider>);
   rerender(<ChatProvider><MessagePanel onClose={close} onNavigate={navigate} /></ChatProvider>);
   expect(screen.getByRole('link', { name: 'Projects' })).toBeTruthy();

@@ -1,19 +1,15 @@
-import { useSyncExternalStore } from 'react';
 import { profileTabs, type ProfileTab } from '../data/profileTabs';
-
-function subscribe(onChange: () => void) {
-  window.addEventListener('hashchange', onChange);
-  return () => window.removeEventListener('hashchange', onChange);
-}
+import { navigate, usePath } from '../routing/navigation';
 
 export function useProfileTab() {
-  const hash = useSyncExternalStore(subscribe, () => window.location.hash.slice(1));
-  const [route, itemId] = hash.split('/');
+  const path = usePath();
+  const [pathname, fragment] = path.split('#');
+  const [route, itemId] = pathname.slice(1).split('/');
   const tabId = route === 'articles' ? 'blog' : route;
   const activeTab = profileTabs.find((tab) => tab.id === tabId)?.id ?? 'posts';
 
   const selectTab = (tab: ProfileTab) => {
-    window.location.hash = tab;
+    navigate(tab === 'posts' ? '/' : `/${tab}`);
   };
 
   return {
@@ -21,7 +17,7 @@ export function useProfileTab() {
     selectTab,
     projectId: activeTab === 'projects' ? itemId : undefined,
     postId: activeTab === 'posts' ? itemId : undefined,
-    aboutSection: activeTab === 'about' ? itemId : undefined,
+    aboutSection: activeTab === 'about' ? fragment : undefined,
     blogId: activeTab === 'blog' ? itemId : undefined,
   };
 }

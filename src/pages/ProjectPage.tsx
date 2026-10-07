@@ -34,7 +34,7 @@ export function ProjectPage({ project }: { project: Project }) {
 
   return (
     <div>
-      <a href="#projects" className="mb-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900">
+      <a href="/projects" className="mb-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900">
         <ArrowLeftIcon aria-hidden="true" className="h-4 w-4" /> Back to projects
       </a>
       <header className="mb-6 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
@@ -103,7 +103,7 @@ export function ProjectPage({ project }: { project: Project }) {
             {related.map((item) => {
               const cover = item.images[0];
               return (
-                <a key={item.id} href={`#projects/${item.id}`} className="group min-w-0 rounded-lg text-left">
+                <a key={item.id} href={`/projects/${item.id}`} className="group min-w-0 rounded-lg text-left">
                   <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
                     {cover ? <img src={cover.src} alt="" width={cover.width} height={cover.height} loading="lazy" className={`h-full w-full transition-transform duration-300 motion-safe:group-hover:scale-[1.02] ${cover.height > cover.width ? 'object-contain' : 'object-cover'}`} /> : <ProjectImagePlaceholder title={item.title} />}
                   </div>

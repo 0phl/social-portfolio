@@ -18,7 +18,7 @@ export function BlogPage({ post }: { post: BlogPost }) {
     <>
       <motion.div aria-hidden="true" style={{ scaleX: scrollYProgress }} className="fixed inset-x-0 top-14 z-40 h-0.5 origin-left bg-brand" />
       <article className="mx-auto max-w-[680px] sm:px-6">
-        <a href="#blog" className="-ml-1 mb-8 inline-flex min-h-11 items-center gap-2 rounded px-1 py-1 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900">
+        <a href="/blog" className="-ml-1 mb-8 inline-flex min-h-11 items-center gap-2 rounded px-1 py-1 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900">
           <ArrowLeftIcon aria-hidden="true" className="h-4 w-4" />Back to blog
         </a>
         <header>

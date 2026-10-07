@@ -6,7 +6,7 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <a
       id={`project-card-${project.id}`}
-      href={`#projects/${project.id}`}
+      href={`/projects/${project.id}`}
       aria-labelledby={`project-${project.id}`}
       className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-left transition-colors hover:border-gray-300"
     >

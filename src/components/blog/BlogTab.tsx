@@ -16,7 +16,7 @@ export function BlogTab({ active }: { active: boolean }) {
           <motion.a
             key={post.id}
             id={`blog-card-${post.id}`}
-            href={`#blog/${post.id}`}
+            href={`/blog/${post.id}`}
             initial={false}
             animate={{ opacity: active ? 1 : 0, x: active || reduceMotion ? 0 : -10 }}
             transition={reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 24 }}

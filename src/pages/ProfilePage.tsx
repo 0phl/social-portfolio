@@ -11,10 +11,13 @@ import { ProjectsTab } from '../components/projects/ProjectsTab';
 import { ProfileHeader } from '../components/profile/ProfileHeader';
 import { TabNavigation } from '../components/profile/TabNavigation';
 import { profileTabs } from '../data/profileTabs';
-import { profile } from '../data/profile';
 import { useProfileTab } from '../hooks/useProfileTab';
+import { usePath } from '../routing/navigation';
+import { getPage, notFoundPage } from '../seo/catalog';
+import { updateMetadata } from '../seo/updateMetadata';
 
 export function ProfilePage() {
+  const path = usePath();
   const { activeTab, selectTab, projectId, postId, aboutSection, blogId } = useProfileTab();
   const project = projects.find((item) => item.id === projectId);
   const blog = blogPosts.find((item) => item.id === blogId);
@@ -23,10 +26,8 @@ export function ProfilePage() {
   const [bioRequest, setBioRequest] = useState(0);
 
   useEffect(() => {
-    const sectionTitle = profileTabs.find((tab) => tab.id === activeTab)?.label;
-    document.title = blog ? `${blog.title} | ${profile.name}` : project ? `${project.title} | ${profile.name}` : activeTab === 'posts' ? `${profile.name} | ${profile.title}` : `${sectionTitle} | ${profile.name}`;
-    document.querySelector('meta[name="description"]')?.setAttribute('content', blog?.excerpt ?? project?.description ?? profile.bio);
-  }, [activeTab, blog, project]);
+    updateMetadata(getPage(path) ?? notFoundPage);
+  }, [path]);
 
   useEffect(() => {
     if (!project && previousProject.current && activeTab === 'projects') {
@@ -45,6 +46,9 @@ export function ProfilePage() {
     }
     previousBlog.current = blog?.id;
   }, [blog, activeTab]);
+
+  const photoDemo = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('photo-demo') && postId?.startsWith('photo-demo');
+  if (!getPage(path) && !photoDemo) return <section className="rounded-lg border border-gray-200 bg-white p-6"><h1 className="text-2xl font-bold">Page not found</h1><p className="mt-3 text-gray-600">This page may have moved, or the link may be incorrect.</p><a href="/" className="mt-4 inline-block text-brand hover:underline">Back to Ronan’s portfolio</a></section>;
 
   return (
     <>

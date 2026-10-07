@@ -30,7 +30,7 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
   const copyLink = async () => {
     if (options.current) options.current.open = false;
     try {
-      await navigator.clipboard.writeText(`${window.location.href.split('#')[0]}#posts${post.preview ? '' : `/${post.id}`}`);
+      await navigator.clipboard.writeText(`${window.location.origin}${post.preview ? '/' : `/posts/${post.id}`}`);
       setStatus(post.preview ? 'Feed link copied. This preview stays in your browser.' : 'Post link copied!');
     } catch {
       setStatus('Could not copy the link. Try copying it from your address bar.');
@@ -47,7 +47,7 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
               <h3 className="text-sm font-semibold">{post.preview ? 'You' : profile.name}</h3>
               {!post.preview && <img src={profile.badge} alt="Profile badge" className="h-3.5 w-3.5" />}
               <span aria-hidden="true" className="text-xs text-gray-500">•</span>
-              <time dateTime={post.publishedAt} className="text-xs text-gray-500">{post.publishedAt.length <= 10 ? formatBlogDate(post.publishedAt) : new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+              <a href={post.preview ? '/' : `/posts/${post.id}`} className="text-xs text-gray-500 hover:underline"><time dateTime={post.publishedAt}>{post.publishedAt.length <= 10 ? formatBlogDate(post.publishedAt) : new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time></a>
             </div>
             <p className="line-clamp-1 text-xs text-gray-500">{post.preview ? 'Local preview · visible only to you' : profile.title}</p>
           </div>
@@ -63,7 +63,7 @@ export function PostCard({ post, liked, onLike }: { post: Post; liked: boolean; 
       <PostMedia post={post} />
       {project && <ProjectPostPreview project={project} />}
       {blog && (
-        <a href={`#blog/${blog.id}`} className="group mt-3 flex gap-4 rounded-lg border border-gray-200 p-4 text-left transition-colors hover:bg-gray-50">
+        <a href={`/blog/${blog.id}`} className="group mt-3 flex gap-4 rounded-lg border border-gray-200 p-4 text-left transition-colors hover:bg-gray-50">
           <div className="min-w-0 flex-1">
             <h4 className="line-clamp-2 text-base font-bold text-gray-900 transition-colors group-hover:text-brand">{blog.title}</h4>
             <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-gray-600">{blog.excerpt}</p>

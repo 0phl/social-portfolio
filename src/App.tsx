@@ -2,8 +2,10 @@ import type { MouseEvent } from 'react';
 import { TopBar } from './components/layout/TopBar';
 import { ProfilePage } from './pages/ProfilePage';
 import { ChatProvider } from './chat/ChatProvider';
+import { Router } from './routing/Router';
+import { navigate } from './routing/navigation';
 
-export function App() {
+export function App({ path = '/' }: { path?: string }) {
   const focusContent = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     const content = document.getElementById('main-content');
@@ -12,7 +14,7 @@ export function App() {
   };
 
   return (
-    <ChatProvider>
+    <Router path={path}><ChatProvider>
       <a
         href="#main-content"
         onClick={focusContent}
@@ -21,7 +23,8 @@ export function App() {
         Skip to content
       </a>
       <TopBar onHomeClick={(event) => {
-        window.location.hash = 'posts';
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        navigate('/');
         focusContent(event);
       }} />
       <main
@@ -31,6 +34,6 @@ export function App() {
       >
         <ProfilePage />
       </main>
-    </ChatProvider>
+    </ChatProvider></Router>
   );
 }

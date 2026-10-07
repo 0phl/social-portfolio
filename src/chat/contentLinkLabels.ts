@@ -8,9 +8,9 @@ function textOf(node: PhrasingContent): string {
 }
 function labelFor(href: string) {
   const url = approvedLink(href);
-  if (url?.startsWith('/#blog/')) return 'Read blog';
-  if (url?.startsWith('/#posts/')) return 'View post';
-  if (url?.startsWith('/#projects/')) return 'Project details';
+  if (url?.startsWith('/blog/')) return 'Read blog';
+  if (url?.startsWith('/posts/')) return 'View post';
+  if (url?.startsWith('/projects/')) return 'Project details';
   return null;
 }
 

@@ -12,6 +12,7 @@ Built with React, TypeScript, Vite, Tailwind CSS, and Framer Motion. The AI assi
 - Demo likes, comments, bookmarks, sharing, and portfolio update notifications.
 - An AI portfolio assistant with project links, typing indicators, and message sounds.
 - Responsive layouts for desktop and mobile.
+- Prerendered pages, clean URLs, share previews, structured data, and an automatically generated sitemap.
 
 Social interactions are browser-side demos, and engagement counts are sample data. There is no account system. AI messages go to the configured AI service, not directly to me; chat history stays in browser memory until reload.
 
@@ -29,7 +30,7 @@ npm ci
 | --- | --- |
 | `npm run dev` | Frontend development server; the AI chat API is unavailable here. |
 | `npm run dev:chat` | Built frontend and local Worker at http://127.0.0.1:8787, including AI chat. |
-| `npm run build` | Generates assistant content and builds the frontend. |
+| `npm run build` | Generates assistant content, builds the frontend, and prerenders public pages and SEO files. |
 | `npm run preview` | Previews the frontend build only; no chat API. |
 
 For chat, create `.dev.vars.local` from `.dev.vars.example` only if it does not already exist, then add your `DEEPSEEK_API_KEY` privately. Keep the supplied local Turnstile testing values. Never commit real keys or put them in a `VITE_` variable.
@@ -46,9 +47,10 @@ Open **http://127.0.0.1:8787**. No deployment is needed. Live replies use API qu
 | --- | --- |
 | `src/components/`, `src/pages/`, `src/hooks/` | Portfolio UI and navigation. |
 | `src/data/`, `src/content/blog/` | Profile, projects, posts, and blog content. |
+| `src/routing/`, `src/seo/` | Navigation, public page catalog, metadata, and prerendering. |
 | `src/chat/` | Browser chat state, streaming, safe links, and shared knowledge generation. |
-| `worker/` | Chat API, provider adapters, request protection, and assistant instructions. |
-| `scripts/` | Generates the assistant reference from published portfolio content. |
+| `worker/` | Page delivery, redirects, chat API, provider adapters, and request protection. |
+| `scripts/` | Generates assistant content and static HTML; validates the SEO output. |
 | `public/` | Images, branding, favicon, and social preview. |
 | `tests/` | Automated tests and human-reviewed live conversation cases. |
 | `docs/` | Assistant guide and implementation notes. |
@@ -63,6 +65,7 @@ npm test
 npm run typecheck
 npm run check:worker
 npm run deploy:dry-run
+npm run check:seo
 ```
 
 These checks need no AI key or API quota. The dry run builds both the frontend and Worker without publishing. Live behavior checks are documented in the [assistant guide](docs/ai-assistant.md).
@@ -94,10 +97,16 @@ When setting up your own deployment:
 
 1. Set the real Turnstile site key and allowed portfolio origins in the top-level production configuration in `wrangler.jsonc`.
 2. Store the selected provider key, `TURNSTILE_SECRET_KEY`, and a random `RATE_LIMIT_SALT` as Cloudflare Worker secrets. Local secrets are not uploaded automatically.
-3. Run the checks above, deploy the production Worker, and connect the domain configured in `index.html` and `wrangler.jsonc`.
+3. Run the checks above, deploy the production Worker, and connect the domain configured in `src/routing/paths.ts`, `index.html`, and `wrangler.jsonc`. Replace the canonical host redirect in `worker/index.ts` and sitemap domain in `scripts/prerender.mjs` too.
 4. Check a live chat reply, verification, project links, and mobile layout on the deployed domain.
 
 The production Turnstile widget is configured for the portfolio domains. Chat intentionally stays unavailable if required production protection or secrets are missing. Never deploy the `local` environment or use its testing keys in production. See [production setup](docs/ai-assistant.md#production-setup) for commands and limits. If adapting this repository, replace the account ID, domain routes, allowed origins, and public Turnstile site key with your own values.
+
+## SEO
+
+Every build creates HTML for published projects, blog articles, posts, and profile sections, along with page-specific metadata, structured data, `robots.txt`, and `sitemap.xml`. New published content is included automatically. Old `/#projects/...` and other hash links still open the correct page; new links use paths such as `/projects/lms-billing`.
+
+After deployment, verify the domain in Google Search Console and submit `https://ronandelacruz.com/sitemap.xml`. This account setup is separate from the code. See [SEO implementation and checks](docs/seo.md).
 
 ## Make it yours
 

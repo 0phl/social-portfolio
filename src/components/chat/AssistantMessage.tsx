@@ -18,7 +18,7 @@ export function AssistantMessage({ text, onNavigate }: { text: string; onNavigat
       a: ({ href, children }) => {
         const url = href && approvedLink(href);
         if (!url) return <span>{children}</span>;
-        return url.startsWith('/#') ? <a href={url} className="text-brand underline underline-offset-2" onClick={(event) => { event.preventDefault(); onNavigate(url); }}>{children}</a> : <a href={url} target="_blank" rel="noopener noreferrer" className="text-brand underline underline-offset-2">{children}</a>;
+        return url.startsWith('/') ? <a href={url} className="text-brand underline underline-offset-2" onClick={(event) => { event.preventDefault(); onNavigate(url); }}>{children}</a> : <a href={url} target="_blank" rel="noopener noreferrer" className="text-brand underline underline-offset-2">{children}</a>;
       },
     }}>{text}</Markdown>
   </div>;

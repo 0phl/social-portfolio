@@ -6,11 +6,12 @@ import { PostCard } from './PostCard';
 import { createPhotoDemo } from '../../data/photoDemo';
 
 export function FeedTab({ postId }: { postId?: string }) {
-  const [previews, setPreviews] = useState<Post[]>(() => {
+  const [previews, setPreviews] = useState<Post[]>([]);
+  useEffect(() => {
     const sample = new URLSearchParams(window.location.search).get('photo-demo');
-    if (sample === '5' || sample === '10') return [createPhotoDemo(sample === '5' ? 5 : 10)];
-    return sample === '1' || sample === '3' ? [createPhotoDemo()] : [];
-  });
+    if (sample === '5' || sample === '10') setPreviews([createPhotoDemo(sample === '5' ? 5 : 10)]);
+    else if (sample === '1' || sample === '3') setPreviews([createPhotoDemo()]);
+  }, []);
   const [likes, setLikes] = useState<Record<string, boolean>>({});
   const [sort, setSort] = useState('recent');
   const [composing, setComposing] = useState(false);
@@ -18,7 +19,7 @@ export function FeedTab({ postId }: { postId?: string }) {
   const editor = useRef<HTMLTextAreaElement>(null);
   const composeButton = useRef<HTMLButtonElement>(null);
   const reduceMotion = useReducedMotion();
-  const visible = [...posts, ...previews].sort((a, b) => {
+  const visible = [...posts, ...previews].filter(post => !postId || post.id === postId).sort((a, b) => {
     const score = sort === 'top' ? (b.engagement?.likes ?? 0) + Number(Boolean(likes[b.id])) - (a.engagement?.likes ?? 0) - Number(Boolean(likes[a.id])) : 0;
     return score || Date.parse(b.publishedAt) - Date.parse(a.publishedAt);
   });
@@ -43,6 +44,8 @@ export function FeedTab({ postId }: { postId?: string }) {
     <>
       <h2 className="sr-only">Posts</h2>
     <div className="space-y-4">
+      {postId && <a href="/" className="inline-flex min-h-11 items-center text-sm font-medium text-brand hover:underline">← All posts</a>}
+      {!postId && <>
       <div className="rounded-lg border border-gray-200 bg-white p-4">
         <div className="flex items-center gap-3">
           <VisitorAvatar size="medium" />
@@ -81,8 +84,9 @@ export function FeedTab({ postId }: { postId?: string }) {
           <option value="recent">Recent</option>
         </select>
       </div>
+      </>}
       {visible.map((post) => (
-        <motion.div key={post.id} initial={reduceMotion || postId ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: 'spring', stiffness: 300, damping: 24 }}>
+        <motion.div key={post.id} initial={post.preview && !reduceMotion && !postId ? { opacity: 0, y: 20 } : false} animate={{ opacity: 1, y: 0 }} transition={{ type: 'spring', stiffness: 300, damping: 24 }}>
           <PostCard post={post} liked={Boolean(likes[post.id])} onLike={() => setLikes((previous) => ({ ...previous, [post.id]: !previous[post.id] }))} />
         </motion.div>
       ))}

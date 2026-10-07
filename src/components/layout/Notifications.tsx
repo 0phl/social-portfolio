@@ -8,10 +8,10 @@ import { projects } from '../../data/projects';
 
 const author = profile.name.split(' ')[0];
 const notifications = [
-  ...blogPosts.map((post) => ({ id: `blog-${post.id}`, title: post.title, activity: `${author} published a blog`, date: post.publishedAt, href: `#blog/${post.id}` })),
+  ...blogPosts.map((post) => ({ id: `blog-${post.id}`, title: post.title, activity: `${author} published a blog`, date: post.publishedAt, href: `/blog/${post.id}` })),
   ...posts.filter((post) => !post.preview && !post.blogPostId).map((post) => {
     const project = projects.find((item) => item.id === post.projectId);
-    return { id: `post-${post.id}`, title: project?.title ?? post.title ?? post.content.split('\n')[0], activity: `${author} ${project ? 'shared a project' : 'posted an update'}`, date: post.publishedAt, href: project ? `#projects/${project.id}` : `#posts/${post.id}` };
+    return { id: `post-${post.id}`, title: project?.title ?? post.title ?? post.content.split('\n')[0], activity: `${author} ${project ? 'shared a project' : 'posted an update'}`, date: post.publishedAt, href: project ? `/projects/${project.id}` : `/posts/${post.id}` };
   }),
 ].sort((a, b) => b.date.localeCompare(a.date));
 
@@ -36,7 +36,7 @@ function loadReadIds() {
 
 export function Notifications() {
   const [open, setOpen] = useState(false);
-  const [read, setRead] = useState(loadReadIds);
+  const [read, setRead] = useState(() => new Set<string>());
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
   const container = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -55,6 +55,7 @@ export function Notifications() {
   };
 
   useEffect(() => {
+    setRead(loadReadIds());
     const syncRead = (event: StorageEvent) => {
       if (event.key === readStorageKey || event.key === null) setRead(loadReadIds());
     };
@@ -70,11 +71,11 @@ export function Notifications() {
     const closeOnNavigation = () => setOpen(false);
     document.addEventListener('pointerdown', closeOutside);
     document.addEventListener('focusin', closeOutside);
-    window.addEventListener('hashchange', closeOnNavigation);
+    window.addEventListener('popstate', closeOnNavigation);
     return () => {
       document.removeEventListener('pointerdown', closeOutside);
       document.removeEventListener('focusin', closeOutside);
-      window.removeEventListener('hashchange', closeOnNavigation);
+      window.removeEventListener('popstate', closeOnNavigation);
     };
   }, [open]);
 
