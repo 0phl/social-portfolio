@@ -19,6 +19,12 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    id: 'welcome-to-my-portfolio',
+    title: 'Welcome to my portfolio',
+    publishedAt: '2026-10-07',
+    content: "Hello guys, welcome to my portfolio! 👋\n\nThis is where I share my projects, things I'm learning, and a bit of my journey in IT. Feel free to look around!\n\nYou can also try the chatbot to ask about my work, or just see how it replies haha. Thanks for stopping by!",
+  },
+  {
     id: 'automating-lms-provisioning',
     title: 'Automating LMS provisioning with Ansible',
     publishedAt: '2026-03',
