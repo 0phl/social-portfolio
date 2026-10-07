@@ -18,6 +18,7 @@
   "observability": { "enabled": false },
   "env": {
     "local": {
+      "routes": [],
       "vars": { "APP_ENV": "local", "AI_PROVIDER": "deepseek", "AI_MODEL": "deepseek-flash", "ALLOWED_ORIGINS": "http://127.0.0.1:8787,http://localhost:8787", "TURNSTILE_SITE_KEY": "1x00000000000000000000AA", "CHAT_DAILY_NETWORK_LIMIT": "50", "CHAT_DAILY_SITE_LIMIT": "1000" },
       "durable_objects": { "bindings": [{ "name": "CHAT_QUOTA", "class_name": "ChatQuota" }] },
       "ratelimits": [{ "name": "CHAT_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 10, "period": 60 } }]
