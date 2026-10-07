@@ -47,8 +47,7 @@ export function ProfilePage() {
     previousBlog.current = blog?.id;
   }, [blog, activeTab]);
 
-  const photoDemo = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('photo-demo') && postId?.startsWith('photo-demo');
-  if (!getPage(path) && !photoDemo) return <section className="rounded-lg border border-gray-200 bg-white p-6"><h1 className="text-2xl font-bold">Page not found</h1><p className="mt-3 text-gray-600">This page may have moved, or the link may be incorrect.</p><a href="/" className="mt-4 inline-block text-brand hover:underline">Back to Ronan’s portfolio</a></section>;
+  if (!getPage(path)) return <section className="rounded-lg border border-gray-200 bg-white p-6"><h1 className="text-2xl font-bold">Page not found</h1><p className="mt-3 text-gray-600">This page may have moved, or the link may be incorrect.</p><a href="/" className="mt-4 inline-block text-brand hover:underline">Back to Ronan’s portfolio</a></section>;
 
   return (
     <>

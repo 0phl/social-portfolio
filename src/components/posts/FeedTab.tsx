@@ -3,15 +3,9 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { VisitorAvatar } from '../shared/VisitorAvatar';
 import { posts, type Post } from '../../data/posts';
 import { PostCard } from './PostCard';
-import { createPhotoDemo } from '../../data/photoDemo';
 
 export function FeedTab({ postId }: { postId?: string }) {
   const [previews, setPreviews] = useState<Post[]>([]);
-  useEffect(() => {
-    const sample = new URLSearchParams(window.location.search).get('photo-demo');
-    if (sample === '5' || sample === '10') setPreviews([createPhotoDemo(sample === '5' ? 5 : 10)]);
-    else if (sample === '1' || sample === '3') setPreviews([createPhotoDemo()]);
-  }, []);
   const [likes, setLikes] = useState<Record<string, boolean>>({});
   const [sort, setSort] = useState('recent');
   const [composing, setComposing] = useState(false);
@@ -64,9 +58,6 @@ export function FeedTab({ postId }: { postId?: string }) {
               <div className="pt-4">
                 <textarea ref={editor} aria-label="Write a post" placeholder="What would you like to share?" rows={4} value={draft} onChange={(event) => setDraft(event.target.value)} className="w-full resize-y rounded-lg border border-gray-200 p-3 text-sm focus:outline-brand" />
                 <p className="mt-2 text-xs text-gray-500">Try a local preview. It won't be published and will reset when you reload.</p>
-                <div className="mt-2 flex flex-wrap gap-x-4">
-                  {([3, 5, 10] as const).map((count) => <button key={count} type="button" onClick={() => { const sample = createPhotoDemo(count); setPreviews((previous) => [sample, ...previous.filter((post) => post.id !== sample.id)]); setSort('recent'); closeComposer(); }} className="min-h-11 text-sm font-medium text-brand hover:underline">Try a sample with {count} photos</button>)}
-                </div>
                 <div className="mt-3 flex justify-end gap-2">
                   <button type="button" onClick={closeComposer} className="min-h-11 rounded-full border border-gray-300 px-4 text-sm text-gray-700 hover:bg-gray-50">Cancel</button>
                   <button type="submit" disabled={!draft.trim()} className="min-h-11 rounded-full bg-brand px-4 text-sm font-medium text-white hover:bg-brand-hover disabled:opacity-50">Preview post</button>

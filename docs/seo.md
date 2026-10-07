@@ -18,7 +18,7 @@ Profile pages use Person/ProfilePage structured data; articles use BlogPosting a
 
 The Worker serves each page's generated HTML and returns HTTP 404 for unknown pages. It redirects `www` to `ronandelacruz.com`, normalizes trailing slashes and `/index.html`, and retains legacy aliases. Old hash links migrate in the browser because URL fragments are never sent to the server.
 
-Navigation and chatbot links use clean paths. Client navigation updates the title, canonical URL, metadata, and structured data. Local photo-demo query URLs have an `X-Robots-Tag: noindex` response header and stay out of the sitemap.
+Navigation and chatbot links use clean paths. Client navigation updates the title, canonical URL, metadata, and structured data. Legacy photo-demo query URLs retain an `X-Robots-Tag: noindex` response header and stay out of the sitemap; they no longer load sample posts.
 
 The Worker runs before assets to apply routing and canonical-host redirects; these requests count toward Workers request usage. Public files are still delivered through the Static Assets binding. Chat protections and quotas are unchanged.
 
