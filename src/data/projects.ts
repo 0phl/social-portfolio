@@ -26,6 +26,77 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'inuman',
+    title: 'Inuman',
+    category: '3D party games',
+    type: 'personal',
+    description: 'A mobile-first collection of 13 drinking and party games I built for the barkada. One phone is passed around the table, with a 3D bar setting, interactive cards and dice, physics-based throws, and prompts in Taglish or English. It brings game rules, player turns, custom content, and feedback together in an installable web app.',
+    contribution: {
+      title: 'Developer',
+      description: 'I built the game engine, React interface, 3D scenes, physics integration, and offline support. The project gave me room to work on deterministic game logic, touch interactions, browser storage, and mobile rendering performance within one application.',
+    },
+    note: 'An 18+ personal project with non-alcoholic play, configurable sip caps, and water reminders. Games run locally on one shared device; online multiplayer is not implemented.',
+    images: projectImages.inuman,
+    website: 'https://inuman.vercel.app/',
+    repository: 'https://github.com/0phl/inuman',
+    highlights: [
+      '13 pass-and-play games with interactive 3D scenes.',
+      'Taglish and English prompts, custom packs, and house rules.',
+      'Installable PWA with offline caching and local player settings.',
+    ],
+    featureGroups: [
+      {
+        title: 'Thirteen games on one device',
+        items: [
+          "Card games include Higher or Lower, King's Cup, and Ride the Bus. Dice games include Mexico, Liar's Dice, and Ship, Captain & Crew.",
+          'Beer Pong, Flip Cup, and Quarters provide skill-based interactions. Spin the Bottle, Truth or Dare, Never Have I Ever, and Most Likely To round out the party games.',
+          'Players can be added by name, renamed, reordered, or marked as sitting out. Private-turn covers help keep hidden information from the next person holding the phone.',
+        ],
+      },
+      {
+        title: 'Game logic & physics',
+        items: [
+          'A pure TypeScript core separates rules and state transitions from React and 3D rendering. Each game defines its setup, action validation, reducer, and player-specific view of hidden information.',
+          'Sessions store seeded random-number state for reproducible outcomes. Dice animations present the result selected by the game logic, while physics determines throw outcomes for Beer Pong and Quarters.',
+          'Rapier simulations run in a Web Worker, with a main-thread fallback when workers are unavailable. The interface replays simulation results to keep the physics work separate from rendering.',
+        ],
+      },
+      {
+        title: 'Bilingual prompts & customization',
+        items: [
+          'The interface supports Taglish and English. Built-in prompt packs carry both languages and can be filtered by content intensity, with adult prompts requiring opt-in.',
+          'A prompt-pack editor supports custom content stored in IndexedDB. Packs, house rules, and themes can be shared through compressed links, QR codes, or files, with validation and an import preview before saving.',
+          'House-rule forms are generated from game schemas. Players can also customize card backs, table felt, dice finishes, and cup colors.',
+        ],
+      },
+      {
+        title: '3D presentation & mobile performance',
+        items: [
+          'Three.js, React Three Fiber, and Drei render the bar environment and game props through one persistent canvas, avoiding repeated WebGL context creation between games.',
+          'On-demand rendering, lazy loading, and lobby warm-up reduce unnecessary work. High, Mid, Low, and automatic quality options provide control over rendering on different devices.',
+          'Sound effects, background music, and supported-device haptics provide feedback. Volume controls and visual theme settings let players adjust the experience.',
+        ],
+      },
+      {
+        title: 'Local storage & offline play',
+        items: [
+          'Zustand manages application state, with browser persistence for settings and player information and IndexedDB for custom prompt packs.',
+          'A service worker precaches the app shell and sound effects. Models, textures, and music use runtime caching, so those assets need to be loaded online before they are available offline.',
+          'The app can be installed to a supported device\'s home screen and is hosted on Vercel. Gameplay does not require an account or a game server.',
+        ],
+      },
+      {
+        title: 'Play settings & validation',
+        items: [
+          'Shared drink-resolution logic applies multipliers, sip or tagay units, per-turn limits, and non-alcoholic settings consistently across games. Players can disable finish-drink instructions and configure water reminders.',
+          'The repository includes Vitest and fast-check tests for game logic and supporting utilities, plus Playwright flows using mobile browser emulation.',
+          'Dedicated dice and throw simulation checks sit alongside an in-app performance benchmark for frame times and draw calls across game scenes.',
+        ],
+      },
+    ],
+    technologies: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Three.js', 'React Three Fiber', 'Drei', 'Rapier', 'Web Workers', 'Zustand', 'Zod', 'i18next', 'IndexedDB', 'Browser Local Storage', 'PWA', 'Workbox', 'Vitest', 'fast-check', 'Playwright', 'Vercel'],
+  },
+  {
     id: 'moodle-support-chatbot',
     title: 'Moodle LMS Support Chatbot',
     category: 'Seaversity LMS integration',

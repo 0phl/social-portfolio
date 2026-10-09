@@ -1,4 +1,12 @@
 {
+  "inuman": [
+    {
+      "src": "/images/projects/inuman/home.png",
+      "alt": "Inuman home screen with a warm brown background, gold title, Pick a Game button, player list, prompt packs, and settings.",
+      "width": 1914,
+      "height": 937
+    }
+  ],
   "pulse-promotional": [
     {
       "src": "/images/projects/pulse-promotional/landing.png",

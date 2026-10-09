@@ -5,13 +5,16 @@ import { ProjectGallery } from '../components/projects/ProjectGallery';
 import { ProjectImagePlaceholder } from '../components/projects/ProjectImagePlaceholder';
 
 const stackCategories = [
-  { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui', 'Framer Motion', 'React Markdown', 'Lucide'] },
+  { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui', 'Framer Motion', 'React Markdown', 'Lucide', 'Zustand', 'i18next'] },
+  { label: '3D & physics', items: ['Three.js', 'React Three Fiber', 'Drei', 'Rapier', 'Web Workers'] },
+  { label: 'Offline support', items: ['PWA', 'Workbox'] },
   { label: 'Mobile', items: ['Flutter', 'Dart'] },
-  { label: 'Backend', items: ['Laravel', 'Express', 'PHP', 'NestJS', 'Node.js', 'Zod', 'pg-boss', 'n8n'] },
+  { label: 'Backend', items: ['Laravel', 'Express', 'PHP', 'NestJS', 'Node.js', 'pg-boss', 'n8n'] },
+  { label: 'Validation', items: ['Zod'] },
   { label: 'Data', items: ['MySQL', 'Firebase', 'IndexedDB', 'PostgreSQL', 'Prisma', 'MinIO', 'Drizzle ORM', 'Durable Objects', 'SQLite', 'Browser Local Storage', 'Pinecone'] },
   { label: 'Integrations & files', items: ['Moodle Web Services', 'PDFKit', 'Nodemailer', 'Sharp', 'write-excel-file', 'Cloudflare Turnstile', 'Moodle', 'REST APIs'] },
   { label: 'Deployment', items: ['Docker Compose', 'Nginx', 'Rocky Linux', 'NPMplus', 'Cloudflare', 'Cloudflare Workers', 'Wrangler', 'Vercel'] },
-  { label: 'Development & testing', items: ['Vitest', 'pnpm', 'Turborepo', 'PGlite', 'Vite', 'React Testing Library'] },
+  { label: 'Development & testing', items: ['Vitest', 'pnpm', 'Turborepo', 'PGlite', 'Vite', 'React Testing Library', 'fast-check', 'Playwright'] },
   { label: 'AI', items: ['Google Gemini', 'LLM Integration', 'RAG'] },
   { label: 'Maps', items: ['Leaflet.js'] },
 ];
