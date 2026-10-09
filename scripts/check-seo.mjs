@@ -20,13 +20,26 @@ for (const path of routes) {
   assert.equal(doc.querySelector('link[rel="canonical"]').href, `https://ronandelacruz.com${path}`);
   assert.equal(doc.querySelector('meta[property="og:title"]').content, doc.title);
   assert.ok(doc.querySelector('meta[name="description"]').content.length > 20);
-  assert.ok(JSON.parse(doc.querySelector('#page-schema').textContent)['@type']);
+  const schema = JSON.parse(doc.querySelector('#page-schema').textContent);
+  assert.ok(schema['@type']);
+  assert.ok(!['SocialMediaPosting', 'DiscussionForumPosting'].includes(schema['@type']), `${path}: personal content must not use forum markup`);
   if (path === '/projects') {
     for (const card of doc.querySelectorAll('#project-results > div')) assert.notEqual(card.style.opacity, '0');
   }
   if (path === '/projects/lms-billing') assert.equal(doc.querySelector('h1').textContent, 'LMS Billing');
   if (path === '/blog/starting-before-i-felt-ready') assert.equal(doc.querySelector('h1').textContent, 'Starting before I felt ready');
-  if (path.startsWith('/posts/')) assert.equal(doc.querySelectorAll('article[id^="post-"]').length, 1);
+  if (path.startsWith('/posts/')) {
+    assert.equal(doc.querySelectorAll('article[id^="post-"]').length, 1);
+    assert.equal(schema['@type'], 'BlogPosting');
+    assert.equal(schema.url, `https://ronandelacruz.com${path}`);
+    assert.equal(schema.mainEntityOfPage, schema.url);
+    assert.ok(schema.articleBody);
+    assert.equal(schema.interactionStatistic, undefined, 'Demo engagement must not enter structured data');
+    if (schema.datePublished) {
+      const visibleDate = doc.querySelector('article[id^="post-"] time');
+      assert.equal(schema.datePublished, visibleDate?.getAttribute('datetime'), `${path}: publication date must match visible content`);
+    }
+  }
   if (path === '/about') {
     const details = doc.querySelectorAll('[id^="details-seaversity-"]');
     assert.ok(details.length > 0);

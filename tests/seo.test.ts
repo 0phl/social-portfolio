@@ -5,8 +5,27 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AboutTab } from '../src/components/profile/AboutTab';
 import { experience } from '../src/data/about';
+import { posts } from '../src/data/posts';
 
 describe('public SEO routes', () => {
+  it.each(posts.filter(post => !post.preview))('describes $id as a personal blog update with its own URL', (post) => {
+    const path = `/posts/${post.id}`;
+    const page = getPage(path)!;
+    const json = renderHead(page).match(/<script id="page-schema" type="application\/ld\+json">(.*?)<\/script>/s)![1];
+    const schema = JSON.parse(json);
+    expect(schema['@type']).toBe('BlogPosting');
+    expect(schema.url).toBe(`https://ronandelacruz.com${path}`);
+    expect(schema.mainEntityOfPage).toBe(schema.url);
+    expect(schema.author.url).toBe('https://ronandelacruz.com/');
+    expect(schema.articleBody).toBeTruthy();
+    if (post.publishedAt.length === 10) {
+      expect(schema.datePublished).toBe(post.publishedAt);
+    } else {
+      expect(schema).not.toHaveProperty('datePublished');
+    }
+    expect(schema).not.toHaveProperty('interactionStatistic');
+    expect(schema).not.toHaveProperty('comment');
+  });
   it('includes collapsed experience details in the initial HTML', () => {
     const html = renderToStaticMarkup(createElement(AboutTab, { active: true, bioRequest: 0 }));
     for (const role of experience) {

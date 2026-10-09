@@ -42,7 +42,8 @@ export const pages: PageMetadata[] = [
     const title = post.title ?? (post.content.split('\n')[0] || blog?.title || 'Portfolio update');
     const page = base(`/posts/${post.id}`, `${title} — Post | ${profile.name}`, post.content || blog?.excerpt || profile.bio);
     const image = post.images?.[0] ?? project?.images[0] ?? blog?.cover;
-    return { ...page, ...(image ? { image: absolute(image.src), imageAlt: image.alt } : {}), type: 'article' as const, schema: { '@context': 'https://schema.org', '@type': 'SocialMediaPosting', headline: title, articleBody: post.content || blog?.excerpt, author: person, mainEntityOfPage: absolute(page.path), ...(post.publishedAt.length === 10 ? { datePublished: post.publishedAt } : {}) } };
+    // These are Ronan's own updates, not user-generated forum discussions.
+    return { ...page, ...(image ? { image: absolute(image.src), imageAlt: image.alt } : {}), type: 'article' as const, schema: { '@context': 'https://schema.org', '@type': 'BlogPosting', url: absolute(page.path), headline: title, articleBody: post.content || blog?.excerpt, author: person, mainEntityOfPage: absolute(page.path), ...(post.publishedAt.length === 10 ? { datePublished: post.publishedAt } : {}) } };
   }),
 ];
 export const notFoundPage: PageMetadata = { ...base('/404', `Page not found | ${profile.name}`, 'This page could not be found. Explore Ronan’s projects, posts, and blog.'), noindex: true };
