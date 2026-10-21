@@ -1,4 +1,30 @@
 {
+  "ronan-launcher": [
+    {
+      "src": "/images/projects/ronan-launcher/hero.png",
+      "alt": "Ronan Launcher with its dark library editor and compact command search window.",
+      "width": 2560,
+      "height": 1600
+    },
+    {
+      "src": "/images/projects/ronan-launcher/launcher.png",
+      "alt": "The launcher searching for Moodle cache commands extracted from runbook notes.",
+      "width": 1520,
+      "height": 960
+    },
+    {
+      "src": "/images/projects/ronan-launcher/notes.png",
+      "alt": "The runbook editor showing organized notes and command blocks with Copy and Paste actions.",
+      "width": 2360,
+      "height": 1520
+    },
+    {
+      "src": "/images/projects/ronan-launcher/library-light.png",
+      "alt": "Ronan Launcher's light theme with an SSH connection editor and masked password field.",
+      "width": 2360,
+      "height": 1520
+    }
+  ],
   "inuman": [
     {
       "src": "/images/projects/inuman/home.png",

@@ -5,7 +5,9 @@ import { ProjectGallery } from '../components/projects/ProjectGallery';
 import { ProjectImagePlaceholder } from '../components/projects/ProjectImagePlaceholder';
 
 const stackCategories = [
-  { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui', 'Framer Motion', 'React Markdown', 'Lucide', 'Zustand', 'i18next'] },
+  { label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Bootstrap', 'shadcn/ui', 'Framer Motion', 'React Markdown', 'Lucide', 'Zustand', 'i18next', 'Radix UI', 'Tiptap', 'Fuse.js'] },
+  { label: 'Desktop', items: ['Tauri', 'Rust', 'Windows APIs', 'NSIS'] },
+  { label: 'Encryption', items: ['Windows DPAPI', 'Argon2id', 'AES-256-GCM'] },
   { label: '3D & physics', items: ['Three.js', 'React Three Fiber', 'Drei', 'Rapier', 'Web Workers'] },
   { label: 'Offline support', items: ['PWA', 'Workbox'] },
   { label: 'Mobile', items: ['Flutter', 'Dart'] },
