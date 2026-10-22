@@ -10,7 +10,7 @@ Built with React, TypeScript, Vite, Tailwind CSS, and Framer Motion. The AI assi
 - Professional, freelance, and personal projects with screenshots and detail pages.
 - Markdown blog posts and a social post feed.
 - Demo likes, comments, bookmarks, sharing, and portfolio update notifications.
-- An AI portfolio assistant with project links, typing indicators, message sounds, and a floating chat button on every page.
+- An AI portfolio assistant with project links, typing indicators, message sounds, and a welcome notification.
 - Responsive layouts for desktop and mobile.
 - Prerendered pages, clean URLs, share previews, structured data, and an automatically generated sitemap.
 

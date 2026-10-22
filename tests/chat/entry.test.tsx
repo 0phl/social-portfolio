@@ -7,7 +7,7 @@ import { useChatEntry } from '../../src/chat/useChatEntry';
 vi.mock('../../src/components/profile/MessagePanel', () => ({ MessagePanel: ({ onClose }: { onClose: () => void }) => <div role="dialog"><p>Existing conversation</p><button onClick={onClose}>Close messages</button></div> }));
 function ProfileButton() {
   const { openChat, unread } = useChatEntry();
-  return <button onClick={(event) => openChat(event.currentTarget)}>Message{unread ? ' (1)' : ''}</button>;
+  return <button id="profile-message" onClick={(event) => openChat(event.currentTarget)}>Message{unread ? ' (1)' : ''}</button>;
 }
 function mount() { return render(<ChatEntryProvider><ProfileButton /></ChatEntryProvider>); }
 beforeEach(() => { vi.useFakeTimers(); vi.stubGlobal('fetch', vi.fn()); });
@@ -15,6 +15,7 @@ afterEach(() => { cleanup(); sessionStorage.clear(); localStorage.clear(); vi.us
 
 it('shows a delayed welcome without making any API request and clears unread on opening', () => {
   mount();
+  expect(screen.queryByRole('button', { name: /Chat with Ronan's AI assistant/ })).toBeNull();
   expect(screen.queryByRole('button', { name: 'Open chat' })).toBeNull();
   act(() => vi.advanceTimersByTime(4000));
   expect(screen.getByRole('button', { name: 'Message (1)' })).toBeTruthy();
@@ -33,10 +34,11 @@ it('does not repeat a dismissed welcome after remounting but keeps chat accessib
   const view = mount();
   act(() => vi.advanceTimersByTime(4000));
   fireEvent.click(screen.getByRole('button', { name: 'Dismiss welcome' }));
+  expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Message (1)' }));
   view.unmount(); mount();
   act(() => vi.advanceTimersByTime(10000));
   expect(screen.queryByText(/Want a quick tour/)).toBeNull();
-  fireEvent.click(screen.getByRole('button', { name: /Chat with Ronan's AI assistant/ }));
+  fireEvent.click(screen.getByRole('button', { name: 'Message (1)' }));
   expect(screen.getByRole('dialog')).toBeTruthy();
 });
 

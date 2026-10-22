@@ -85,6 +85,7 @@ export function ProfileHeader() {
               </AnimatePresence>
             </div>
             <button
+              id="profile-message"
               type="button"
               onClick={(event) => openChat(event.currentTarget)}
               aria-label={unread ? 'Message, 1 unread welcome from Ronan’s AI assistant' : 'Message'}
