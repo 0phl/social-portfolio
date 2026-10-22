@@ -2,20 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { CheckIcon, GithubIcon, LinkedinIcon, MapPinIcon, MoreHorizontalIcon } from 'lucide-react';
 import { profile } from '../../data/profile';
-import { MessagePanel } from './MessagePanel';
-import { navigateFromChat } from '../../chat/navigation';
+import { useChatEntry } from '../../chat/useChatEntry';
 
 export function ProfileHeader() {
   const reduceMotion = useReducedMotion();
   const [isFollowing, setIsFollowing] = useState(false);
   const [hoveringFollow, setHoveringFollow] = useState(false);
-  const [messageOpen, setMessageOpen] = useState(false);
+  const { openChat, unread } = useChatEntry();
   const [menuOpen, setMenuOpen] = useState(false);
   const [status, setStatus] = useState('');
   const menu = useRef<HTMLDivElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
-  const messageButton = useRef<HTMLButtonElement>(null);
-  const chatDestination = useRef<string | null>(null);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -88,12 +85,13 @@ export function ProfileHeader() {
               </AnimatePresence>
             </div>
             <button
-              ref={messageButton}
               type="button"
-              onClick={() => setMessageOpen(true)}
-              className="inline-flex min-h-11 items-center justify-center rounded-full border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 sm:min-h-[38px]"
+              onClick={(event) => openChat(event.currentTarget)}
+              aria-label={unread ? 'Message, 1 unread welcome from Ronan’s AI assistant' : 'Message'}
+              className="relative inline-flex min-h-11 items-center justify-center rounded-full border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 sm:min-h-[38px]"
             >
               Message
+              {unread && <span aria-hidden="true" className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 px-1 text-[10px] font-bold text-white">1</span>}
             </button>
             <button
               type="button"
@@ -138,13 +136,6 @@ export function ProfileHeader() {
           </div>
         </div>
       </section>
-      <AnimatePresence onExitComplete={() => {
-        const destination = chatDestination.current; chatDestination.current = null;
-        if (!destination) { requestAnimationFrame(() => messageButton.current?.focus({ preventScroll: true })); return; }
-        navigateFromChat(destination);
-      }}>
-        {messageOpen && <MessagePanel key="messages" onClose={() => setMessageOpen(false)} onNavigate={(url) => { chatDestination.current = url; setMessageOpen(false); }} />}
-      </AnimatePresence>
     </>
   );
 }

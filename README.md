@@ -10,11 +10,13 @@ Built with React, TypeScript, Vite, Tailwind CSS, and Framer Motion. The AI assi
 - Professional, freelance, and personal projects with screenshots and detail pages.
 - Markdown blog posts and a social post feed.
 - Demo likes, comments, bookmarks, sharing, and portfolio update notifications.
-- An AI portfolio assistant with project links, typing indicators, and message sounds.
+- An AI portfolio assistant with project links, typing indicators, message sounds, and a floating chat button on every page.
 - Responsive layouts for desktop and mobile.
 - Prerendered pages, clean URLs, share previews, structured data, and an automatically generated sitemap.
 
 Social interactions are browser-side demos, and engagement counts are sample data. There is no account system. AI messages go to the configured AI service, not directly to me; chat history stays in browser memory until reload.
+
+The assistant shows a dismissible welcome after four seconds, once per browser session, with an unread badge until opened. This preset greeting makes no AI request. Its optional chime respects mute and browser audio restrictions.
 
 ## Run locally
 

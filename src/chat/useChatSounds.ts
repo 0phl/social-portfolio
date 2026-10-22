@@ -60,8 +60,10 @@ export function useChatSounds(messages: Message[]) {
       if (audio) void audio.close().catch(() => undefined);
     };
   }, [silence]);
+  const playReceive = useCallback(() => play('receive'), [play]);
   return {
     soundsEnabled,
+    playReceive,
     playSend: () => prepare(true),
     prepare,
     toggleSounds: () => {

@@ -2,6 +2,7 @@ import type { MouseEvent } from 'react';
 import { TopBar } from './components/layout/TopBar';
 import { ProfilePage } from './pages/ProfilePage';
 import { ChatProvider } from './chat/ChatProvider';
+import { ChatEntryProvider } from './components/chat/ChatEntryProvider';
 import { Router } from './routing/Router';
 import { navigate } from './routing/navigation';
 
@@ -14,7 +15,7 @@ export function App({ path = '/' }: { path?: string }) {
   };
 
   return (
-    <Router path={path}><ChatProvider>
+    <Router path={path}><ChatProvider><ChatEntryProvider>
       <a
         href="#main-content"
         onClick={focusContent}
@@ -34,6 +35,6 @@ export function App({ path = '/' }: { path?: string }) {
       >
         <ProfilePage />
       </main>
-    </ChatProvider></Router>
+    </ChatEntryProvider></ChatProvider></Router>
   );
 }

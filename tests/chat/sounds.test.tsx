@@ -47,3 +47,16 @@ it('does not play a late sound after closing during browser audio activation', a
   await act(async () => { resume(); });
   expect(audio.start).not.toHaveBeenCalled();
 });
+
+it('skips welcome audio without interaction and honors mute after activation', () => {
+  const audio = audioMock();
+  const { result } = renderHook(() => useChatSounds([]));
+  act(() => result.current.playReceive());
+  expect(audio.constructor).not.toHaveBeenCalled();
+  act(() => result.current.prepare());
+  act(() => result.current.playReceive());
+  expect(audio.start).toHaveBeenCalledTimes(2);
+  act(() => result.current.toggleSounds());
+  act(() => result.current.playReceive());
+  expect(audio.start).toHaveBeenCalledTimes(2);
+});
