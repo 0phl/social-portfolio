@@ -1,3 +1,5 @@
+import { launcherBlogCover } from './blog';
+
 export interface PostImage {
   src: string;
   alt: string;
@@ -18,6 +20,15 @@ export interface Post {
 }
 
 export const posts: Post[] = [
+  {
+    id: 'i-knew-the-problem',
+    title: 'I Knew the Problem. AI Helped Me Build the Solution.',
+    publishedAt: '2026-10-26',
+    content: "I told Claude Code how I wanted an app to look and work, and we built it.\n\nThat became Ronan Launcher, a desktop app built around my own workflow.\n\nI wrote about how it started, how I explained what I wanted, and what I learned along the way. You don't have to be a software engineer to start thinking about how AI can help you solve a problem.\n\nRead the full story below.",
+    images: [launcherBlogCover],
+    blogPostId: 'i-knew-the-problem',
+    engagement: { likes: 32, comments: 5, shares: 4 },
+  },
   {
     id: 'welcome-to-my-portfolio',
     title: 'Welcome to my portfolio',

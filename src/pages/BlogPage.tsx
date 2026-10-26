@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { motion, useScroll } from 'framer-motion';
 import { ArrowLeftIcon, CalendarIcon, ClockIcon } from 'lucide-react';
 import { BlogResponses } from '../components/blog/BlogResponses';
@@ -48,7 +49,12 @@ export function BlogPage({ post }: { post: BlogPost }) {
           ) : block.type === 'heading' ? (
             <h2 key={index} className="mb-3 mt-10 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">{block.text}</h2>
           ) : (
-            <p key={index} className="mb-5 text-[17px] leading-[1.75] text-gray-800">{block.text}</p>
+            <ReactMarkdown key={index} components={{
+              p: ({ children }) => <p className="mb-5 text-[17px] leading-[1.75] text-gray-800">{children}</p>,
+              ul: ({ children }) => <ul className="my-6 list-disc space-y-2.5 pl-5 text-[17px] leading-relaxed text-gray-800 marker:text-gray-300">{children}</ul>,
+              a: ({ href, children }) => <a href={href} className="text-brand underline underline-offset-2 hover:text-blue-700">{children}</a>,
+              hr: () => <hr className="my-8 border-gray-200" />,
+            }}>{block.text}</ReactMarkdown>
           ))}
         </div>
         <ul className="mt-10 flex flex-wrap gap-2 border-t border-gray-200 pt-6">
