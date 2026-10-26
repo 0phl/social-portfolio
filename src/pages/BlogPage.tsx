@@ -3,12 +3,14 @@ import ReactMarkdown from 'react-markdown';
 import { motion, useScroll } from 'framer-motion';
 import { ArrowLeftIcon, CalendarIcon, ClockIcon } from 'lucide-react';
 import { BlogResponses } from '../components/blog/BlogResponses';
-import { formatBlogDate, type BlogPost } from '../data/blog';
+import { blogPosts, formatBlogDate, type BlogPost } from '../data/blog';
 import { profile } from '../data/profile';
 
 export function BlogPage({ post }: { post: BlogPost }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const { scrollYProgress } = useScroll();
+  const related = blogPosts.filter((item) => item.id !== post.id)
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 3);
 
   useEffect(() => {
     heading.current?.focus({ preventScroll: true });
@@ -62,6 +64,27 @@ export function BlogPage({ post }: { post: BlogPost }) {
         </ul>
         <BlogResponses key={post.id} postId={post.id} />
       </article>
+      {related.length > 0 && (
+        <section aria-labelledby="related-blogs-heading" className="mb-16 mt-16 border-t border-gray-200 pt-8">
+          <h2 id="related-blogs-heading" className="mb-4 text-sm font-semibold">More blogs</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {related.map((item) => (
+              <a key={item.id} href={`/blog/${item.id}`} className="group min-w-0 rounded-lg text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
+                <div className="aspect-video overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                  <img src={item.cover.src} alt="" width={item.cover.width} height={item.cover.height} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 motion-safe:group-hover:scale-[1.02]" />
+                </div>
+                <h3 className="mt-3 text-sm font-semibold transition-colors group-hover:text-brand">{item.title}</h3>
+                <p className="mt-1 line-clamp-2 text-xs text-gray-600">{item.excerpt}</p>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                  <time dateTime={item.publishedAt}>{formatBlogDate(item.publishedAt)}</time>
+                  <span aria-hidden="true">•</span>
+                  <span>{item.readTime}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }
