@@ -37,6 +37,7 @@ export const projects: Project[] = [
     },
     note: 'A frontend showcase with simulated payments, receipt uploads, voice-note progress, chat, and verification states. These interactions run in browser memory; the project does not connect to payment, messaging, upload, or authentication services.',
     images: projectImages['react-component-showcase'],
+    website: 'https://react-component-showcase-silk.vercel.app',
     repository: 'https://github.com/0phl/react-component-showcase',
     highlights: [
       '31 reusable React components covering calendars, forms, charts, chat, and payment interfaces.',
