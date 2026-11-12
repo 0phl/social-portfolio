@@ -1,4 +1,12 @@
 {
+  "react-component-showcase": [
+    {
+      "src": "/images/projects/react-component-showcase/board.png",
+      "alt": "React Component Showcase with 31 blue-themed interface cards, including a calendar, payment panel, spending chart, chat, sliders, and verification inputs.",
+      "width": 1920,
+      "height": 1440
+    }
+  ],
   "ronan-launcher": [
     {
       "src": "/images/projects/ronan-launcher/hero.png",
