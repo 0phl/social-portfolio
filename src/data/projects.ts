@@ -85,7 +85,7 @@ export const projects: Project[] = [
     title: 'Ronan Launcher',
     category: 'Windows productivity tool',
     type: 'personal',
-    description: 'A Windows tray app I built to keep SSH connections, shell snippets, and runbook notes one shortcut away. Press Ctrl+Shift+Space, search the library, and copy or paste a command into the window you were using. It brings everyday server administration references into a local desktop tool.',
+    description: 'A Windows tray app I built to keep SSH connections, shell snippets, and runbook notes one shortcut away. Press Ctrl+Shift+Space, search the library, and copy or paste a command into the window you were using. It brings everyday system administration references into a local desktop tool.',
     contribution: {
       title: 'Desktop Application Developer',
       description: 'I built the React and TypeScript interface and the Rust backend with Tauri. My work covered the searchable launcher, library editors, Windows focus and clipboard integration, SQLite storage, password protection, and portable import and export.',

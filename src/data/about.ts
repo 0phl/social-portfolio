@@ -1,7 +1,7 @@
 export const experience = [
   {
     id: 'seaversity-full-time',
-    role: 'Server Administrator',
+    role: 'System Administrator',
     company: 'Seaversity, Inc.',
     logo: '/images/organizations/seaversity.png',
     type: 'Full-time',
@@ -19,7 +19,7 @@ export const experience = [
   },
   {
     id: 'seaversity-contract',
-    role: 'Server Administrator',
+    role: 'System Administrator',
     company: 'Seaversity, Inc.',
     logo: '/images/organizations/seaversity.png',
     type: 'Contract',

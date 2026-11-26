@@ -34,13 +34,13 @@ I still had doubts, but I was slowly learning how to handle them.
 
 ## Getting hired
 
-After my internship, I was given the chance to continue working with Seaversity through a project-based role. Later, I was hired as a full-time server administrator.
+After my internship, I was given the chance to continue working with Seaversity through a project-based role. Later, I moved into a full-time role as a system administrator.
 
 Written like that, the path sounds simple. I finished college, became an intern, and then got hired. But it did not feel simple while I was going through it.
 
-Becoming a server administrator gave me more responsibilities. I started working more with Linux servers, web services, LMS platforms, domains, reverse proxies, access, and troubleshooting.
+Becoming a system administrator gave me more responsibilities. I started working more with Linux servers, web services, LMS platforms, domains, reverse proxies, access, and troubleshooting.
 
-I also had opportunities to work on applications and automation, even though my main title was server administrator. This allowed me to learn things outside my original role.
+I also had opportunities to work on applications and automation, which helped me learn beyond my day-to-day responsibilities.
 
 There were still many things I did not know. The difference was that I was becoming more comfortable with learning while doing the work.
 
